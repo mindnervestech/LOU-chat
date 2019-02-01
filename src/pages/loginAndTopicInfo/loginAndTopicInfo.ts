@@ -156,10 +156,8 @@ export class loginAndTopicInfo {
             lastMessage: this.groupInfo.lastMessage
           });
 
-          var phofilePic = "";
-            if(this.base64Image != undefined){
-              phofilePic = this.base64Image;
-            }
+          var phofilePic = this.userProfilePic;
+            
           firebase.database().ref().child('users/'+ key).update({
             "profilePic" : phofilePic,
             "tripe" : {
