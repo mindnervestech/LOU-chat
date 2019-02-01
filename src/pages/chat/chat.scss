@@ -171,14 +171,14 @@ page-chat {
     .myleft{
         float: left !important;
         max-width: 85%;
-        background-color: rgba(237, 241, 244, 0.33);
-        color: #000;
+        background-color: #E6E5EB;
+        color: black;
+        padding: 10px 15px 10px 20px;
         position: relative;
         vertical-align: top;
-        border: 1px solid rgba(237, 241, 244, 0.33);
-        padding: 18px 15px 10px 20px;
+        border: 1px solid lavender;
         border-radius: 12px;
-        font-size: 19px;
+        font-size: 16px;
         font-weight: 500;
     }
     .left-msg{
