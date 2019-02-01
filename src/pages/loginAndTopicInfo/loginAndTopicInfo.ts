@@ -24,9 +24,9 @@ export class loginAndTopicInfo {
 	usernameInfo : any;
 	base64Image: any;
 	nickName: string = "";
-  groupInfo: any;
-  userProfilePic : string = ""; 
-  user_profilePic: string = "assets/image/profile.png";
+    groupInfo: any;
+    userProfilePic : string = ""; 
+    user_profilePic: string = "assets/image/profile.png";
 
 	constructor(public LoadingProvider: LoadingProvider,
 	public CommonProvider: CommonProvider,
@@ -47,7 +47,7 @@ export class loginAndTopicInfo {
 	ionViewDidEnter() {
      var user = JSON.parse(localStorage.getItem("loginUser"));
       if (!user) {
-            this.userProfilePic = "assets/image/profile.png";
+            this.user_profilePic = "assets/image/profile.png";
         }else{
           console.log("user",user);
           this.nickName = user.name;
@@ -79,10 +79,11 @@ export class loginAndTopicInfo {
                 localStorage.setItem("Group", JSON.stringify(groupData));
               });
             });
-  }
+    }
+
   	GoToFriendListPage() {
     	this.navCtrl.push("FriendlistPage");
-      }
+    }
       
     
    btnActivate(ionicButton) {

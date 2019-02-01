@@ -193,11 +193,16 @@
    .the-message  .myleft-image{
         float:left!important;
        width: 50%;
-    background: transparent;
-    padding: 6px 10px;
-    position: relative;
+       background: #4bb1bb;
+       padding: 6px 4px 1px 3px;
+        position: relative;
    // height: 50%;
-    vertical-align: top;
+        vertical-align: top;
+        border-radius: 18px;
+        img{
+            opacity: 1;
+            border-radius: 9px;
+        }
     }
     // .the-message  .myleft-image::before{
     //     width: 0;
