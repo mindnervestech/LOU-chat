@@ -123,6 +123,7 @@ export class FriendlistPage {
                  var userData = Alluser.val();
                  for(var data in userData){
                      if(data != userID){
+                         me.tripeUsersList = [];
                          var userinfo = {
                             name: userData[data].name,
                             profilePic: userData[data].profilePic ? userData[data].profilePic : "assets/image/profile.png",

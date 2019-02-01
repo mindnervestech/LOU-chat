@@ -73,6 +73,7 @@ export class ChatRoomMembers {
                   console.log(me.groupMemberKey);
                     firebase.database().ref('users/'+ data).on('value', function (snap) {
                         var value = snap.val();
+                        me.groupList = [];
                             var profilePic = value ? ((value.profilePic == "") ? 'assets/image/profile.png' : value.profilePic) : 'assets/image/profile.png';
                             var groupDetail = {
                                 name : value.name,

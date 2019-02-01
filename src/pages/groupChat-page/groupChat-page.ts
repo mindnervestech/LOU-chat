@@ -42,25 +42,25 @@ declare var firebase;
      <ion-item-divider  style="text-align: center;" *ngIf="showHeader(message,i)" >{{message.DateCreated}}</ion-item-divider>
     <ion-item  class="chat-page-ion-item">
      <div  *ngIf="message.type == 'text'" >
-            <ion-row *ngIf="message.userId == myuserid" id="quote-{{message.mkey}}">
+            <ion-row *ngIf="message.sender_id == myuserid" id="quote-{{message.mkey}}">
                 <p class="the-message right-msg" style="width:100%;"><span class="myright"><span  [innerHTML]="message.message" ></span><span class="mtime">{{ message.time}}</span></span>
                 </p>
             </ion-row>
-            <ion-row *ngIf="message.userId != myuserid" id="quote-{{message.mkey}}" style="margin: 0px;">
+            <ion-row *ngIf="message.sender_id != myuserid" id="quote-{{message.mkey}}" style="margin: 0px;">
                 <p class="the-message left-msg" style="width:100%;">
                   <ion-avatar item-left>
-                    <ion-img class="imgstyle" src='{{(message.profilePic == "") ? ".assets/image/profile.png" : message.profilePic}}' (click)="showProfile(message)"></ion-img>
+                    <ion-img class="imgstyle" src='{{message.profilePic}}' (click)="showProfile(message)"></ion-img>
                     </ion-avatar>
                 <span class="myleft"><span    [innerHTML]="message.message"></span><span class="mtime">{{ message.time}}</span></span>
                 </p>
             </ion-row>
       </div>
       <div *ngIf="message.type == 'image'">
-        <ion-row *ngIf="message.userId == myuserid" id="quote-{{message.mkey}}">
+        <ion-row *ngIf="message.sender_id == myuserid" id="quote-{{message.mkey}}">
           <p class="the-message" style="width:100%;"><span class="myright-image"><span > <img (click)="imageTap(message.message)" style="opacity: 0.5;" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/> </span><br><span class="mtime-image">{{ message.time}}</span></span>
           </p>
         </ion-row>
-        <ion-row *ngIf="message.userId != myuserid" id="quote-{{message.mkey}}">
+        <ion-row *ngIf="message.sender_id != myuserid" id="quote-{{message.mkey}}">
           <p class="the-message" style="width:100%;"><span class="myleft-image"><span>  <img style="opacity: 0.5;"  (click)="imageTap(message.message)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/></span><br><span class="mtime-image">{{ message.time}}</span></span>
           </p>
         </ion-row>
@@ -150,7 +150,7 @@ export class GroupChatPage {
           'mkey': messages.key,
           "userId": me.myuserid,
           "type": messages.val().type,
-          "profilePic": messages.val().profilePic,
+          "profilePic": (messages.val().profilePic != "") ? messages.val().profilePic  : "assets/image/profile.png",
         }));
         
         console.log("msg list",me.messagesList);
