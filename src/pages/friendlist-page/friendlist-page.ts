@@ -74,7 +74,6 @@ export class FriendlistPage {
     }
 
     ionViewDidLoad() {
-        console.log("ionViewDidLoad");
         var me = this;
 
        /* this.sqlite.create({
@@ -89,7 +88,6 @@ export class FriendlistPage {
             me.match();
     }
     ionViewDidEnter() {
-        console.log("ionViewDidEnter");
        /* var me = this;
         this.sqlite.create({
             name: 'data.db',
@@ -97,7 +95,6 @@ export class FriendlistPage {
         })
             .then((db: SQLiteObject) => {
                 me.sqlDb = db;
-                console.log("find friend");
                 me.loadListFromStorage();
             });*/
     }
@@ -114,7 +111,6 @@ export class FriendlistPage {
         var me = this;
         firebase.database().ref('users/'+ userID).on('value',function(user){
             var myData = user.val();
-            console.log("user",myData.tripe);
             var push = "true";
             var date = new Date();
             var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
@@ -170,9 +166,7 @@ export class FriendlistPage {
                      }
                      push = "true";
                  }
-                 console.log(me.tripeUsersList);
                  if(me.tripeUsersList.length != 0){
-                     console.log("in");
 
                      me.usersList = me.tripeUsersList; 
                  }
@@ -217,16 +211,13 @@ export class FriendlistPage {
         var GrouplastDate;
 
         var groupInfo = JSON.parse(localStorage.getItem("Group"));
-        console.log("group", groupInfo.groupId);
         var userId = localStorage.getItem("userId");
-        console.log(userId);
         firebase.database().ref('GroupMember/' + groupInfo.groupId+ '/' + userId).on("value",function(user){
             me.groupData = [];
             var userInfo = user.val();
             GrouplastDate = me.getLastDate(userInfo.lastDate);
             firebase.database().ref('Group/'+ groupInfo.key).on("value",function(groupData){
                 var value = groupData.val();
-                console.log("groupData",value);
                 me.groupData = [];
                 var groupDetail = {
                     groupId : value.groupId,
@@ -243,8 +234,6 @@ export class FriendlistPage {
             for (var data in groupData ) {
                 for(var dataMember in groupData[data]){
                     if(user.uid == dataMember){
-                        console.log("data",groupData[data][dataMember]);
-                        console.log("groupId",data);
                         firebase.database().ref('Group/').orderByChild("groupId").equalTo(data).on('value', function (group) {
                             var value = group.val();
                             for (var i in value ) {
@@ -262,7 +251,6 @@ export class FriendlistPage {
                     }
                 }
             }
-            console.log(me.groupData);
         });*/
 
         /* firebase.database().ref('Friends/' + user.uid).off();
@@ -374,8 +362,6 @@ export class FriendlistPage {
     }
     groupMessageBox(item){
         var groupData = JSON.parse(localStorage.getItem("Group"));
-        console.log("groupData",groupData.startTime);
-        console.log(groupData.tripeDate);
         var msg = this.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
         if(msg == ""){
             this.navCtrl.setRoot("GroupChatPage",item);
@@ -388,24 +374,18 @@ export class FriendlistPage {
     tripeDateValidation(ripeDate,startDate,endDate){
         var msg = "";
         var convertDate = ripeDate.split("-");
-        console.log("convertDate",convertDate);
         var start = startDate.split(":");
         var end = endDate.split(":");
-        console.log("endDate",endDate);
-        console.log(convertDate);
         var date = new Date();
         var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-        console.log("dateCreated",dateCreated);
         var todayDate = dateCreated.split(" ");
         var todayConvertDate = todayDate[0].split("-");
         var todayConvertTime = todayDate[1].split(":");
         if(convertDate[0] != todayConvertDate[0] || convertDate[1] != todayConvertDate[1] || convertDate[2] != todayConvertDate[2]){
-            console.log("data Invalid");
              var st1 = parseInt(start[0]) - 2
             msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
             return msg;
         }else{
-            console.log("data valid");
             if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0]) && parseInt(start[1]) <= parseInt(todayConvertTime[1]) ){
                 if(parseInt(end[0]) >= parseInt(todayConvertTime[0])){
                     msg = "";

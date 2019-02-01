@@ -113,7 +113,6 @@ export class ProfilePage {
 
     ionViewDidLoad() {
         this.loadUserProfileData();
-        console.log("welcom");
     }
     
     btnActivate(ionicButton) {
@@ -124,7 +123,6 @@ export class ProfilePage {
     }
     
     isSelected(event) {
-        console.log(event);
         return 'primary';
         // event.target.getAttribute('selected') ? 'primary' : '';
     }  

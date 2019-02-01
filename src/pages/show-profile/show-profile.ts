@@ -24,7 +24,7 @@ declare var firebase;
       <!-- <img id="profile-image" [src]="userInfo.user_profilePic" *ngIf="this.captureDataUrl" /> -->
          </div>
         <div padding class="user-info">
-            <ion-item><h2>Name</h2></ion-item>
+            <ion-item><h2>{{userInfo.user_name}}</h2></ion-item>
             <ion-item><p>Age ,Gender ,Information</p></ion-item>  
         </div>
     </ion-content>
@@ -61,7 +61,6 @@ export class ShowProfilePage {
                 user_accessCode: "",
             }
             var userId = me.navParams.data.senderId;
-            console.log(userId);
             var loginUserId = user.uid;
             if(me.navParams.data.senderId == loginUserId){
                 me.block = 0;
@@ -82,7 +81,6 @@ export class ShowProfilePage {
             else {
                 //data load from firebase.
                 firebase.database().ref('users/' + userId).once('value').then(function (snapshot) {
-                    console.log('snapshotss', snapshot.val());
                     var name = snapshot.val() ? snapshot.val().name : "";
                     var email = snapshot.val() ? snapshot.val().email : "";
                     var status = snapshot.val() ? snapshot.val().status : "";

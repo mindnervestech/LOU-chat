@@ -64,7 +64,6 @@ export class OptionPage {
     }else{
       if(me.TrainOrFliteNumber != "" && me.optionValue != ""){
        firebase.database().ref('Group').orderByChild("trainNumber").equalTo(me.TrainOrFliteNumber).on('value', function (group) {
-          console.log(group.val());
           if(group.val() == null){
              let alert = me.alertCtrl.create({ subTitle: "Please enter valid number", buttons: ['OK'] });
              alert.present();
@@ -72,7 +71,6 @@ export class OptionPage {
             firebase.database().ref('Group').orderByChild("trainNumber").equalTo(me.TrainOrFliteNumber).on('value', function (group) {
               var groupKey = Object.keys(group.val())[0];
               firebase.database().ref('Group/'+ groupKey).on("value", function(GroupInformation){
-                console.log(GroupInformation.val());
                 var groupData = {
                   key : groupKey,
                   unreadCount : GroupInformation.val().unreadCount,
@@ -85,11 +83,9 @@ export class OptionPage {
                 }
                   var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
                   if(msg == ""){
-                    console.log("msg",msg);
                     localStorage.setItem("option", JSON.stringify(data));  
                     me.navCtrl.setRoot("loginAndTopicInfo",data);
                   }else{
-                    console.log("msg",msg);
                     let alert = me.alertCtrl.create({ subTitle: msg, buttons: ['OK'] }); 
                     alert.present();
                   }
@@ -142,7 +138,6 @@ export class OptionPage {
   }
 
   isSelected(event) {
-    console.log(event);
     return 'primary';
     // event.target.getAttribute('selected') ? 'primary' : '';
   }
@@ -150,24 +145,18 @@ export class OptionPage {
   tripeDateValidation(ripeDate,startDate,endDate){
         var msg = "";
         var convertDate = ripeDate.split("-");
-        console.log("convertDate",convertDate);
         var start = startDate.split(":");
         var end = endDate.split(":");
-        console.log("endDate",endDate);
-        console.log(convertDate);
         var date = new Date();
         var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-        console.log("dateCreated",dateCreated);
         var todayDate = dateCreated.split(" ");
         var todayConvertDate = todayDate[0].split("-");
         var todayConvertTime = todayDate[1].split(":");
         if(parseInt(convertDate[0]) >= parseInt(todayConvertDate[0]) || parseInt(convertDate[1]) >= parseInt(todayConvertDate[1]) || parseInt(convertDate[2]) >= parseInt(todayConvertDate[2])){
-            console.log("data Invalid");
              var st1 = parseInt(start[0]) - 2
             msg = "";
             return msg;
         }else{
-            console.log("data valid");
             if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0]) && parseInt(start[1]) <= parseInt(todayConvertTime[1]) ){
                 if(parseInt(end[0]) >= parseInt(todayConvertTime[0])  && parseInt(end[1]) >= parseInt(todayConvertTime[1])){
                     msg = "";

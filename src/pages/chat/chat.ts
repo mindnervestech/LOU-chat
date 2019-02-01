@@ -379,7 +379,6 @@ export class ChatPage {
     var me = this;
     var friendRef = firebase.database().ref('Friends/' + me.myuserid);
 
-    console.log("inside ionview will leave");
     global.Is_CHAT_PAGE = false;
     //it is for unreadCount Message update in firebase if user leaves the chat page then the current user message will be update in firebase as unReadCount as 0;
     friendRef.child(me.friendkey).update({

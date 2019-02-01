@@ -49,22 +49,16 @@ export class loginAndTopicInfo {
       if (!user) {
             this.user_profilePic = "assets/image/profile.png";
         }else{
-          console.log("user",user);
           this.nickName = user.name;
           this.user_profilePic = user.profilePic;
           this.user_profilePic = (user.profilePic != '') ? user.profilePic : "assets/image/profile.png";
-          console.log(this.user_profilePic);
         }
     	this.navParams.data
-      console.log(this.navParams.data);
       var me = this;
       var trainData = this.navParams.data;
-      console.log(trainData.optionValue);
       firebase.database().ref('Group').orderByChild("trainNumber").equalTo(trainData.optionValue).on('value', function (group) {
-              console.log(group.val());
               var groupKey = Object.keys(group.val())[0];
               firebase.database().ref('Group/'+ groupKey).on("value", function(GroupInformation){
-                console.log(GroupInformation.val());
                 var groupData = {
                   key : groupKey,
                   unreadCount : GroupInformation.val().unreadCount,
@@ -94,7 +88,6 @@ export class loginAndTopicInfo {
   }
 
   isSelected(event) {
-    console.log(event);
     return 'primary';
     // event.target.getAttribute('selected') ? 'primary' : '';
   }
@@ -102,24 +95,18 @@ export class loginAndTopicInfo {
     tripeDateValidation(ripeDate,startDate,endDate){
         var msg = "";
         var convertDate = ripeDate.split("-");
-        console.log("convertDate",convertDate);
         var start = startDate.split(":");
         var end = endDate.split(":");
-        console.log("endDate",endDate);
-        console.log(convertDate);
         var date = new Date();
         var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-        console.log("dateCreated",dateCreated);
         var todayDate = dateCreated.split(" ");
         var todayConvertDate = todayDate[0].split("-");
         var todayConvertTime = todayDate[1].split(":");
         if(convertDate[0] != todayConvertDate[0] || convertDate[1] != todayConvertDate[1] || convertDate[2] != todayConvertDate[2]){
-            console.log("data Invalid");
              var st1 = parseInt(start[0]) - 2
             msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
             return msg;
         }else{
-            console.log("data valid");
             if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0]) && parseInt(start[1]) <= parseInt(todayConvertTime[1]) ){
                 if(parseInt(end[0]) >= parseInt(todayConvertTime[0])){
                     msg = "";
@@ -142,7 +129,6 @@ export class loginAndTopicInfo {
             this.newLoginUser();
         }else{
           //user data update and add member to group
-          console.log("user",user);
           this.LoadingProvider.startLoading();
           var group_id = this.groupInfo.groupId;
           var date = new Date();
@@ -169,7 +155,6 @@ export class loginAndTopicInfo {
             }
           }).then(()=>{
             var groupData = JSON.parse(localStorage.getItem("Group"));
-            console.log(groupData);
             var me = this;
             var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
             if(msg == ""){
@@ -200,13 +185,10 @@ export class loginAndTopicInfo {
 
   		if(me.nickName != ""){
   			me.LoadingProvider.startLoading();
-  			console.log("nickName",me.nickName);
 
   			firebase.database().ref('users').orderByChild("name").equalTo(me.nickName).on('value', function (user) {
-  				console.log("user",user.val());
   				if(user.val() == null){
   					localStorage.setItem("value", "false");
-  					console.log(me.base64Image);
   					var phofilePic = "";
   					if(me.base64Image != undefined){
   						phofilePic = me.base64Image;
@@ -229,11 +211,9 @@ export class loginAndTopicInfo {
                 VisitPeople : me.navParams.data.selectedOption4,
               }
           			}).then(()=>{
-          				console.log("in");
 		            	setTimeout(() => {
 		            	firebase.database().ref('users').orderByChild("name").equalTo(me.nickName).on('value', function (userInfo) {
 							      var key = Object.keys(userInfo.val())[0];
-							      console.log(userInfo.val());
 							      global.USER_IMAGE = profilePhoto;
 		            		global.USER_NAME = me.nickName;
 		            		global.USER_ACCESS_CODE = access_code;
@@ -259,7 +239,6 @@ export class loginAndTopicInfo {
                         lastMessage: me.groupInfo.lastMessage
                     });
                     var groupData = JSON.parse(localStorage.getItem("Group"));
-                        console.log(groupData);
                         var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
                         if(msg == ""){
                           me.LoadingProvider.closeLoading();

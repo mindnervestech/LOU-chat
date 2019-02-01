@@ -61,7 +61,6 @@ export class StartPage {
 	constructor(public navCtrl: NavController, private _zone: NgZone) { }
 
 	ionViewDidLoad() {
-        console.log('ionViewDidLoad StartPage');
         
 	}
 
@@ -71,9 +70,7 @@ export class StartPage {
 	}
 
     slideNext($index){
-        console.log($index);
         this.slides.slideNext();
-        console.log("slide CHANGED", this.slides.getActiveIndex());
         var a= this.slides.getActiveIndex();
         if(a == 3){
             this.redirect();

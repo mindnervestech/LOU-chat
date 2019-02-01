@@ -53,12 +53,10 @@ export class ChatRoomMembers {
     }
 
     ionViewDidLoad() {
-        console.log("ionViewDidLoad");
-        console.log(this.navParams.data);
         this.getChatMemberData(this.navParams.data);
     }
     ionViewDidEnter() {
-        console.log("ionViewDidEnter");
+        
     }
     goToFriendPage(){
          this.navCtrl.setRoot("FriendlistPage");
@@ -69,9 +67,7 @@ export class ChatRoomMembers {
               var groupData  = snapshot.val();
               me.groupList = [];
               for (var data in groupData ) {
-                  console.log(data);
                   me.groupMemberKey.push(data);
-                  console.log(me.groupMemberKey);
                     firebase.database().ref('users/'+ data).on('value', function (snap) {
                         var value = snap.val();
                             var profilePic = value ? ((value.profilePic == "") ? 'assets/image/profile.png' : value.profilePic) : 'assets/image/profile.png';
@@ -86,7 +82,6 @@ export class ChatRoomMembers {
                             };
                             me.groupList.push(groupDetail);
                             me.count++;
-                        console.log("groupData",me.groupList);
                     });  
                     setTimeout(() => {
                       

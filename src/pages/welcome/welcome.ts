@@ -18,7 +18,7 @@ export class WelcomePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad WelcomePage');
+    
   }
 
   redirect() {
