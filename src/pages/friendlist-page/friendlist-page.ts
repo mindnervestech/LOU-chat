@@ -155,6 +155,7 @@ export class FriendlistPage {
             firebase.database().ref('Group/'+ groupInfo.key).on("value",function(groupData){
                 var value = groupData.val();
                 console.log("groupData",value);
+                me.groupData = [];
                 var groupDetail = {
                     groupId : value.groupId,
                     groupName : value.groupName,

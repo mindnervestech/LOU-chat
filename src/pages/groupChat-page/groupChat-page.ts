@@ -6,6 +6,7 @@ import { Network } from '@ionic-native/network';
 import { Camera } from '@ionic-native/camera';
 import { LoadingProvider } from '../../providers/loading/loading';
 import { global } from '../global/global';
+import { DomSanitizer } from '@angular/platform-browser';
 //import * as Message from '../../providers/message/message';
 declare var firebase;
 
@@ -41,11 +42,11 @@ declare var firebase;
      <ion-item-divider  style="text-align: center;" *ngIf="showHeader(message,i)" >{{message.DateCreated}}</ion-item-divider>
     <ion-item  class="chat-page-ion-item">
      <div  *ngIf="message.type == 'text'" >
-            <ion-row *ngIf="message.sender_id == myuserid" id="quote-{{message.mkey}}">
+            <ion-row *ngIf="message.userId == myuserid" id="quote-{{message.mkey}}">
                 <p class="the-message right-msg" style="width:100%;"><span class="myright"><span  [innerHTML]="message.message" ></span><span class="mtime">{{ message.time}}</span></span>
                 </p>
             </ion-row>
-            <ion-row *ngIf="message.sender_id != myuserid" id="quote-{{message.mkey}}" style="margin: 0px;">
+            <ion-row *ngIf="message.userId != myuserid" id="quote-{{message.mkey}}" style="margin: 0px;">
                 <p class="the-message left-msg" style="width:100%;">
                   <ion-avatar item-left>
                     <ion-img class="imgstyle" src='{{(message.profilePic == "") ? ".assets/image/profile.png" : message.profilePic}}' (click)="showProfile(message)"></ion-img>
@@ -54,20 +55,15 @@ declare var firebase;
                 </p>
             </ion-row>
       </div>
-        <div  *ngIf="message.type == 'image'" >
-            <ion-row *ngIf="message.sender_id == myuserid" id="quote-{{message.mkey}}">
-                <p class="the-message" style="width:100%;"><span class="myright-image"><span > <img (click)="imageTap(message.message)" style="opacity: 0.5;" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/> </span><br><span class="mtime-image">{{ message.time}}</span></span>
-                </p>
-            </ion-row>
-            <ion-row *ngIf="message.sender_id != myuserid" id="quote-{{message.mkey}}">
-                <p class="the-message" style="width:100%;"><span class="myleft-image"><span>  <img style="opacity: 0.5;"  (click)="imageTap(message.message)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/></span><br><span class="mtime-image">{{ message.time}}</span></span>
-                </p>
-                <div>
-                  <ion-avatar item-left>
-                    <ion-img class="imgstyle" src='{{(message.profilePic == "") ? ".assets/image/profile.png" : "message.profilePic"}}' (click)="showProfile(message)"></ion-img>
-                  </ion-avatar>
-                </div>
-            </ion-row>
+      <div *ngIf="message.type == 'image'">
+        <ion-row *ngIf="message.userId == myuserid" id="quote-{{message.mkey}}">
+          <p class="the-message" style="width:100%;"><span class="myright-image"><span > <img (click)="imageTap(message.message)" style="opacity: 0.5;" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/> </span><br><span class="mtime-image">{{ message.time}}</span></span>
+          </p>
+        </ion-row>
+        <ion-row *ngIf="message.userId != myuserid" id="quote-{{message.mkey}}">
+          <p class="the-message" style="width:100%;"><span class="myleft-image"><span>  <img style="opacity: 0.5;"  (click)="imageTap(message.message)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/></span><br><span class="mtime-image">{{ message.time}}</span></span>
+          </p>
+        </ion-row>
       </div>
     </ion-item>
     </ion-item-group>
@@ -113,7 +109,7 @@ export class GroupChatPage {
     private limit = 10;
     loadingmessageCounter: any = 0;
     sqlDb: SQLiteObject;
-    constructor(public modalCtrl: ModalController,private camera: Camera, public LoadingProvider: LoadingProvider,public platform: Platform,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
+    constructor( public _DomSanitizer: DomSanitizer,public modalCtrl: ModalController,private camera: Camera, public LoadingProvider: LoadingProvider,public platform: Platform,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
         var me = this;
         me.menu.swipeEnable(true);
         var user = JSON.parse(localStorage.getItem("loginUser"));

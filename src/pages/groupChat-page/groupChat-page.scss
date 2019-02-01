@@ -165,13 +165,17 @@
         font-weight: 500;
     }
      .the-message .myright-image {
-     width: 50%;
-    background: transparent;
-    padding: 6px 10px;
-    position: relative;
-    //height: 50%;
+        width: 50%;
+        background: #4bb1bb;
+        padding: 6px 4px 1px 3px;
+        position: relative;
         float: right;
-    vertical-align: top;
+        vertical-align: top;
+        border-radius: 18px;
+        img{
+            opacity: 1;
+            border-radius: 9px;
+        }
     }
     .myleft{
         float:left!important;
@@ -195,34 +199,34 @@
    // height: 50%;
     vertical-align: top;
     }
-    .the-message  .myleft-image::before{
-        width: 0;
-        height: 0;
-        content: '';
-        position: absolute;
-        left: -20px;
-        bottom: -2px;
-        border-top: 22px solid transparent;
-        border-bottom: 20px solid transparent; 
-        border-right:51px solid rgba(237, 241, 244, 0.33); 
-        -webkit-transform: rotate(40deg);
-        transform: rotate(-40deg);
-        z-index: -1;
-    }
-    .the-message .myright-image:after{
-        width: 0;
-        height: 0;
-        content: '';
-        position: absolute;
-        right: -18px;
-        bottom: -2px;
-        border-top: 22px solid transparent;
-        border-bottom: 20px solid transparent;
-        border-left: 51px solid #4bb1bb;
-        -webkit-transform: rotate(40deg);
-        transform: rotate(40deg);
-        z-index: -1;
-    }
+    // .the-message  .myleft-image::before{
+    //     width: 0;
+    //     height: 0;
+    //     content: '';
+    //     position: absolute;
+    //     left: -20px;
+    //     bottom: -2px;
+    //     border-top: 22px solid transparent;
+    //     border-bottom: 20px solid transparent; 
+    //     border-right:51px solid rgba(237, 241, 244, 0.33); 
+    //     -webkit-transform: rotate(40deg);
+    //     transform: rotate(-40deg);
+    //     z-index: -1;
+    // }
+    // .the-message .myright-image:after{
+    //     width: 0;
+    //     height: 0;
+    //     content: '';
+    //     position: absolute;
+    //     right: -18px;
+    //     bottom: -2px;
+    //     border-top: 22px solid transparent;
+    //     border-bottom: 20px solid transparent;
+    //     border-left: 51px solid #4bb1bb;
+    //     -webkit-transform: rotate(40deg);
+    //     transform: rotate(40deg);
+    //     z-index: -1;
+    // }
     ion-item-divider{
         border-bottom:0px;
     }

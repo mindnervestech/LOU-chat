@@ -105,9 +105,11 @@ export class loginAndTopicInfo {
           //user data update and add member to group
           console.log("user",user);
           this.LoadingProvider.startLoading();
+          console.log( this.groupInfo);
           var group_id = this.groupInfo.groupId;
           var date = new Date();
           var key = localStorage.getItem("userId");
+          console.log( this.groupInfo);
           var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
           firebase.database().ref().child('GroupMember/'+ group_id + '/' + key).set({
             groupId : group_id,
