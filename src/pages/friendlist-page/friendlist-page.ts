@@ -121,9 +121,9 @@ export class FriendlistPage {
             var mylastDate = me.getLastDate(dateCreated);
              firebase.database().ref('users/').on('value',function(Alluser){
                  var userData = Alluser.val();
+                 me.tripeUsersList = [];
                  for(var data in userData){
                      if(data != userID){
-                         me.tripeUsersList = [];
                          var userinfo = {
                             name: userData[data].name,
                             profilePic: userData[data].profilePic ? userData[data].profilePic : "assets/image/profile.png",
@@ -131,7 +131,8 @@ export class FriendlistPage {
                             lastDate: mylastDate,
                             unreadMessage: 0,
                             userId: data,
-                            lastMessage: ""
+                            lastMessage: "",
+                            date: mylastDate,
                          };
 
                          if(myData.tripe.HomeWork){
@@ -170,6 +171,7 @@ export class FriendlistPage {
                  console.log(me.tripeUsersList);
                  if(me.tripeUsersList.length != 0){
                      console.log("in");
+
                      me.usersList = me.tripeUsersList; 
                  }
              });

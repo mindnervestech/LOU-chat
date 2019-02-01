@@ -157,7 +157,7 @@ export class loginAndTopicInfo {
           });
 
           var phofilePic = this.userProfilePic;
-            
+
           firebase.database().ref().child('users/'+ key).update({
             "profilePic" : phofilePic,
             "tripe" : {
@@ -258,7 +258,7 @@ export class loginAndTopicInfo {
                     });
                     var groupData = JSON.parse(localStorage.getItem("Group"));
                         console.log(groupData);
-                        var msg = this.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
+                        var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
                         if(msg == ""){
                           this.LoadingProvider.closeLoading();
                           this.navCtrl.setRoot("FriendlistPage");
