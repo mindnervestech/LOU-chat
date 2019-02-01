@@ -26,7 +26,7 @@ export class loginAndTopicInfo {
 	nickName: string = "";
   groupInfo: any;
   userProfilePic : string = ""; 
-  user_profilePic: string = "";
+  user_profilePic: string = "assets/image/profile.png";
 
 	constructor(public LoadingProvider: LoadingProvider,
 	public CommonProvider: CommonProvider,
@@ -52,8 +52,8 @@ export class loginAndTopicInfo {
           console.log("user",user);
           this.nickName = user.name;
           this.user_profilePic = user.profilePic;
-          this.userProfilePic = (user.profilePic != '') ? user.profilePic : "assets/image/profile.png";
-          console.log(this.userProfilePic);
+          this.user_profilePic = (user.profilePic != '') ? user.profilePic : "assets/image/profile.png";
+          console.log(this.user_profilePic);
         }
     	this.navParams.data
       console.log(this.navParams.data);
@@ -169,19 +169,20 @@ export class loginAndTopicInfo {
           }).then(()=>{
             var groupData = JSON.parse(localStorage.getItem("Group"));
             console.log(groupData);
-            var msg = this.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
+            var me = this;
+            var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
             if(msg == ""){
-              this.LoadingProvider.closeLoading();
-              this.navCtrl.setRoot("FriendlistPage");
+              me.LoadingProvider.closeLoading();
+              me.navCtrl.setRoot("FriendlistPage");
             }else{
-              this.LoadingProvider.closeLoading();
-                let actionSheet = this.alertCtrl.create({
+              me.LoadingProvider.closeLoading();
+                let actionSheet = me.alertCtrl.create({
                 title: 'The chat room is not yet opened, but you can already see some tips for your topics',
                 buttons: [
                     {
                         text: 'Go',
                         handler: () => {
-                            this.GoToFriendListPage();
+                            me.GoToFriendListPage();
                         }
                     }
                 ]

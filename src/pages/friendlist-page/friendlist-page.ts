@@ -121,6 +121,7 @@ export class FriendlistPage {
             var mylastDate = me.getLastDate(dateCreated);
              firebase.database().ref('users/').on('value',function(Alluser){
                  var userData = Alluser.val();
+
                  me.tripeUsersList = [];
                  for(var data in userData){
                      if(data != userID){
@@ -133,6 +134,7 @@ export class FriendlistPage {
                             userId: data,
                             lastMessage: "",
                             date: mylastDate,
+                            senderId : data
                          };
 
                          if(myData.tripe.HomeWork){

@@ -198,7 +198,7 @@ export class ChatPage {
     block1 = me.senderUser.block;
     me.block1 = block1;
     me.friendkey = me.senderUser.key;
-    firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).off();
+    /*firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).off();
     //it will call if you blocked someone or blocked by someone.
     firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).on('value', function (snapshot) {
       me.block2 = snapshot.val().block;
@@ -211,7 +211,7 @@ export class ChatPage {
         me.blockMsg = Message.SHOW_BLOCK_MSG;
         me.blockUser = 1;
       }
-    });
+    });*/
 
     me.readMessage();
     // in case of ofline this function will call and load message data from SQLite.
@@ -431,7 +431,7 @@ export class ChatPage {
           type: type
         }).then(function () {
           if (type == "text") {
-            firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).once('value').then(function (snapshot) {
+            /*firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).once('value').then(function (snapshot) {
               var friendRef = firebase.database().ref('Friends/' + me.senderUser.senderId);
               friendRef.child(userId).update({
                 unreadCount: parseInt(snapshot.val().unreadCount) + 1,
@@ -454,7 +454,7 @@ export class ChatPage {
               }).then(function () {
                 console.log("Message send successfully");
               });
-            });
+            });*/
           }
         });
       });
