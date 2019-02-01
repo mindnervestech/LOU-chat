@@ -67,13 +67,13 @@ export class ChatRoomMembers {
         var me = this;
          firebase.database().ref('GroupMember/'+ groupId).on('value', function (snapshot) {
               var groupData  = snapshot.val();
+              me.groupList = [];
               for (var data in groupData ) {
                   console.log(data);
                   me.groupMemberKey.push(data);
                   console.log(me.groupMemberKey);
                     firebase.database().ref('users/'+ data).on('value', function (snap) {
                         var value = snap.val();
-                        me.groupList = [];
                             var profilePic = value ? ((value.profilePic == "") ? 'assets/image/profile.png' : value.profilePic) : 'assets/image/profile.png';
                             var groupDetail = {
                                 name : value.name,
