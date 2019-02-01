@@ -163,10 +163,10 @@ export class loginAndTopicInfo {
           firebase.database().ref().child('users/'+ key).update({
             "profilePic" : phofilePic,
             "tripe" : {
-              "Business" : this.navParams.data.selectedOption1,
+              "HomeWork" : this.navParams.data.selectedOption1,
               "Tourism" : this.navParams.data.selectedOption2,
-              "VisitPeople" : this.navParams.data.selectedOption3,
-              "HomeWork" :this.navParams.data.selectedOption4,
+              "Business" : this.navParams.data.selectedOption3,
+              "VisitPeople" :this.navParams.data.selectedOption4,
             }
           }).then(()=>{
             var groupData = JSON.parse(localStorage.getItem("Group"));
@@ -223,10 +223,10 @@ export class loginAndTopicInfo {
   					 	email: "",
   					 	pushToken: "123456",
               tripe : {
-                Business : me.navParams.data.selectedOption1,
+                HomeWork : me.navParams.data.selectedOption1,
                 Tourism : me.navParams.data.selectedOption2,
-                VisitPeople : me.navParams.data.selectedOption3,
-                HomeWork : me.navParams.data.selectedOption4,
+                Business : me.navParams.data.selectedOption3,
+                VisitPeople : me.navParams.data.selectedOption4,
               }
           			}).then(()=>{
           				console.log("in");
