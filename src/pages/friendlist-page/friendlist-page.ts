@@ -125,7 +125,7 @@ export class FriendlistPage {
                      if(data != userID){
                          var userinfo = {
                             name: userData[data].name,
-                            profilePic: userData[data].profilePic,
+                            profilePic: userData[data].profilePic ? userData[data].profilePic : "assets/image/profile.png",
                             email: userData[data].email,
                             lastDate: mylastDate,
                             unreadMessage: 0,
@@ -167,7 +167,7 @@ export class FriendlistPage {
                      push = "true";
                  }
                  console.log(me.tripeUsersList);
-                 if(me.tripeUsersList.length() != 0){
+                 if(me.tripeUsersList.length != 0){
                      console.log("in");
                      me.usersList = me.tripeUsersList; 
                  }
