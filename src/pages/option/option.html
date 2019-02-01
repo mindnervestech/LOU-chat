@@ -1,0 +1,64 @@
+<!--
+  Generated template for the OptionPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+
+  <ion-navbar>
+    <ion-title>option</ion-title>
+  </ion-navbar>
+
+</ion-header> -->
+
+
+<ion-content padding>
+    <h1>Choose your option</h1>
+    <form>
+        <p class="error">{{ error_message }}</p>
+        <ion-label>Select option</ion-label>
+        <ion-item class="txtdesign1 select">
+          <ion-select placeholder="Select option" interface="popover" name="option" [(ngModel)]="optionValue">
+            <ion-option *ngFor ="let data of option" [value]="data.option">
+              {{data.option}}
+            </ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-label>Sub option</ion-label>
+        <ion-item class="txtdesign1">
+            <ion-input type="text" placeholder="Enter selected option number" name="number" [(ngModel)]="TrainOrFliteNumber"></ion-input>
+        </ion-item>
+        
+        <ion-label class="info">Information</ion-label>
+        <!-- <ion-item class="txtdesign1 remove-border">
+          <ion-label>Info_1</ion-label>    
+          <ion-checkbox></ion-checkbox>
+        </ion-item>
+        <ion-item class="txtdesign1 remove-border">
+          <ion-label>Info_2</ion-label>
+          <ion-checkbox></ion-checkbox>  
+        </ion-item>
+        <ion-item class="txtdesign1 remove-border">
+          <ion-label>Info_3</ion-label>
+          <ion-checkbox></ion-checkbox>  
+        </ion-item> 
+        <ion-item class="txtdesign1 remove-border">
+          <ion-label>Info_4</ion-label>
+          <ion-checkbox></ion-checkbox>
+        </ion-item> -->
+        <div class="multiple-option">
+          <button id="1" #first ion-button color="dark" (click)="btnActivate(first)">Option_1 Option_1</button>
+          <button id="1" #second ion-button color="dark" (click)="btnActivate(second)">Option_2</button>
+          <button id="1" #third ion-button color="dark" (click)="btnActivate(third)">Option_3</button>
+          <button id="1" #fourth ion-button color="dark" (click)="btnActivate(fourth)">Option_4</button>
+          <button id="1" #fifth ion-button color="dark" (click)="btnActivate(fifth)">Option_5</button>
+        </div>
+        </form>
+</ion-content>
+<ion-footer>
+  <ion-toolbar class="option">
+    <button ion-button full color="primary" (click)="nextPage()" class="btndesign" tappable>NEXT</button>
+  </ion-toolbar>
+</ion-footer>

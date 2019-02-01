@@ -1,0 +1,24 @@
+page-image-popup {
+#blanket {
+   background-color:#111;
+   opacity: 0.65;
+   position:fixed;
+   z-index: 9001; 
+   top:0px;
+   left:0px;
+   width:100%;
+    height:100%;
+}
+
+#popUpDiv {
+    position:relative;
+    background-color:white;
+   // width:551px;
+    margin:50% auto 0 auto;
+   // height:259px;
+border:10px solid white;
+    z-index: 9002; 
+
+}
+.close{position:absolute; right:-25px; top:-25px;}
+}

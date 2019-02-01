@@ -1,0 +1,46 @@
+page-welcome {
+
+}
+.welcome{    
+    background: #fff;
+    
+    button{
+        color: #4c5660;
+    }
+}    
+.welcome-start {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 11px;
+    margin: auto;
+    height: fit-content;
+    width: fit-content;
+    img{
+        height: 353px;
+    }
+    h1{
+        text-align: center;
+        font-size: 30px;
+        font-family: initial;
+        font-weight: 300;
+    }
+    .language-btn{
+        h2{
+            text-align: center;
+            font-weight: 300;
+            font-size: 19px;
+        }
+        margin: 47px 0;
+        button{
+            width: 40%;
+            padding: 11px 0;
+            margin: 20px auto;
+            font-size: 19px;
+            background: transparent;
+            border: 1px solid #000;
+            display: block;
+            border-radius: 113px !important;
+        }
+    }
+}

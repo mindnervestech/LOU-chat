@@ -1,0 +1,77 @@
+<ion-header>
+         <ion-navbar>
+                         <button ion-button menuToggle>
+             <ion-icon name='menu'></ion-icon>
+       </button>
+      <ion-title  class="title">Your Profile</ion-title>   
+    </ion-navbar>
+ </ion-header>
+    
+ <ion-content padding>
+        <ion-list no-lines id="ProfileDP">
+            <ion-item class="upload-image">
+                <div id="profileimage"  [ngStyle]="{'background-image': 'url(' + profilePhoto + ')'}"                
+                (click)="presentActionSheet()" tappable>
+                </div>
+            </ion-item>
+        </ion-list>
+        <div class="exit">
+            <div class="chat-text">
+                <p>Your currently in chat room</p>
+                <p>Info_name</p>
+            </div>
+            <div class="quit-btn"><button ion-button full color="primary"  class="btndesign" tappable (click)='logOutUser()'>Quit</button></div>
+        </div>
+        <ion-label class="color-label">Gender</ion-label>
+        <ion-item class="txtdesign1">
+          <ion-select placeholder="Select option" interface="popover">
+            <ion-option value="option1">Male</ion-option>
+            <ion-option value="option2">Female</ion-option>
+          </ion-select>
+        </ion-item>
+        <div class="input-label">
+            <ion-label>Age</ion-label>
+            <ion-item>
+                <ion-input type="text" placeholder="Your Age"></ion-input>
+            </ion-item>
+        </div>
+        <div class="input-label">
+            <ion-label>Info</ion-label>
+            <ion-item>
+                <ion-input type="text" placeholder="Your Entry"></ion-input>
+            </ion-item>
+        </div>
+        <div class="profile-scroll">
+            <div class="topic-info topic-info-1">
+                <h2>information</h2>
+                <div class="row">
+                    <div class="multiple-option">
+                        <button id="1" #first ion-button color="dark" (click)="btnActivate(first)">Option_1</button>
+                        <button id="1" #second ion-button color="dark" (click)="btnActivate(second)">Option_2</button>
+                        <button id="1" #third ion-button color="dark" (click)="btnActivate(third)">Option_1</button>
+                        <button id="1" #fourth ion-button color="dark" (click)="btnActivate(fourth)">Option_3</button>
+                        <button id="1" #fifth ion-button color="dark" (click)="btnActivate(fifth)">Option_4</button>
+                        <button id="1" #sixth ion-button color="dark" (click)="btnActivate(sixth)">Option_5</button>
+                    </div>    
+                </div>   
+            </div>     
+            <h2>Topic information</h2>
+            <div class="topic-info topic-info-2">
+                <div class="row">
+                    <div class="multiple-option">
+                        <button id="1" #f ion-button color="dark" (click)="btnActivate(f)">Option_1</button>
+                        <button id="1" #s ion-button color="dark" (click)="btnActivate(s)">Option_2</button>
+                        <button id="1" #t ion-button color="dark" (click)="btnActivate(t)">Option_1</button>
+                        <button id="1" #fo ion-button color="dark" (click)="btnActivate(fo)">Option_3</button>
+                        <button id="1" #fi ion-button color="dark" (click)="btnActivate(fi)">Option_4</button>
+                        <button id="1" #s ion-button color="dark" (click)="btnActivate(s)">Option_5</button>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </ion-content>    
+    <ion-footer>
+        <ion-toolbar>
+            <button ion-button full color="primary" (click)="LoginUser()" class="btndesign loginbtn" tappable>Save</button>  
+        </ion-toolbar>
+    </ion-footer>

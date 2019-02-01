@@ -1,0 +1,59 @@
+page-friendlist{
+    .ion-pro
+ .friendlist-page-content .title
+    {
+        margin-left: 10px;
+    }
+    .ion-pro ion-img,.ion-pro img{
+        position: relative !important;
+    }
+    .friendlist-page-content .list-ios > .item-block:first-child{
+        border-top:0px;
+    }
+    .item-md ion-avatar ion-img, .item-md ion-avatar img {
+        width: 47px;
+        height: 46px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    .list-md {
+        margin: 5px 1px 16px 4px;
+    }
+    .mytime{
+        font-size: 16px;
+        display: inline;
+        float: right;
+        margin-top: 3px;
+        color: #999;
+        font-weight: 500;
+    }
+    .item-md [item-right]{
+        margin: 0px 8px 9px 0;
+    }
+    h2{
+        font-size: 20px !important;
+        font-weight: 500 !important;
+        color: #000;
+        display: inline;
+    }  
+    p{
+        font-size: 16px !important;
+        color: #666;
+        margin-top: 7px !important;
+    }
+    .msg-name{
+        font-size: 16px;
+        display: inline;
+        color: #000;
+        font-weight: 500;
+    }
+    .label-md {
+        margin: 13px 8px 12px 0;
+    }
+    .badge-md {
+        border-radius: 4px;
+        color: #fff;
+        background-color: #488aff;
+        margin: 3px 11px;
+    }
+}

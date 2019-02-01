@@ -1,0 +1,28 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name='menu'></ion-icon>
+        </button>
+        <ion-title  class="title">Friends</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content class="friendlist-page-content">
+    <!-- <div *ngIf="hide">
+        <h4 style="color:#ccc" padding text-justify>{{msg}}</h4>
+    </div> -->
+    <ion-list [virtualScroll]="usersList" [approxItemHeight]="'70px'" >
+        <ion-item *virtualItem="let item" (click)='messageBox($event,item)' tappable>
+        <ion-avatar item-left>
+              <ion-img class="imgstyle" src='{{item.profilePic}}' ></ion-img>
+        </ion-avatar>                
+        <h2 *ngIf="item.name" >{{ item.name }} </h2>
+        <h2 *ngIf="!item.name">{{ item.email }} </h2>
+        <span class="mytime" >{{ item.date }}</span>                   
+        <p><span class="msg-name">You:</span> {{ item.lastMessage }} </p>
+       <div item-right>
+         <br>
+         <ion-badge style="float: right;" *ngIf="item.unreadMessage">{{ item.unreadMessage }}</ion-badge>  
+          </div>             
+           </ion-item>          
+       </ion-list>
+</ion-content>

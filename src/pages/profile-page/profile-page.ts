@@ -1,0 +1,371 @@
+import { Component, NgZone, ViewChild, } from '@angular/core';
+import { Nav, IonicPage, NavController, NavParams, AlertController, ActionSheetController } from 'ionic-angular';
+//import { UUID } from 'angular2-uuid';
+import { Camera } from '@ionic-native/camera';
+import { global } from '../global/global';
+import { Events } from 'ionic-angular';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
+import { Clipboard } from '@ionic-native/clipboard';
+import { CommonProvider } from '../../providers/common/common';
+import * as Message from '../../providers/message/message';
+import { Network } from '@ionic-native/network';
+declare var firebase;
+
+@IonicPage()
+
+@Component({
+    selector: 'page-profile',
+    templateUrl: 'profile-page.html',
+       //     template: `
+//     <ion-header>
+//         <ion-navbar>
+//             <button ion-button menuToggle>
+//                 <ion-icon name='menu'></ion-icon>
+//             </button>
+//             <ion-title  class="title">Your Profile</ion-title>   
+//         </ion-navbar>
+//     </ion-header>
+
+//     <ion-content  class="profile-page">
+//         <div class="profile-image-container">
+//         <div id="profile-image" [ngStyle]="{'background-image': 'url(' + userInfo.user_profilePic + ')'}" *ngIf="this.captureDataUrl" (click)="presentActionSheet()" tappable> </div> 
+//  <!-- <ion-img id="profile-image" [src]="userInfo.user_profilePic" *ngIf="this.captureDataUrl"  (click)="presentActionSheet()" tappable ></ion-img> -->
+             
+//         <!-- <img id="profile-image" [src]="userInfo.user_profilePic" *ngIf="this.captureDataUrl"  (click)="presentActionSheet()" tappable /> -->
+//          </div>
+//         <div padding>
+//             <h5  (click)="Copy()">Access Code : <span class="secondary-color thecode">{{  userInfo.user_accessCode }}</span></h5>
+//             <h5>Email : {{ userInfo.user_email }}</h5>
+//             <p>Share this access code to people, so they can send contact request to you.</p>
+//             <ion-list>
+//                 <ion-item>
+//                     <ion-label stacked>Name</ion-label>
+//                     <ion-input type='text'  [(ngModel)]='userInfo.user_name' ></ion-input>
+//                 </ion-item>
+//                 <ion-item>
+//                     <ion-label stacked>Gender</ion-label>
+//                     <ion-select [(ngModel)]="userInfo.user_gender">
+//                         <ion-option value="Male">Male</ion-option>
+//                         <ion-option value="Female">Female</ion-option>
+//                     </ion-select>
+//                 </ion-item>  
+//                 <ion-item>
+//                     <ion-label stacked>Status</ion-label>
+//                     <ion-input type='text'  [(ngModel)]='userInfo.user_status' ></ion-input>
+//                 </ion-item>              
+//             </ion-list>
+//             <button ion-button full tappable (click)='updateProfile()' class="btndesign">Update</button>
+//         </div>
+//     </ion-content>
+//     `,
+})
+
+export class ProfilePage {
+    @ViewChild(Nav) nav: Nav;
+    user_name: string;
+    user_email: string;
+    user_access_code: string;
+    private userInfo: any;
+    user_gender: string;
+    user_status: string;
+    captureDataUrl: string = "assets/image/sea.jpg";
+    base64Image: any;
+    profilePhoto: string = "";
+    sqlDb: SQLiteObject;
+
+    constructor(public CommonProvider: CommonProvider, public _zone: NgZone, public events: Events, public navCtrl: NavController, public sqlite: SQLite, public navParams: NavParams, public alertCtrl: AlertController,
+        public actionSheetCtrl: ActionSheetController, private camera: Camera, private clipboard: Clipboard,private network: Network) {
+        //var user = firebase.auth().currentUser;
+        var me = this;
+        var user = JSON.parse(localStorage.getItem("loginUser"));
+        console.log("user",user);
+        if (!user) {
+            me.navCtrl.setRoot("OptionPage");
+        }
+
+        me.userInfo = {
+            user_id: "",
+            user_name: "",
+            user_gender: "",
+            user_status: "",
+            user_profilePic: "assets/image/sea.jpg",
+            user_accessCode: "",
+        }
+
+        this.sqlite.create({
+            name: 'data.db',
+            location: 'default'
+        })
+            .then((db: SQLiteObject) => {
+                me.sqlDb = db;
+                //clear old data
+                /*db.executeSql('DELETE from userProfile', {}).then(() => {
+                    //db.vacuum;
+                    alert('TABLE deleted');
+                }, (err:any) => {
+                    alert('Unable to execute sql: '+ err);
+                });*/
+
+                me.loadUserDataFromSqlStorage();
+            });
+
+    }
+
+    ionViewDidLoad() {
+        this.loadUserProfileData();
+        console.log("welcom");
+    }
+    
+    btnActivate(ionicButton) {
+        if(ionicButton._color === 'dark')
+          ionicButton.color =  'primary';
+        else
+          ionicButton.color = 'dark';
+    }
+    
+    isSelected(event) {
+        console.log(event);
+        return 'primary';
+        // event.target.getAttribute('selected') ? 'primary' : '';
+    }  
+    logOutUser() {
+        var me = this;
+         if (this.network.type == "none") {
+            //no internet connection
+            localStorage.removeItem("option");
+            localStorage.removeItem("GroupKey");
+            localStorage.removeItem("GroupId");
+            localStorage.removeItem("Group");
+            me.navCtrl.setRoot("OptionPage");
+        }else{
+            var GroupId = localStorage.getItem("GroupId");
+            var userId = localStorage.getItem("userId");
+            firebase.database().ref('GroupMember/' + GroupId + '/' + userId).remove();
+            localStorage.removeItem("option");
+            localStorage.removeItem("GroupKey");
+            localStorage.removeItem("GroupId");
+            localStorage.removeItem("Group");
+            me.navCtrl.setRoot("OptionPage");
+        }
+    }
+    loadUserDataFromSqlStorage() {
+        var me = this;
+        var user = JSON.parse(localStorage.getItem("loginUser"));
+        var userId = user.uid;
+        me.sqlDb.executeSql('select * from userProfile where user_id = ?', [userId]).then((data) => {
+            if (data.rows.length > 0) {
+                me._zone.run(() => {
+                    me.userInfo = data.rows.item(0);
+
+                })
+            }
+        }, (err) => {
+            alert('Unable to find data in userProfile: ' + JSON.stringify(err));
+        });
+    }
+
+    loadUserProfileData() {
+        // this function will load user profile data. from firebase and insert and update in SQLite.
+        var me = this;
+        var user = JSON.parse(localStorage.getItem("loginUser"));
+        var userId = user.uid;
+        firebase.database().ref('users/' + userId).on('value', function (snapshot) {
+            var name = snapshot.val() ? snapshot.val().name : "";
+            var email = snapshot.val() ? snapshot.val().email : "";
+            var status = snapshot.val() ? snapshot.val().status : "";
+            var gender = snapshot.val() ? snapshot.val().gender : "";
+            var access_code = snapshot.val() ? snapshot.val().access_code : "";
+            //var profilePic = (snapshot.val().profilePic == "") ? 'assets/image/profile.png' : snapshot.val().profilePic;
+            var profilePic = (user.profilePic == "") ? 'assets/image/profile.png' : user.profilePic;
+            me.profilePhoto = profilePic;
+            me.sqlDb.executeSql('select * from userProfile where user_id = ?', [userId]).then((data) => {
+                if (data.rows.length > 0) {
+                    if (data.rows.item(0).name != name || data.rows.item(0).status != status || data.rows.item(0).gender != gender || data.rows.item(0).profilePic != profilePic) {
+                        me.CommonProvider.toDataUrl(profilePic, function (myBase64) {
+                            me.sqlDb.executeSql("UPDATE userProfile SET user_id='" + userId + "',user_gender='" + gender + "',user_name='" + name + "',user_email='" + email + "',user_status='" + status + "',user_profilePic='" + myBase64 + "',user_accessCode='" + access_code + "' where user_id = '" + userId + "'", [])
+                                .then(() => {
+                                    me.loadUserDataFromSqlStorage();
+                                })
+                                .catch(e => alert('Unable to update sql: ' + JSON.stringify(e)));
+                        });
+                    }
+                } else {
+                    me.CommonProvider.toDataUrl(profilePic, function (myBase64) {
+                        me.sqlDb.executeSql("INSERT INTO userProfile(user_id,user_gender,user_name,user_email,user_status,user_profilePic,user_accessCode) VALUES('" + userId + "','" + gender + "','" + name + "','" + email + "','" + status + "','" + myBase64 + "','" + access_code + "')", [])
+                            .then(() => {
+                                me.loadUserDataFromSqlStorage();
+                            })
+                            .catch(e => alert('Unable to insert sql: ' + JSON.stringify(e)));
+                    });
+                }
+            }, (err) => {
+                alert('Unable to select sql: ' + JSON.stringify(err));
+            });
+        });
+    }
+
+
+    gallaryUpload() {
+        // it will call when image upload from Gallery and profile image update in firebase. 
+        var me = this;
+        me.camera.getPicture({
+            sourceType: me.camera.PictureSourceType.PHOTOLIBRARY,
+            destinationType: me.camera.DestinationType.DATA_URL,
+            quality: 80,
+            targetWidth: 500,
+            targetHeight: 500,
+            allowEdit: true,
+            correctOrientation: true
+        }).then((imageData) => {
+            // imageData is a base64 encoded string
+            me.base64Image = "data:image/jpeg;base64," + imageData;
+            me.profilePhoto = me.base64Image;
+            
+            var user = JSON.parse(localStorage.getItem("loginUser"));    
+            var logInUser = {
+                name :  user.name,
+				access_code : user.access_code,
+			    profilePic : me.profilePhoto,
+				uid : user.uid
+            }
+            localStorage.setItem("loginUser", JSON.stringify(logInUser));
+            var uploadTask = firebase.storage().ref().child(me.CommonProvider.Guid() + ".png").putString(imageData, "base64");
+            uploadTask.on('state_changed', function (snapshot) {
+            }, function (error) {
+                alert(error);
+            }, function () {
+                var downloadFlyerURL = uploadTask.snapshot.downloadURL;
+                me.userInfo.user_profilePic = downloadFlyerURL;
+                var userId = firebase.auth().currentUser.uid;
+                var name = firebase.auth().currentUser.name;
+                var usersRef = firebase.database().ref('users');
+                var hopperRef = usersRef.child(userId);
+                hopperRef.update({
+                    "profilePic": downloadFlyerURL
+                });
+                global.USER_IMAGE = downloadFlyerURL;
+                me.PublishEventUserUpdate();
+            //     var logInUser = {
+            //         name :  me.nickName,
+            //         access_code : access_code,
+            //         profilePic : phofilePic,
+            //         uid : key
+            //     };
+            // localStorage.setItem("loginUser", JSON.stringify(logInUser));
+            
+            });
+        }, (err) => {
+            console.log(err);
+        });
+    }
+    presentActionSheet() {
+        let actionSheet = this.actionSheetCtrl.create({
+            title: 'Profile Picture',
+            buttons: [
+                {
+                    text: 'Upload from Gallery',
+                    handler: () => {
+                        this.gallaryUpload();
+                    }
+                },
+                {
+                    text: 'Capture from Camera',
+                    handler: () => {
+                        this.cameraUpload();
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    handler: () => {
+                        console.log('Cancel clicked');
+                    }
+                }
+            ]
+        });
+        actionSheet.present();
+    }
+
+    cameraUpload() {
+        const filename = Math.floor(Date.now() / 1000);
+        var me = this;
+        me.camera.getPicture({
+            quality: 80,
+            destinationType: me.camera.DestinationType.DATA_URL,
+            encodingType: me.camera.EncodingType.JPEG,
+            mediaType: me.camera.MediaType.PICTURE,
+            targetWidth: 500,
+            targetHeight: 500,
+            allowEdit: true,
+            correctOrientation: true
+        }).then((imageData) => {
+            // imageData is a base64 encoded string
+            me.base64Image = "data:image/jpeg;base64," + imageData;
+            me.profilePhoto = me.base64Image;
+            //this.captureDataUrl=this.base64Image;
+            var user = JSON.parse(localStorage.getItem("loginUser"));
+            var logInUser = {
+                name :  user.name,
+				access_code : user.access_code,
+			    profilePic : me.profilePhoto,
+				uid : user.uid
+            }
+            localStorage.setItem("loginUser", JSON.stringify(logInUser));
+            var uploadTask = firebase.storage().ref().child(`${filename}.jpg`).putString(imageData, "base64");
+            uploadTask.on('state_changed', function (snapshot) {
+            }, function (error) {
+                alert(error);
+            }, function () {
+                var downloadFlyerURL = uploadTask.snapshot.downloadURL;
+                me.userInfo.user_profilePic = downloadFlyerURL;
+                var userId = firebase.auth().currentUser.uid;
+                var usersRef = firebase.database().ref('users');
+                var hopperRef = usersRef.child(userId);
+                hopperRef.update({
+                    "profilePic": downloadFlyerURL
+                });
+                global.USER_IMAGE = downloadFlyerURL;
+                me.PublishEventUserUpdate();
+            });
+        }, (err) => {
+            console.log(err);
+        });
+    }
+
+    updateProfile() {
+        var me = this;
+        const user_name = me.userInfo.user_name.replace("'", "''");
+
+        var user_gender = me.userInfo.user_gender;
+        var user_status = me.userInfo.user_status.replace("'", "''");
+        var userId = firebase.auth().currentUser.uid;
+        var usersRef = firebase.database().ref('users');
+        var hopperRef = usersRef.child(userId);
+        hopperRef.update({
+            "name": user_name,
+            "status": user_status,
+            "gender": user_gender,
+        });
+        global.USER_NAME = user_name;
+        let alert = me.alertCtrl.create({ subTitle: Message.PROFILE_UPDATE_SUCCESS, buttons: ['OK'] });
+        alert.present();
+        me.PublishEventUserUpdate();
+    }
+    PublishEventUserUpdate() {
+        var me = this;
+        me.events.publish("LOAD_USER_UPDATE", "");
+    }
+    Copy() {
+        var me = this;
+        me.clipboard.copy(me.userInfo.user_accessCode);
+        me.clipboard.paste().then(
+            (resolve: string) => {
+                alert(resolve);
+            },
+            (reject: string) => {
+                // alert('Error: ' + reject);
+            }
+        );
+    }
+
+}
