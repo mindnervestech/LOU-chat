@@ -15,12 +15,13 @@ import * as Message from '../../providers/message/message';
 })
 export class OptionPage {
    option: any = new Array();
+   trepOption: any = new Array();
    TrainOrFliteNumber : string = "";
    optionValue : string = "";
-   /*public selectedOption1:boolean = false;
+   public selectedOption1:boolean = false;
    public selectedOption2:boolean = false;
    public selectedOption3:boolean = false;
-   public selectedOption4:boolean = false;*/
+   public selectedOption4:boolean = false;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -31,58 +32,113 @@ export class OptionPage {
     var me = this;
     firebase.database().ref().child('option/').on('value',function(optionData){
       var value = optionData.val();
+      me.option = [];
       for(var data in value){
         me.option.push(value[data]);
       }
     });
-  }
 
-  /*selectedValue(event : any,text){
-    if(text == "option1"){
-      this.selectedOption1 = event.checked;
-    }
-    if(text == "option2"){
-      this.selectedOption2 = event.checked;
-    }
-    if(text == "option3"){
-      this.selectedOption3 = event.checked;
-    }
-    if(text == "option4"){
-      this.selectedOption4 = event.checked;
-    }
-  }*/
+    firebase.database().ref().child('treapOtion/').on('value',function(optionData){
+      var value = optionData.val();
+      me.trepOption = [];
+      for(var data in value){
+        me.trepOption.push(value[data]);
+      }
+    });
+
+  }
 
   nextPage(){
     var data = {
       option : this.optionValue,
       optionValue : this.TrainOrFliteNumber,
-      /*selectedOption1 : this.selectedOption1,
+      selectedOption1 : this.selectedOption1,
       selectedOption2 : this.selectedOption2,
       selectedOption3 : this.selectedOption3,
-      selectedOption4 : this.selectedOption4,*/
+      selectedOption4 : this.selectedOption4
     };
     var me = this;
-    if(me.TrainOrFliteNumber != "" && me.optionValue != ""){
+    if(this.selectedOption1 == false && this.selectedOption2 == false && this.selectedOption3 == false && this.selectedOption4 == false){
+      let alert = me.alertCtrl.create({ subTitle: "Please select at list one option", buttons: ['OK'] });
+        alert.present();
+    }else{
+      if(me.TrainOrFliteNumber != "" && me.optionValue != ""){
        firebase.database().ref('Group').orderByChild("trainNumber").equalTo(me.TrainOrFliteNumber).on('value', function (group) {
           console.log(group.val());
           if(group.val() == null){
              let alert = me.alertCtrl.create({ subTitle: "Please enter valid number", buttons: ['OK'] });
              alert.present();
           }else{
-            localStorage.setItem("option", JSON.stringify(data));  
-            me.navCtrl.setRoot("loginAndTopicInfo",data);
+            firebase.database().ref('Group').orderByChild("trainNumber").equalTo(me.TrainOrFliteNumber).on('value', function (group) {
+              var groupKey = Object.keys(group.val())[0];
+              firebase.database().ref('Group/'+ groupKey).on("value", function(GroupInformation){
+                console.log(GroupInformation.val());
+                var groupData = {
+                  key : groupKey,
+                  unreadCount : GroupInformation.val().unreadCount,
+                  lastMessage : GroupInformation.val().lastMessage,
+                  groupId : GroupInformation.val().groupId,
+                  groupName : GroupInformation.val().groupName,
+                  tripeDate : GroupInformation.val().tripeDate,
+                  startTime:  GroupInformation.val().startTime,
+                  endTime:  GroupInformation.val().endTime,
+                }
+                  var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
+                  if(msg == ""){
+                    console.log("msg",msg);
+                    localStorage.setItem("option", JSON.stringify(data));  
+                    me.navCtrl.setRoot("loginAndTopicInfo",data);
+                  }else{
+                    console.log("msg",msg);
+                    let alert = me.alertCtrl.create({ subTitle: msg, buttons: ['OK'] }); 
+                    alert.present();
+                  }
+
+              });
+            });
+
+
+            
+            
           }
        });       
-    }else{
-      let alert = me.alertCtrl.create({ subTitle: Message.FIELD_REQUIRED, buttons: ['OK'] });
-      alert.present();
+      }else{
+        let alert = me.alertCtrl.create({ subTitle: Message.FIELD_REQUIRED, buttons: ['OK'] });
+        alert.present();
+      }
     }
   }
-   btnActivate(ionicButton) {
-    if(ionicButton._color === 'dark')
+   btnActivate(ionicButton,text) {
+    if(ionicButton._color === 'dark'){
       ionicButton.color =  'primary';
-    else
+        if(text == "option1"){
+          this.selectedOption1 = true;
+        }
+        if(text == "option2"){
+          this.selectedOption2 = true;
+        }
+        if(text == "option3"){
+          this.selectedOption3 = true;
+        }
+        if(text == "option4"){
+          this.selectedOption4 = true;
+        }
+    }
+    else{
       ionicButton.color = 'dark';
+      if(text == "option1"){
+          this.selectedOption1 = false;
+        }
+        if(text == "option2"){
+          this.selectedOption2 = false;
+        }
+        if(text == "option3"){
+          this.selectedOption3 = false;
+        }
+        if(text == "option4"){
+          this.selectedOption4 = false;
+        }
+    }
   }
 
   isSelected(event) {
@@ -90,4 +146,41 @@ export class OptionPage {
     return 'primary';
     // event.target.getAttribute('selected') ? 'primary' : '';
   }
+
+  tripeDateValidation(ripeDate,startDate,endDate){
+        var msg = "";
+        var convertDate = ripeDate.split("-");
+        console.log("convertDate",convertDate);
+        var start = startDate.split(":");
+        var end = endDate.split(":");
+        console.log("endDate",endDate);
+        console.log(convertDate);
+        var date = new Date();
+        var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        console.log("dateCreated",dateCreated);
+        var todayDate = dateCreated.split(" ");
+        var todayConvertDate = todayDate[0].split("-");
+        var todayConvertTime = todayDate[1].split(":");
+        if(parseInt(convertDate[0]) >= parseInt(todayConvertDate[0]) || parseInt(convertDate[1]) >= parseInt(todayConvertDate[1]) || parseInt(convertDate[2]) >= parseInt(todayConvertDate[2])){
+            console.log("data Invalid");
+             var st1 = parseInt(start[0]) - 2
+            msg = "";
+            return msg;
+        }else{
+            console.log("data valid");
+            if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0]) && parseInt(start[1]) <= parseInt(todayConvertTime[1]) ){
+                if(parseInt(end[0]) >= parseInt(todayConvertTime[0])  && parseInt(end[1]) >= parseInt(todayConvertTime[1])){
+                    msg = "";
+                    return msg;
+                }else{
+                    msg = "This group chat is end at " + ripeDate + " " + endDate;
+                    return msg;
+                }
+            }else{
+                var st = parseInt(start[0]) - 2
+                    msg = "";
+                    return msg;
+            }
+        }
+    }
 }

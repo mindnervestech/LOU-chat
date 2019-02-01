@@ -58,6 +58,7 @@ declare var firebase;
 export class FriendlistPage {
     usersList: any = new Array();
     groupData: any = new Array();
+    tripeUsersList: any = new Array();
     msg: any;
     hide: boolean = false;
     sqlDb: SQLiteObject;
@@ -67,7 +68,6 @@ export class FriendlistPage {
         me.menu.swipeEnable(true);
         //var user = firebase.auth().currentUser;
         var user = JSON.parse(localStorage.getItem("loginUser"));
-        console.log("user",user);
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
         }
@@ -86,6 +86,7 @@ export class FriendlistPage {
                 //me.LoadList();
             });*/
             me.LoadList();
+            me.match();
     }
     ionViewDidEnter() {
         console.log("ionViewDidEnter");
@@ -106,6 +107,73 @@ export class FriendlistPage {
     }
     gotToChatRoomMembersPage(item){
         this.navCtrl.setRoot("ChatRoomMembers",item);
+    }
+
+    match(){
+        var userID = localStorage.getItem("userId");
+        var me = this;
+        firebase.database().ref('users/'+ userID).on('value',function(user){
+            var myData = user.val();
+            console.log("user",myData.tripe);
+            var push = "true";
+            var date = new Date();
+            var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+            var mylastDate = me.getLastDate(dateCreated);
+             firebase.database().ref('users/').on('value',function(Alluser){
+                 var userData = Alluser.val();
+                 for(var data in userData){
+                     if(data != userID){
+                         var userinfo = {
+                            name: userData[data].name,
+                            profilePic: userData[data].profilePic,
+                            email: userData[data].email,
+                            lastDate: mylastDate,
+                            unreadMessage: 0,
+                            userId: data,
+                            lastMessage: ""
+                         };
+
+                         if(myData.tripe.HomeWork){
+                             if(userData[data].tripe.HomeWork == myData.tripe.HomeWork){
+                                 me.tripeUsersList.push(userinfo);
+                                 push = "false";
+                             }
+                         }
+                         if(myData.tripe.Tourism){
+                             if(userData[data].tripe.Tourism == myData.tripe.Tourism){
+                                if(push == "true"){
+                                    me.tripeUsersList.push(userinfo);
+                                    push = "false";
+                                }
+                             }
+                         }
+                         if(myData.tripe.Business){
+                             if(userData[data].tripe.Business == myData.tripe.Business){
+                                 if(push == "true"){
+                                    me.tripeUsersList.push(userinfo);
+                                    push = "false";
+                                }
+                             }
+                         }
+                         if(myData.tripe.VisitPeople){
+                             if(userData[data].tripe.VisitPeople == myData.tripe.VisitPeople){
+                                 if(push == "true"){
+                                    me.tripeUsersList.push(userinfo);
+                                    push = "false";
+                                }
+                             }
+                         }
+                     }
+                     push = "true";
+                 }
+                 console.log(me.tripeUsersList);
+                 if(me.tripeUsersList.length() != 0){
+                     console.log("in");
+                     me.usersList = me.tripeUsersList; 
+                 }
+             });
+        });
+
     }
 
     /*loadListFromStorage() {
@@ -150,7 +218,6 @@ export class FriendlistPage {
         firebase.database().ref('GroupMember/' + groupInfo.groupId+ '/' + userId).on("value",function(user){
             me.groupData = [];
             var userInfo = user.val();
-            console.log(userInfo);
             GrouplastDate = me.getLastDate(userInfo.lastDate);
             firebase.database().ref('Group/'+ groupInfo.key).on("value",function(groupData){
                 var value = groupData.val();

@@ -104,7 +104,7 @@ declare var senderId: any; // senderId
 export class MyApp {
     @ViewChild(Nav) nav: Nav;
 
-    rootPage: any = (localStorage.getItem("isFirstTimeLoginTrue") == 'true') ? "OptionPage" : "WelcomePage";
+    rootPage: any = (localStorage.getItem("isFirstTimeLoginTrue") == 'true') ? ((localStorage.getItem("isFirstTimeLoginTrue") == 'true') ? "FriendlistPage" : "OptionPage") : "WelcomePage";
     sqlstorage: SQLite;
     sqlDb: SQLiteObject;
     items: Array<Object>;
@@ -232,6 +232,7 @@ export class MyApp {
 
     logOutUser() {
         var me = this;
+        localStorage.setItem("IsLogin", 'false');
          if (this.network.type == "none") {
             //no internet connection
             localStorage.removeItem("option");

@@ -47,12 +47,12 @@ export class loginAndTopicInfo {
 	ionViewDidEnter() {
      var user = JSON.parse(localStorage.getItem("loginUser"));
       if (!user) {
-            this.userProfilePic = "./assets/image/profile.png";
+            this.userProfilePic = "assets/image/profile.png";
         }else{
           console.log("user",user);
           this.nickName = user.name;
           this.user_profilePic = user.profilePic;
-          this.userProfilePic = (user.profilePic != '') ? this.user_profilePic : "./assets/image/profile.png";
+          this.userProfilePic = (user.profilePic != '') ? user.profilePic : "assets/image/profile.png";
           console.log(this.userProfilePic);
         }
     	this.navParams.data
@@ -96,7 +96,45 @@ export class loginAndTopicInfo {
     console.log(event);
     return 'primary';
     // event.target.getAttribute('selected') ? 'primary' : '';
-  }  
+  }
+
+    tripeDateValidation(ripeDate,startDate,endDate){
+        var msg = "";
+        var convertDate = ripeDate.split("-");
+        console.log("convertDate",convertDate);
+        var start = startDate.split(":");
+        var end = endDate.split(":");
+        console.log("endDate",endDate);
+        console.log(convertDate);
+        var date = new Date();
+        var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        console.log("dateCreated",dateCreated);
+        var todayDate = dateCreated.split(" ");
+        var todayConvertDate = todayDate[0].split("-");
+        var todayConvertTime = todayDate[1].split(":");
+        if(convertDate[0] != todayConvertDate[0] || convertDate[1] != todayConvertDate[1] || convertDate[2] != todayConvertDate[2]){
+            console.log("data Invalid");
+             var st1 = parseInt(start[0]) - 2
+            msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
+            return msg;
+        }else{
+            console.log("data valid");
+            if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0]) && parseInt(start[1]) <= parseInt(todayConvertTime[1]) ){
+                if(parseInt(end[0]) >= parseInt(todayConvertTime[0])){
+                    msg = "";
+                    return msg;
+                }else{
+                    msg = "This group chat is end at " + ripeDate + " " + endDate;
+                    return msg;
+                }
+            }else{
+                var st = parseInt(start[0]) - 2
+                    msg = "This group chat not start yet. It's start at " + ripeDate + " " + st + ":" + start[1];
+                    return msg;
+            }
+        }
+    }
+
     LoginUser(){
       var user = JSON.parse(localStorage.getItem("loginUser"));
       if (!user) {
@@ -105,11 +143,9 @@ export class loginAndTopicInfo {
           //user data update and add member to group
           console.log("user",user);
           this.LoadingProvider.startLoading();
-          console.log( this.groupInfo);
           var group_id = this.groupInfo.groupId;
           var date = new Date();
           var key = localStorage.getItem("userId");
-          console.log( this.groupInfo);
           var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
           firebase.database().ref().child('GroupMember/'+ group_id + '/' + key).set({
             groupId : group_id,
@@ -125,16 +161,36 @@ export class loginAndTopicInfo {
               phofilePic = this.base64Image;
             }
           firebase.database().ref().child('users/'+ key).update({
-            "phofilePic" : phofilePic,
-            /*"tripe" : {
-              "business" : this.navParams.data.selectedOption1,
+            "profilePic" : phofilePic,
+            "tripe" : {
+              "Business" : this.navParams.data.selectedOption1,
               "Tourism" : this.navParams.data.selectedOption2,
-              "visitPeople" : this.navParams.data.selectedOption3,
+              "VisitPeople" : this.navParams.data.selectedOption3,
               "HomeWork" :this.navParams.data.selectedOption4,
-            }*/
+            }
           }).then(()=>{
+            var groupData = JSON.parse(localStorage.getItem("Group"));
+            console.log(groupData);
+            var msg = this.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
+            if(msg == ""){
               this.LoadingProvider.closeLoading();
               this.navCtrl.setRoot("FriendlistPage");
+            }else{
+              this.LoadingProvider.closeLoading();
+                let actionSheet = this.alertCtrl.create({
+                title: 'The chat room is not yet opened, but you can already see some tips for your topics',
+                buttons: [
+                    {
+                        text: 'Go',
+                        handler: () => {
+                            this.GoToFriendListPage();
+                        }
+                    }
+                ]
+            });
+            actionSheet.present();
+           }
+       
           });
         }
     }
@@ -166,12 +222,12 @@ export class loginAndTopicInfo {
   					 	gender:"",
   					 	email: "",
   					 	pushToken: "123456",
-              /*tripe : {
-                business : me.navParams.data.selectedOption1,
-                Tourism : me.navParams.data.selectedOption2,
-                visitPeople : me.navParams.data.selectedOption3,
-                HomeWork :me.navParams.data.selectedOption4,
-              }*/
+              tripe : {
+                Business : false,//me.navParams.data.selectedOption1,
+                Tourism : false,//me.navParams.data.selectedOption2,
+                VisitPeople : false,//me.navParams.data.selectedOption3,
+                HomeWork : false//me.navParams.data.selectedOption4,
+              }
           			}).then(()=>{
           				console.log("in");
 		            	setTimeout(() => {
@@ -183,14 +239,14 @@ export class loginAndTopicInfo {
 		            		global.USER_ACCESS_CODE = access_code;
 		            		me.events.publish("LOAD_USER_UPDATE", "");
 		            		localStorage.setItem("IsLogin", 'true');
-		              	    localStorage.setItem("userId", key);
+		              	localStorage.setItem("userId", key);
 		              	var logInUser = {
-                            name :  me.nickName,
-                            access_code : access_code,
-                            profilePic : phofilePic,
-                            uid : key
+								        name :  me.nickName,
+								        access_code : access_code,
+								        profilePic : phofilePic,
+								        uid : key
 		              	};
-					    localStorage.setItem("loginUser", JSON.stringify(logInUser));
+							      localStorage.setItem("loginUser", JSON.stringify(logInUser));
                     var group_id = me.groupInfo.groupId;
                     var date = new Date();
                     var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
@@ -202,8 +258,29 @@ export class loginAndTopicInfo {
                         unreadCount : me.groupInfo.unreadCount,
                         lastMessage: me.groupInfo.lastMessage
                     });
-						    me.LoadingProvider.closeLoading();
-						    me.navCtrl.setRoot("FriendlistPage");
+                    var groupData = JSON.parse(localStorage.getItem("Group"));
+                        console.log(groupData);
+                        var msg = this.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
+                        if(msg == ""){
+                          this.LoadingProvider.closeLoading();
+                          this.navCtrl.setRoot("FriendlistPage");
+                        }else{
+                          this.LoadingProvider.closeLoading();
+                            let actionSheet = this.alertCtrl.create({
+                            title: 'The chat room is not yet opened, but you can already see some tips for your topics',
+                            buttons: [
+                                {
+                                    text: 'Go',
+                                    handler: () => {
+                                        this.GoToFriendListPage();
+                                    }
+                                }
+                            ]
+                        });
+                        actionSheet.present();
+                       }
+						    //me.LoadingProvider.closeLoading();
+						    //me.navCtrl.setRoot("FriendlistPage");
 		            	});
 			            }, 1500);
 		            });

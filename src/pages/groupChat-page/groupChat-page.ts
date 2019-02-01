@@ -103,7 +103,6 @@ export class GroupChatPage {
     myuserid: any;
     hide: boolean = false;
     message: string = "";
-    vprofilePic: string = "";
     usersData: any;
     blockUser: any = 0;
     private limit = 10;
