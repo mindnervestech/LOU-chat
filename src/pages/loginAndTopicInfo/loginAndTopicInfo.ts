@@ -223,10 +223,10 @@ export class loginAndTopicInfo {
   					 	email: "",
   					 	pushToken: "123456",
               tripe : {
-                Business : false,//me.navParams.data.selectedOption1,
-                Tourism : false,//me.navParams.data.selectedOption2,
-                VisitPeople : false,//me.navParams.data.selectedOption3,
-                HomeWork : false//me.navParams.data.selectedOption4,
+                Business : me.navParams.data.selectedOption1,
+                Tourism : me.navParams.data.selectedOption2,
+                VisitPeople : me.navParams.data.selectedOption3,
+                HomeWork : me.navParams.data.selectedOption4,
               }
           			}).then(()=>{
           				console.log("in");
