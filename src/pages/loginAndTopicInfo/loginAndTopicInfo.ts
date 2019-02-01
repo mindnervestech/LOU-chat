@@ -262,17 +262,17 @@ export class loginAndTopicInfo {
                         console.log(groupData);
                         var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
                         if(msg == ""){
-                          this.LoadingProvider.closeLoading();
-                          this.navCtrl.setRoot("FriendlistPage");
+                          me.LoadingProvider.closeLoading();
+                          me.navCtrl.setRoot("FriendlistPage");
                         }else{
-                          this.LoadingProvider.closeLoading();
-                            let actionSheet = this.alertCtrl.create({
+                          me.LoadingProvider.closeLoading();
+                            let actionSheet = me.alertCtrl.create({
                             title: 'The chat room is not yet opened, but you can already see some tips for your topics',
                             buttons: [
                                 {
                                     text: 'Go',
                                     handler: () => {
-                                        this.GoToFriendListPage();
+                                        me.GoToFriendListPage();
                                     }
                                 }
                             ]

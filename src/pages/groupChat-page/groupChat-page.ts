@@ -119,7 +119,6 @@ export class GroupChatPage {
     }
 
     ionViewDidLoad() {
-        console.log("ionViewDidLoad");
         var me = this;
         var user = JSON.parse(localStorage.getItem("loginUser"));
         var userId = user.uid;
@@ -128,12 +127,10 @@ export class GroupChatPage {
         me.setScroll();
         firebase.database().ref().child('users/'+userId).on('value',function(user){
           me.usersData = user.val();
-          console.log("me.usersData",me.usersData);
         });
         firebase.database().ref().child('GroupChats/' + me.groupData.groupId).limitToLast(me.limit).off("child_added");
       firebase.database().ref().child('GroupChats/' +  me.groupData.groupId).limitToLast(me.limit).on("child_added", function (messages) {
         //me.lastKeyProcess = true;
-        console.log("group chat data",messages.val());
         me.loadingmessageCounter++;
         var convertDate = messages.val().DateCreated.split(" ");
         var dateValue = convertDate[0].split("-");
@@ -153,7 +150,6 @@ export class GroupChatPage {
           "profilePic": (messages.val().profilePic != "") ? messages.val().profilePic  : "assets/image/profile.png",
         }));
         
-        console.log("msg list",me.messagesList);
           if (me.loadingmessageCounter > 5) {
             setTimeout(() => {
               me.setScroll();
@@ -162,12 +158,9 @@ export class GroupChatPage {
       });
     }
     ionViewDidEnter() {
-        console.log("ionViewDidEnter");
-        console.log(this.groupData.groupName);
         if(this.groupData.groupName != undefined){
           var user = JSON.parse(localStorage.getItem("loginUser"));
           var userId = user.uid;
-          console.log("userId----",userId);
           firebase.database().ref('GroupMember/' + this.groupData.groupId +'/'+userId).update({
              unreadCount: 0
           });
@@ -178,7 +171,6 @@ export class GroupChatPage {
     }
     findChatData(){
        this.groupData = this.navParams.data;
-       console.log(this.groupData);
     }
     goToChatRoomMember(){
         this.navCtrl.setRoot("ChatRoomMembers",this.groupData.groupId);
@@ -212,7 +204,6 @@ export class GroupChatPage {
     }
 
     presentActionSheet(){
-        console.log("attachment");
         var me = this;
     if (me.network.type == "none") {
       let toast = this.toastCtrl.create({
@@ -256,7 +247,6 @@ export class GroupChatPage {
     }
 
     sendMessage(type){
-      console.log("msg",type);
       var date = new Date();
       //in case of network type none means no internet connection then user can not send message to other.
       if (this.network.type == "none") {
@@ -273,10 +263,6 @@ export class GroupChatPage {
       var userEmail = user.email;
       var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
       var senderName = (global.USER_NAME == "") ? userEmail : global.USER_NAME;
-      console.log("userId",userId);
-      console.log("userEmail",userEmail);
-      console.log("dateCreated",dateCreated);
-      console.log("senderName",senderName);
 
       if (this.message != "") {
         var lastDisplaymessage = this.message.replace(/\r?\n/g, '<br />');
@@ -299,7 +285,6 @@ export class GroupChatPage {
               var value = snapshot.val();
               for(var i in value){
                 var friendData = firebase.database().ref('GroupMember/' + me.groupData.groupId);
-                console.log( parseInt(value[i].unreadCount));
                 friendData.child(i).update({
                   unreadCount: parseInt(value[i].unreadCount) + 1,
                   lastDate: dateCreated,
