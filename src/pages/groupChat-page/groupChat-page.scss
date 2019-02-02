@@ -11,6 +11,9 @@
     position: absolute;
     bottom: 0;
     display: inline-block;
+    border-radius: 50%;
+    border: 2px solid #e6e5eb;
+    opacity: 1 !important;
 }
 .item-md ion-avatar[item-left] {
     margin: 0px 12px 0px 0px;
@@ -115,7 +118,7 @@
         color: #FFFFFF; 
         position: absolute;
         bottom: 20px;
-        left: 30px;
+        right: 30px;
     }
  .myleft-image .mtime-image{
         color: #FFFFFF; 
@@ -178,10 +181,10 @@
         }
     }
     .myleft{
-        float:left!important;
-        max-width:85%;
-        background-color:#E6E5EB;
-        color:black;  
+        float: left !important;
+        max-width: 85%;
+        background-color: #E6E5EB;
+        color: black;
         padding: 10px 15px 10px 20px;
         position: relative;
         vertical-align: top;
@@ -189,6 +192,7 @@
         border-radius: 12px;
         font-size: 16px;
         font-weight: 500;
+        left: 13%;
     }
    .the-message  .myleft-image{
         float:left!important;

@@ -25,7 +25,7 @@ declare var senderId: any; // senderId
     <ion-menu [content]='content'>
         <ion-header>
             <ion-toolbar>
-                <span align="center"><ion-title>MyChat</ion-title></span>
+                <span align="center"><ion-title>LUO Chat</ion-title></span>
             </ion-toolbar>
         </ion-header>
         <ion-content class="sidemenu-chat">

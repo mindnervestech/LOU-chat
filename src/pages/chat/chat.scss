@@ -149,26 +149,14 @@ page-chat {
         position: relative;
         float: right;
         vertical-align: top;
-        border-radius: 10px;
         position: relative;
+        border-radius: 18px;
+         padding: 6px 4px 1px 3px;
         img{
             opacity: 1 !important;
         }
     }
-    .the-message .myright-image:after{
-        width: 0;
-        height: 0;
-        content: '';
-        position: absolute;
-        right: -18px;
-        bottom: -2px;
-        border-top: 22px solid transparent;
-        border-bottom: 20px solid transparent;
-        border-left: 51px solid #4bb1bb;
-        -webkit-transform: rotate(40deg);
-        transform: rotate(40deg);
-        z-index: -1;
-    }
+    
     .myleft{
         float: left !important;
         max-width: 85%;
@@ -188,28 +176,13 @@ page-chat {
    .the-message  .myleft-image{
         float:left !important;
         background: rgb(75, 177, 187);
-        padding: 1px 5px;
+        border-radius: 18px;
+        padding: 6px 4px 1px 3px;
         position: relative;
-        // height: 50%;
         vertical-align: top;
-        border-radius: 10px;
         img{
             opacity: 1 !important;
         }
-    }
-    .the-message  .myleft-image::before{
-        width: 0;
-        height: 0;
-        content: '';
-        position: absolute;
-        left: -20px;
-        bottom: -2px;
-        border-top: 22px solid transparent;
-        border-bottom: 20px solid transparent; 
-        border-right:51px solid rgba(237, 241, 244, 0.33); 
-        -webkit-transform: rotate(40deg);
-        transform: rotate(-40deg);
-        z-index: -1;
     }
     ion-item-divider{
         border-bottom:0px;

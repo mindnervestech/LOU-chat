@@ -355,7 +355,7 @@ export class ProfilePage {
             "gender": me.gender
         });
 
-        let alert = me.alertCtrl.create({ subTitle: Message.PROFILE_UPDATE_SUCCESS, buttons: ['OK'] });
+        let alert = me.alertCtrl.create({ subTitle: 'Profile updated successfully', buttons: ['OK'] });
         alert.present();
         me.PublishEventUserUpdate();
     }

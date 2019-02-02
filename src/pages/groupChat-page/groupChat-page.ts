@@ -48,10 +48,8 @@ declare var firebase;
             </ion-row>
             <ion-row *ngIf="message.sender_id != myuserid" id="quote-{{message.mkey}}" style="margin: 0px;">
                 <p class="the-message left-msg" style="width:100%;">
-                  <ion-avatar item-left>
-                    <ion-img class="imgstyle" src='{{message.profilePic}}' (click)="showProfile(message)"></ion-img>
-                    </ion-avatar>
-                <span class="myleft"><span    [innerHTML]="message.message"></span><span class="mtime">{{ message.time}}</span></span>
+                <img (click)="imageTap(message.profilePic)" style="opacity: 0.5;" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.profilePic)"/>
+                <span class="myleft"><span [innerHTML]="message.message"></span><span class="mtime">{{ message.time}}</span></span>
                 </p>
             </ion-row>
       </div>
@@ -158,15 +156,19 @@ export class GroupChatPage {
       });
     }
     ionViewDidEnter() {
-        if(this.groupData.groupName != undefined){
-          var user = JSON.parse(localStorage.getItem("loginUser"));
-          var userId = user.uid;
-          firebase.database().ref('GroupMember/' + this.groupData.groupId +'/'+userId).update({
-             unreadCount: 0
-          });
-        }
+        this. counterZero();
+    }
+    counterZero(){
+      if(this.groupData.groupName != undefined){
+        var user = JSON.parse(localStorage.getItem("loginUser"));
+        var userId = user.uid;
+        firebase.database().ref('GroupMember/' + this.groupData.groupId +'/'+userId).update({
+           unreadCount: 0
+        });
+      }
     }
     goToFriendPage(){
+      this.counterZero();
          this.navCtrl.setRoot("FriendlistPage");
     }
     findChatData(){

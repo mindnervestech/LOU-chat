@@ -27,7 +27,7 @@ declare var firebase;
                 <ion-row class="ion_row_sub_margin">
                     <h2 class="subheading_content">You have match with {{usersListLength}} member</h2>
                     <p class="common-topic">Your common topic:</p>
-                    <div *ngFor="let data of trepOption">
+                    <div class="option" *ngFor="let data of trepOption">
                         <p class="common-topic">- {{data.option}}</p>
                     </div>
                 </ion-row>
