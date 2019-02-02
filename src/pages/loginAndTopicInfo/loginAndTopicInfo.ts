@@ -213,10 +213,10 @@ export class loginAndTopicInfo {
           firebase.database().ref().child('users/'+ key).update({
             "profilePic" : phofilePic,
             "tripe" : {
-              "HomeWork" : this.navParams.data.selectedOption1,
+              "Home Work Trip" : this.navParams.data.selectedOption1,
               "Tourism" : this.navParams.data.selectedOption2,
               "Business" : this.navParams.data.selectedOption3,
-              "VisitPeople" :this.navParams.data.selectedOption4,
+              "To Visit People" :this.navParams.data.selectedOption4,
             }
           }).then(()=>{
             var groupData = JSON.parse(localStorage.getItem("Group"));
@@ -270,10 +270,10 @@ export class loginAndTopicInfo {
   					 	age: "",
   					 	pushToken: "123456",
               tripe : {
-                HomeWork : me.navParams.data.selectedOption1,
-                Tourism : me.navParams.data.selectedOption2,
-                Business : me.navParams.data.selectedOption3,
-                VisitPeople : me.navParams.data.selectedOption4,
+                "Home Work Trip" : me.navParams.data.selectedOption1,
+                "Tourism" : me.navParams.data.selectedOption2,
+                "Business" : me.navParams.data.selectedOption3,
+                "To Visit People" : me.navParams.data.selectedOption4,
               }
           			}).then(()=>{
 		            	setTimeout(() => {

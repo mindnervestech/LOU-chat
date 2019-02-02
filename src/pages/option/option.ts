@@ -99,31 +99,31 @@ export class OptionPage {
    btnActivate(ionicButton,text) {
     if(ionicButton._color === 'dark'){
       ionicButton.color =  'primary';
-        if(text == "HomeWork"){
+        if(text == 1){
           this.selectedOption1 = true;
         }
-        if(text == "Tourism"){
+        if(text == 2){
           this.selectedOption2 = true;
         }
-        if(text == "Business"){
+        if(text == 3){
           this.selectedOption3 = true;
         }
-        if(text == "VisitPeople"){
+        if(text == 4){
           this.selectedOption4 = true;
         }
     }
     else{
       ionicButton.color = 'dark';
-      if(text == "HomeWork"){
+      if(text == 1){
           this.selectedOption1 = false;
         }
-        if(text == "Tourism"){
+        if(text == 2){
           this.selectedOption2 = false;
         }
-        if(text == "Business"){
+        if(text == 3){
           this.selectedOption3 = false;
         }
-        if(text == "VisitPeople"){
+        if(text == 4){
           this.selectedOption4 = false;
         }
     }

@@ -107,11 +107,7 @@ export class FriendlistPage {
                 //me.LoadList();
             });*/
              var popup = localStorage.getItem("popUp");
-             if(popup == "true"){
-
-             }else{
                 me.match();
-             }
             me.LoadList();
     }
     ionViewDidEnter() {
@@ -204,21 +200,25 @@ export class FriendlistPage {
                      push = "true";
                  }
                  if(me.tripeUsersList.length != 0){
-                     me.hideMe = true;
-                     var user = JSON.parse(localStorage.getItem("loginUser"));
-                     var userId = user.uid;
-                     firebase.database().ref('users/' + userId).on('value', function (snapshot) {
-                        for(var i in snapshot.val().tripe){
-                            if(snapshot.val().tripe[i]){
-                                var option ={
-                                    option: i
-                                };
-                                me.trepOption.push(option);
+                     var popup = localStorage.getItem("popUp");
+                     if(popup == "true"){
+                         me.usersList = me.tripeUsersList; 
+                     }else{
+                         me.hideMe = true;
+                         var user = JSON.parse(localStorage.getItem("loginUser"));
+                         var userId = user.uid;
+                         firebase.database().ref('users/' + userId).on('value', function (snapshot) {
+                            for(var i in snapshot.val().tripe){
+                                if(snapshot.val().tripe[i]){
+                                    var option ={
+                                        option: i
+                                    };
+                                    me.trepOption.push(option);
+                                }
                             }
-                        }
-                    });
-
-                     me.usersListLength = me.tripeUsersList.length;
+                        });
+                         me.usersListLength = me.tripeUsersList.length;
+                     }
                  }
              });
         });
