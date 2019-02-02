@@ -385,12 +385,34 @@ export class FriendlistPage {
             msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
             return msg;
         }else{
-            if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0]) || parseInt(start[1]) <= parseInt(todayConvertTime[1])){
-                if(parseInt(end[0]) >= parseInt(todayConvertTime[0]) && parseInt(end[1]) >= parseInt(todayConvertTime[1])){
-                    msg = "";
-                    return msg;
+            if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0])){
+                if(parseInt(start[0]) - 2 == parseInt(todayConvertTime[0])){
+                    if(parseInt(start[1]) <= parseInt(todayConvertTime[1])){
+                        if(parseInt(end[0]) >= parseInt(todayConvertTime[0])){
+                           if(parseInt(end[0]) == parseInt(todayConvertTime[0])){
+                               if(parseInt(end[1]) >= parseInt(todayConvertTime[1])){
+                                   msg = "";
+                                  return msg;
+                               }else{
+                                   msg = "This group chat is end at " + ripeDate + " " + endDate;
+                                    return msg;
+                               }
+                           }else{
+                              msg = "";
+                              return msg; 
+                           }
+                        }else{
+                            msg = "This group chat is end at " + ripeDate + " " + endDate;
+                            return msg;
+                        }
+
+                    }else{
+                        var st = parseInt(start[0]) - 2
+                        msg = "This group chat not start yet. It's start at " + ripeDate + " " + st + ":" + start[1];
+                        return msg;
+                    }
                 }else{
-                    msg = "This group chat is end at " + ripeDate + " " + endDate;
+                    msg = "";
                     return msg;
                 }
             }else{
