@@ -27,13 +27,14 @@ declare var firebase;
                 <ion-row class="ion_row_sub_margin">
                     <h2 class="subheading_content">You have match with {{usersListLength}} member</h2>
                     <p class="common-topic">Your common topic:</p>
-                    <p class="common-topic">- Info1</p>
-                    <p class="common-topic">- Info2</p>
+                    <div *ngFor="let data of trepOption">
+                        <p class="common-topic">- {{data.option}}</p>
+                    </div>
                 </ion-row>
                 <div class="div_bottom">
                     <ion-row justify-content-center align-items-center class="ion_row_heiht_bottam">
                         <button class="dismiss" (click)='dismiss_dialog()' style="position:absolute;left: 0;">Dismiss</button>
-                        <button class="dismiss" (click)='dismiss_dialog()' style="position:absolute;right: 0;">Add to chat list</button>
+                        <button class="dismiss" (click)='addToChat()' style="position:absolute;right: 0;">Add to chat list</button>
                     </ion-row>
                 </div>
             </div>
@@ -77,9 +78,10 @@ export class FriendlistPage {
     usersListLength: any = Number;
     groupData: any = new Array();
     tripeUsersList: any = new Array();
+    trepOption: any = new Array();
     msg: any;
     hide: boolean = false;
-    hideMe: boolean = true;
+    hideMe: boolean = false;
     sqlDb: SQLiteObject;
     profilePic: string = "";
     constructor(public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
@@ -104,8 +106,13 @@ export class FriendlistPage {
                 me.sqlDb = db;
                 //me.LoadList();
             });*/
+             var popup = localStorage.getItem("popUp");
+             if(popup == "true"){
+
+             }else{
+                me.match();
+             }
             me.LoadList();
-            me.match();
     }
     ionViewDidEnter() {
        /* var me = this;
@@ -128,7 +135,14 @@ export class FriendlistPage {
 
     dismiss_dialog(){
         this.hideMe = false;
+        localStorage.setItem("popUp","true");
     }
+    addToChat(){
+        this.hideMe = false;
+        localStorage.setItem("popUp","true");
+        this.usersList = this.tripeUsersList; 
+    }
+
     match(){
         var userID = localStorage.getItem("userId");
         var me = this;
@@ -190,9 +204,21 @@ export class FriendlistPage {
                      push = "true";
                  }
                  if(me.tripeUsersList.length != 0){
+                     me.hideMe = true;
+                     var user = JSON.parse(localStorage.getItem("loginUser"));
+                     var userId = user.uid;
+                     firebase.database().ref('users/' + userId).on('value', function (snapshot) {
+                        for(var i in snapshot.val().tripe){
+                            if(snapshot.val().tripe[i]){
+                                var option ={
+                                    option: i
+                                };
+                                me.trepOption.push(option);
+                            }
+                        }
+                    });
 
-                     me.usersList = me.tripeUsersList; 
-                     me.usersListLength = me.usersList.length;
+                     me.usersListLength = me.tripeUsersList.length;
                  }
              });
         });
