@@ -166,7 +166,7 @@ export class FriendlistPage {
                             senderId : data
                          };
 
-                         if(myData.tripe.HomeWork){
+                         if(myData.tripe["Home Work Trip"]){
                              if(userData[data].tripe.HomeWork == myData.tripe.HomeWork){
                                  me.tripeUsersList.push(userinfo);
                                  push = "false";
@@ -188,7 +188,7 @@ export class FriendlistPage {
                                 }
                              }
                          }
-                         if(myData.tripe.VisitPeople){
+                         if(myData.tripe["To Visit People"]){
                              if(userData[data].tripe.VisitPeople == myData.tripe.VisitPeople){
                                  if(push == "true"){
                                     me.tripeUsersList.push(userinfo);
