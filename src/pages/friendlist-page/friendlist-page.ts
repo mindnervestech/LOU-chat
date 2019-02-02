@@ -131,7 +131,6 @@ export class FriendlistPage {
 
     dismiss_dialog(){
         this.hideMe = false;
-        localStorage.setItem("popUp","true");
     }
     addToChat(){
         this.hideMe = false;
@@ -167,7 +166,7 @@ export class FriendlistPage {
                          };
 
                          if(myData.tripe["Home Work Trip"]){
-                             if(userData[data].tripe.HomeWork == myData.tripe.HomeWork){
+                             if(userData[data].tripe["Home Work Trip"] == myData.tripe["Home Work Trip"]){
                                  me.tripeUsersList.push(userinfo);
                                  push = "false";
                              }
@@ -189,7 +188,7 @@ export class FriendlistPage {
                              }
                          }
                          if(myData.tripe["To Visit People"]){
-                             if(userData[data].tripe.VisitPeople == myData.tripe.VisitPeople){
+                             if(userData[data].tripe["To Visit People"] == myData.tripe["To Visit People"]){
                                  if(push == "true"){
                                     me.tripeUsersList.push(userinfo);
                                     push = "false";
