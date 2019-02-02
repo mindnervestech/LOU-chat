@@ -76,6 +76,7 @@ export class ProfilePage {
     age : string = "";
     status : string = "";
     trepOption: any = new Array();
+    information: any = new Array();
 
     constructor(public CommonProvider: CommonProvider, public _zone: NgZone, public events: Events, public navCtrl: NavController, public sqlite: SQLite, public navParams: NavParams, public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController, private camera: Camera, private clipboard: Clipboard,private network: Network) {
@@ -179,6 +180,11 @@ export class ProfilePage {
                     me.trepOption.push(option);
                 }
                 
+            }
+            for(var j = 0; j < snapshot.val().information.length; j++){
+                if(snapshot.val().information[j].value){
+                    me.information.push(snapshot.val().information[j]);
+                }
             }
             me.age = snapshot.val() ? snapshot.val().age : "";
             me.status = snapshot.val() ? snapshot.val().status : "";

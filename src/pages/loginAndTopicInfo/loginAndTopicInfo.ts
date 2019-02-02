@@ -106,6 +106,22 @@ export class loginAndTopicInfo {
 	}
 
 	ionViewDidEnter() {
+    var language = localStorage.getItem("language");
+
+    firebase.database().ref().child('information/').orderByChild("language").equalTo(language).on('value',function(optionData){
+      var value = optionData.val();
+      me.trepOption = [];
+      for(var data in value){
+        var info = {
+          option : value[data].option,
+          optionNumber : value[data].optionNumber,
+          value : false
+        }
+        me.trepOption.push(info);
+      }
+      console.log(me.trepOption);
+    });
+
      var user = JSON.parse(localStorage.getItem("loginUser"));
       if (!user) {
             this.user_profilePic = "assets/image/profile.png";
@@ -141,11 +157,15 @@ export class loginAndTopicInfo {
     }
       
     
-   btnActivate(ionicButton) {
-    if(ionicButton._color === 'dark')
+   btnActivate(ionicButton,text) {
+    if(ionicButton._color === 'dark'){
       ionicButton.color =  'primary';
-    else
+      this.trepOption[text - 1].value = true;
+    }
+    else{
       ionicButton.color = 'dark';
+      this.trepOption[text - 1].value = false;
+    }
   }
 
   isSelected(event) {
@@ -217,7 +237,8 @@ export class loginAndTopicInfo {
               "Tourism" : this.navParams.data.selectedOption2,
               "Business" : this.navParams.data.selectedOption3,
               "To Visit People" :this.navParams.data.selectedOption4,
-            }
+            },
+            "information" : this.trepOption
           }).then(()=>{
             var groupData = JSON.parse(localStorage.getItem("Group"));
             var me = this;
@@ -274,7 +295,8 @@ export class loginAndTopicInfo {
                 "Tourism" : me.navParams.data.selectedOption2,
                 "Business" : me.navParams.data.selectedOption3,
                 "To Visit People" : me.navParams.data.selectedOption4,
-              }
+              },
+              information : me.trepOption
           			}).then(()=>{
 		            	setTimeout(() => {
 		            	firebase.database().ref('users').orderByChild("name").equalTo(me.nickName).on('value', function (userInfo) {

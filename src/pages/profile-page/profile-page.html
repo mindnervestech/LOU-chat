@@ -62,12 +62,12 @@
             <div class="topic-info topic-info-2">
                 <div class="row">
                     <div class="multiple-option">
-                        <button id="1" #f ion-button color="dark" (click)="btnActivate(f)">Option_1</button>
-                        <button id="1" #s ion-button color="dark" (click)="btnActivate(s)">Option_2</button>
+                        <button *ngFor="let value of information" id="1" #f ion-button color="dark">{{value.option}}</button>
+                        <!-- <button id="1" #s ion-button color="dark" (click)="btnActivate(s)">Option_2</button>
                         <button id="1" #t ion-button color="dark" (click)="btnActivate(t)">Option_1</button>
                         <button id="1" #fo ion-button color="dark" (click)="btnActivate(fo)">Option_3</button>
                         <button id="1" #fi ion-button color="dark" (click)="btnActivate(fi)">Option_4</button>
-                        <button id="1" #s ion-button color="dark" (click)="btnActivate(s)">Option_5</button>
+                        <button id="1" #s ion-button color="dark" (click)="btnActivate(s)">Option_5</button> -->
                     </div>
                 </div>
             </div>

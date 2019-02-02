@@ -131,10 +131,12 @@ export class FriendlistPage {
 
     dismiss_dialog(){
         this.hideMe = false;
+        localStorage.setItem("popUpRedirect","true");
     }
     addToChat(){
         this.hideMe = false;
         localStorage.setItem("popUp","true");
+        localStorage.setItem("popUpRedirect","true");
         this.usersList = this.tripeUsersList; 
     }
 
@@ -203,20 +205,25 @@ export class FriendlistPage {
                      if(popup == "true"){
                          me.usersList = me.tripeUsersList; 
                      }else{
-                         me.hideMe = true;
-                         var user = JSON.parse(localStorage.getItem("loginUser"));
-                         var userId = user.uid;
-                         firebase.database().ref('users/' + userId).on('value', function (snapshot) {
-                            for(var i in snapshot.val().tripe){
-                                if(snapshot.val().tripe[i]){
-                                    var option ={
-                                        option: i
-                                    };
-                                    me.trepOption.push(option);
+                         var popupRedirect = localStorage.getItem("popUpRedirect");
+                         if(popupRedirect == "true"){
+
+                         }else{
+                             me.hideMe = true;
+                             var user = JSON.parse(localStorage.getItem("loginUser"));
+                             var userId = user.uid;
+                             firebase.database().ref('users/' + userId).on('value', function (snapshot) {
+                                for(var i in snapshot.val().tripe){
+                                    if(snapshot.val().tripe[i]){
+                                        var option ={
+                                            option: i
+                                        };
+                                        me.trepOption.push(option);
+                                    }
                                 }
-                            }
-                        });
-                         me.usersListLength = me.tripeUsersList.length;
+                            });
+                             me.usersListLength = me.tripeUsersList.length;
+                         }
                      }
                  }
              });

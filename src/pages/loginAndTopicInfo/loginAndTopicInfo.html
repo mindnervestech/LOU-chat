@@ -18,8 +18,8 @@
     <div class="topic-info">
         <div class="row">
                 <div class="multiple-option">
-                    <button id="1" #first ion-button color="dark" (click)="btnActivate(first)">Topicality</button>
-                    <button id="1" #second ion-button color="dark" (click)="btnActivate(second)">Policy</button>
+                    <button *ngFor="let data of trepOption" id="1" #first ion-button color="dark" (click)="btnActivate(first,data.optionNumber)">{{data.option}}</button>
+                    <!-- <button id="1" #second ion-button color="dark" (click)="btnActivate(second)">Policy</button>
                     <button id="1" #third ion-button color="dark" (click)="btnActivate(third)">Culture</button>
                     <button id="1" #fourth ion-button color="dark" (click)="btnActivate(fourth)">Languages</button>
                     <button id="1" #fifth ion-button color="dark" (click)="btnActivate(fifth)">Cinema</button>
@@ -46,7 +46,7 @@
                     <button id="1" #twentysix ion-button color="dark" (click)="btnActivate(twentysix)">Immovable</button>
                     <button id="1" #twentyseven ion-button color="dark" (click)="btnActivate(twentyseven)">Mobility</button>
                     <button id="1" #twentyeight ion-button color="dark" (click)="btnActivate(twentyeight)">Gastronomy</button>
-                    <button id="1" #twentynine ion-button color="dark" (click)="btnActivate(twentynine)">Love</button>
+                    <button id="1" #twentynine ion-button color="dark" (click)="btnActivate(twentynine)">Love</button> -->
                 </div>
             </div>
     </div>
