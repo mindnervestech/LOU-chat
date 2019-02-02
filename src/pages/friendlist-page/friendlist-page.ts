@@ -89,7 +89,7 @@ export class FriendlistPage {
         me.menu.swipeEnable(true);
         //var user = firebase.auth().currentUser;
         var user = JSON.parse(localStorage.getItem("loginUser"));
-        this.profilePic = (user.profilePic == "") ? 'assets/image/profile.png' : user.profilePic; 
+        me.profilePic = (user.profilePic == "") ? 'assets/image/profile.png' : user.profilePic; 
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
         }
@@ -255,8 +255,6 @@ export class FriendlistPage {
     LoadList() {
         var user = JSON.parse(localStorage.getItem("loginUser"));
         var me = this;
-        me.usersList = [];
-       
         var GrouplastDate;
 
         var groupInfo = JSON.parse(localStorage.getItem("Group"));

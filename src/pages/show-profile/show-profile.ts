@@ -24,10 +24,10 @@ declare var firebase;
       <!-- <img id="profile-image" [src]="userInfo.user_profilePic" *ngIf="this.captureDataUrl" /> -->
          </div>
         <div padding class="user-info">
-            <ion-item><h2>{{userInfo.user_name}}</h2></ion-item>
-            <ion-item *ngIf="userInfo.user_gender != ''"><p>Gender : {{userInfo.user_gender}}</p></ion-item>
-            <ion-item *ngIf="userInfo.user_age != ''"><p>Age : {{userInfo.user_age}}</p></ion-item>
-            <ion-item *ngIf="userInfo.user_status != ''"><p>Status : {{userInfo.user_status}}</p></ion-item>  
+            <ion-item><p><span class="label">Name:</span> <span class="info-label">{{userInfo.user_name}}</span></p></ion-item>
+            <ion-item *ngIf="userInfo.user_gender != ''"><p><span class="label">Gender:</span> <span class="info-label">{{userInfo.user_gender}}</span></p></ion-item>
+            <ion-item *ngIf="userInfo.user_age != ''"><p><span class="label">Age:</span> <span class="info-label">{{userInfo.user_age}}</span></p></ion-item>
+            <ion-item *ngIf="userInfo.user_status != ''"><p><span class="label">Status:</span> <span class="info-label">{{userInfo.user_status}}</span></p></ion-item>  
         </div>
     </ion-content>
     <ion-footer>

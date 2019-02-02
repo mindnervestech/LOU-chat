@@ -30,6 +30,9 @@ page-show-profile {
     }
     .user-info{
         margin-top: 19%;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
     }
     .item-inner {
         border-bottom: 0px solid #dedede !important;
@@ -47,7 +50,13 @@ page-show-profile {
     }
     p{
         font-size: 19px !important;
-        text-align: center;
+        margin-bottom: 7px !important;
+    }
+    span.label {
+        display: inline-block;
+        text-align: left;
+        font-weight: 500;
+        width: 80px;
     }
     .footer-md::before{
         background-image: none;

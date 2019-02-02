@@ -36,11 +36,11 @@ page-option {
             .button-md {
                 overflow: hidden;
                 margin: 0.6rem 0.2rem;
-                padding: 6px 15px;
-                height: 3.5rem;
+                padding: 8px 20px;
+                height: 3.8rem;
                 width: auto;
                 border-radius: 30px !important;
-                font-size: 1.4rem;
+                font-size: 17px;
                 font-weight: 400;
                 text-transform: capitalize;
             }
@@ -52,7 +52,7 @@ page-option {
             .button-md-primary {
                 color: #000000;
                 //background-color: rgba(84, 66, 235, 0.76) !important;
-                background: #dddbdb;
+                background: #c6ff0d;
             }    
         }
         .text-input-md {
@@ -133,10 +133,11 @@ page-option {
     background: linear-gradient(to right, rgba(0,152,169,1) 0%, rgba(28,205,214,1) 50%, rgba(75,202,209,1) 55%, rgba(0,152,169,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0098a9', endColorstr='#0098a9', GradientType=1 );
     margin-bottom: 0;
+    border-radius: 0px !important;
 }
 .footer-md .toolbar-md {
     padding: 0px;
-    min-height: 56px;
+    min-height: auto !important;
 }
 .footer-md .toolbar-background-md {
     border-color: #b2b2b2;
@@ -145,7 +146,6 @@ page-option {
 }
 @media(max-height: 600px){
     .multiple-option{
-        height: 217px;
         overflow: auto;
     }    
 }
