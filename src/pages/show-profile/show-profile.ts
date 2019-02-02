@@ -25,7 +25,9 @@ declare var firebase;
          </div>
         <div padding class="user-info">
             <ion-item><h2>{{userInfo.user_name}}</h2></ion-item>
-            <ion-item><p>Age ,Gender ,Information</p></ion-item>  
+            <ion-item *ngIf="userInfo.user_gender != ''"><p>Gender : {{userInfo.user_gender}}</p></ion-item>
+            <ion-item *ngIf="userInfo.user_age != ''"><p>Age : {{userInfo.user_age}}</p></ion-item>
+            <ion-item *ngIf="userInfo.user_status != ''"><p>Status : {{userInfo.user_status}}</p></ion-item>  
         </div>
     </ion-content>
     <ion-footer>
@@ -58,7 +60,7 @@ export class ShowProfilePage {
                 user_gender: "",
                 user_status: "",
                 user_profilePic: "",
-                user_accessCode: "",
+                user_age: "",
             }
             var userId = me.navParams.data.senderId;
             var loginUserId = user.uid;
@@ -71,10 +73,11 @@ export class ShowProfilePage {
                 me.userInfo = {
                     user_gender: me.navParams.data.gender,
                     user_name: me.navParams.data.name,
-                    user_email: me.navParams.data.email,
+                    //user_email: me.navParams.data.email,
                     user_status: me.navParams.data.status,
                     user_profilePic: me.navParams.data.profilePic,
-                    user_accessCode: me.navParams.data.access_code
+                    user_age: me.navParams.data.age,
+                    //user_accessCode: me.navParams.data.access_code
                 }
 
             }  // call else if internet connection is available.the currentUser can view the profile of connected user.
@@ -87,13 +90,15 @@ export class ShowProfilePage {
                     var gender = snapshot.val() ? snapshot.val().gender : "";
                     var access_code = snapshot.val() ? snapshot.val().access_code : "";
                     var profilePic = (snapshot.val().profilePic == "") ? 'assets/image/profile.png' : snapshot.val().profilePic;
+                    var age = snapshot.val() ? snapshot.val().age : "";
                     me.userInfo = {
                         user_gender: gender,
                         user_name: name,
-                        user_email: email,
+                        //user_email: email,
                         user_status: status,
                         user_profilePic: profilePic,
-                        user_accessCode: access_code
+                        user_age: age,
+                        //user_accessCode: access_code
                     }
 
                 });

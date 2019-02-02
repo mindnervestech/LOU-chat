@@ -49,10 +49,12 @@
           <ion-checkbox></ion-checkbox>
         </ion-item> -->
         <div class="multiple-option">
-          <button id="1" #first ion-button color="dark" (click)="btnActivate(first,'option1')">HomeWork</button>
-          <button id="2" #second ion-button color="dark" (click)="btnActivate(second,'option2')">Tourism</button>
+          <div *ngFor="let data of trepOption">
+            <button id="1" #first ion-button color="dark" (click)="btnActivate(first,data.option)">{{data.option}}</button>
+          </div>
+          <!-- <button id="2" #second ion-button color="dark" (click)="btnActivate(second,'option2')">Tourism</button>
           <button id="3" #third ion-button color="dark" (click)="btnActivate(third,'option3')">Business</button>
-          <button id="4" #fourth ion-button color="dark" (click)="btnActivate(fourth,'option4')">VisitPeople</button>
+          <button id="4" #fourth ion-button color="dark" (click)="btnActivate(fourth,'option4')">VisitPeople</button> -->
         </div>
         </form>
 </ion-content>

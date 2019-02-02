@@ -70,15 +70,18 @@ export class ProfilePage {
     user_status: string;
     captureDataUrl: string = "assets/image/sea.jpg";
     base64Image: any;
-    profilePhoto: string = "";
+    profilePhoto: string = "assets/image/sea.jpg";
     sqlDb: SQLiteObject;
+    gender: string = "";
+    age : string = "";
+    status : string = "";
+    trepOption: any = new Array();
 
     constructor(public CommonProvider: CommonProvider, public _zone: NgZone, public events: Events, public navCtrl: NavController, public sqlite: SQLite, public navParams: NavParams, public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController, private camera: Camera, private clipboard: Clipboard,private network: Network) {
         //var user = firebase.auth().currentUser;
         var me = this;
         var user = JSON.parse(localStorage.getItem("loginUser"));
-        console.log("user",user);
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
         }
@@ -168,15 +171,22 @@ export class ProfilePage {
         var user = JSON.parse(localStorage.getItem("loginUser"));
         var userId = user.uid;
         firebase.database().ref('users/' + userId).on('value', function (snapshot) {
-            var name = snapshot.val() ? snapshot.val().name : "";
-            var email = snapshot.val() ? snapshot.val().email : "";
-            var status = snapshot.val() ? snapshot.val().status : "";
-            var gender = snapshot.val() ? snapshot.val().gender : "";
-            var access_code = snapshot.val() ? snapshot.val().access_code : "";
+            for(var i in snapshot.val().tripe){
+                if(snapshot.val().tripe[i]){
+                    var option ={
+                        option: i
+                    };
+                    me.trepOption.push(option);
+                }
+                
+            }
+            me.age = snapshot.val() ? snapshot.val().age : "";
+            me.status = snapshot.val() ? snapshot.val().status : "";
+            me.gender = snapshot.val() ? snapshot.val().gender : "";
             //var profilePic = (snapshot.val().profilePic == "") ? 'assets/image/profile.png' : snapshot.val().profilePic;
             var profilePic = (user.profilePic == "") ? 'assets/image/profile.png' : user.profilePic;
             me.profilePhoto = profilePic;
-            me.sqlDb.executeSql('select * from userProfile where user_id = ?', [userId]).then((data) => {
+            /*me.sqlDb.executeSql('select * from userProfile where user_id = ?', [userId]).then((data) => {
                 if (data.rows.length > 0) {
                     if (data.rows.item(0).name != name || data.rows.item(0).status != status || data.rows.item(0).gender != gender || data.rows.item(0).profilePic != profilePic) {
                         me.CommonProvider.toDataUrl(profilePic, function (myBase64) {
@@ -198,7 +208,7 @@ export class ProfilePage {
                 }
             }, (err) => {
                 alert('Unable to select sql: ' + JSON.stringify(err));
-            });
+            });*/
         });
     }
 
@@ -234,8 +244,9 @@ export class ProfilePage {
             }, function () {
                 var downloadFlyerURL = uploadTask.snapshot.downloadURL;
                 me.userInfo.user_profilePic = downloadFlyerURL;
-                var userId = firebase.auth().currentUser.uid;
-                var name = firebase.auth().currentUser.name;
+                var user = JSON.parse(localStorage.getItem("loginUser"));
+                var userId = user.uid;
+                var name = user.name;
                 var usersRef = firebase.database().ref('users');
                 var hopperRef = usersRef.child(userId);
                 hopperRef.update({
@@ -332,19 +343,18 @@ export class ProfilePage {
 
     updateProfile() {
         var me = this;
-        const user_name = me.userInfo.user_name.replace("'", "''");
 
-        var user_gender = me.userInfo.user_gender;
-        var user_status = me.userInfo.user_status.replace("'", "''");
-        var userId = firebase.auth().currentUser.uid;
+        var user = JSON.parse(localStorage.getItem("loginUser"));
+
+        var userId = user.uid;
         var usersRef = firebase.database().ref('users');
         var hopperRef = usersRef.child(userId);
         hopperRef.update({
-            "name": user_name,
-            "status": user_status,
-            "gender": user_gender,
+            "age":me.age,
+            "status": me.status,
+            "gender": me.gender
         });
-        global.USER_NAME = user_name;
+
         let alert = me.alertCtrl.create({ subTitle: Message.PROFILE_UPDATE_SUCCESS, buttons: ['OK'] });
         alert.present();
         me.PublishEventUserUpdate();

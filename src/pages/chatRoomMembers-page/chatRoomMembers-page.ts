@@ -78,7 +78,9 @@ export class ChatRoomMembers {
                                 profilePic : profilePic,
                                 status : value.status,
                                 senderId: me.groupMemberKey[me.count],
-                                 block: 0,
+                                block: 0,
+                                age: value.age,
+                                gender: value.gender
                             };
                             me.groupList.push(groupDetail);
                             me.count++;

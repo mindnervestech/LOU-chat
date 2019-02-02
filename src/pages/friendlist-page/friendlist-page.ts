@@ -123,7 +123,7 @@ export class FriendlistPage {
                          var userinfo = {
                             name: userData[data].name,
                             profilePic: userData[data].profilePic ? userData[data].profilePic : "assets/image/profile.png",
-                            email: userData[data].email,
+                            age: userData[data].age,
                             lastDate: mylastDate,
                             unreadMessage: 0,
                             userId: data,
@@ -385,8 +385,8 @@ export class FriendlistPage {
             msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
             return msg;
         }else{
-            if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0]) && parseInt(start[1]) <= parseInt(todayConvertTime[1]) ){
-                if(parseInt(end[0]) >= parseInt(todayConvertTime[0])){
+            if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0]) || parseInt(start[1]) <= parseInt(todayConvertTime[1])){
+                if(parseInt(end[0]) >= parseInt(todayConvertTime[0]) && parseInt(end[1]) >= parseInt(todayConvertTime[1])){
                     msg = "";
                     return msg;
                 }else{

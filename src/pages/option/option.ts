@@ -2,12 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 declare var firebase;
 import * as Message from '../../providers/message/message';
-/**
- * Generated class for the OptionPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+
 @IonicPage()
 @Component({
   selector: 'page-option',
@@ -92,10 +87,7 @@ export class OptionPage {
 
               });
             });
-
-
-            
-            
+       
           }
        });       
       }else{
@@ -107,31 +99,31 @@ export class OptionPage {
    btnActivate(ionicButton,text) {
     if(ionicButton._color === 'dark'){
       ionicButton.color =  'primary';
-        if(text == "option1"){
+        if(text == "HomeWork"){
           this.selectedOption1 = true;
         }
-        if(text == "option2"){
+        if(text == "Tourism"){
           this.selectedOption2 = true;
         }
-        if(text == "option3"){
+        if(text == "Business"){
           this.selectedOption3 = true;
         }
-        if(text == "option4"){
+        if(text == "VisitPeople"){
           this.selectedOption4 = true;
         }
     }
     else{
       ionicButton.color = 'dark';
-      if(text == "option1"){
+      if(text == "HomeWork"){
           this.selectedOption1 = false;
         }
-        if(text == "option2"){
+        if(text == "Tourism"){
           this.selectedOption2 = false;
         }
-        if(text == "option3"){
+        if(text == "Business"){
           this.selectedOption3 = false;
         }
-        if(text == "option4"){
+        if(text == "VisitPeople"){
           this.selectedOption4 = false;
         }
     }
@@ -145,31 +137,59 @@ export class OptionPage {
   tripeDateValidation(ripeDate,startDate,endDate){
         var msg = "";
         var convertDate = ripeDate.split("-");
-        var start = startDate.split(":");
+        //var start = startDate.split(":");
         var end = endDate.split(":");
         var date = new Date();
         var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
         var todayDate = dateCreated.split(" ");
         var todayConvertDate = todayDate[0].split("-");
         var todayConvertTime = todayDate[1].split(":");
-        if(parseInt(convertDate[0]) >= parseInt(todayConvertDate[0]) || parseInt(convertDate[1]) >= parseInt(todayConvertDate[1]) || parseInt(convertDate[2]) >= parseInt(todayConvertDate[2])){
-             var st1 = parseInt(start[0]) - 2
+        if(parseInt(convertDate[0]) >= parseInt(todayConvertDate[0])){
+          if(parseInt(convertDate[0]) == parseInt(todayConvertDate[0])){
+            if(parseInt(convertDate[1]) >= parseInt(todayConvertDate[1])){
+              if(parseInt(convertDate[1]) == parseInt(todayConvertDate[1])){
+                if(parseInt(convertDate[2]) >= parseInt(todayConvertDate[2])){
+                  if(parseInt(convertDate[2]) == parseInt(todayConvertDate[2])){
+                    if(parseInt(end[0]) >= parseInt(todayConvertTime[0])){
+                      if(parseInt(end[0]) == parseInt(todayConvertTime[0])){
+                        if(parseInt(end[1]) > parseInt(todayConvertTime[1])){
+                          msg = "";
+                          return msg;
+                        }else{
+                          msg = "This group chat is end at " + ripeDate + " " + endDate;
+                          return msg;
+                        }
+                      }else{
+                        msg = "";
+                        return msg;
+                      }
+                    }else{
+                      msg = "This group chat is end at " + ripeDate + " " + endDate;
+                      return msg;
+                    }
+                  }else{
+                    msg = "";
+                    return msg;
+                  }
+                }else{
+                  msg = "This group chat is end at " + ripeDate;
+                  return msg;
+                }
+              }else{
+                msg = "";
+                return msg;
+              }
+            }else{
+              msg = "This group chat is end at " + ripeDate;
+              return msg;
+            }
+          }else{
             msg = "";
             return msg;
+          }
         }else{
-            if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0]) && parseInt(start[1]) <= parseInt(todayConvertTime[1]) ){
-                if(parseInt(end[0]) >= parseInt(todayConvertTime[0])  && parseInt(end[1]) >= parseInt(todayConvertTime[1])){
-                    msg = "";
-                    return msg;
-                }else{
-                    msg = "This group chat is end at " + ripeDate + " " + endDate;
-                    return msg;
-                }
-            }else{
-                var st = parseInt(start[0]) - 2
-                    msg = "";
-                    return msg;
-            }
-        }
+          msg = "This group chat is end at " + ripeDate;
+          return msg;
+        }   
     }
 }

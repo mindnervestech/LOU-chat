@@ -24,21 +24,21 @@
         </div>
         <ion-label class="color-label">Gender</ion-label>
         <ion-item class="txtdesign1">
-          <ion-select placeholder="Select option" interface="popover">
-            <ion-option value="option1">Male</ion-option>
-            <ion-option value="option2">Female</ion-option>
+          <ion-select placeholder="Select option" interface="popover" [(ngModel)]="gender">
+            <ion-option value="Male">Male</ion-option>
+            <ion-option value="Female">Female</ion-option>
           </ion-select>
         </ion-item>
         <div class="input-label">
             <ion-label>Age</ion-label>
             <ion-item>
-                <ion-input type="text" placeholder="Your Age"></ion-input>
+                <ion-input type="text" placeholder="Your Age" [(ngModel)]="age"></ion-input>
             </ion-item>
         </div>
         <div class="input-label">
-            <ion-label>Info</ion-label>
+            <ion-label>Status</ion-label>
             <ion-item>
-                <ion-input type="text" placeholder="Your Entry"></ion-input>
+                <ion-input type="text" placeholder="Your Entry" [(ngModel)]="status"></ion-input>
             </ion-item>
         </div>
         <div class="profile-scroll">
@@ -46,12 +46,15 @@
                 <h2>information</h2>
                 <div class="row">
                     <div class="multiple-option">
-                        <button id="1" #first ion-button color="dark" (click)="btnActivate(first)">Option_1</button>
+                        <div *ngFor="let data of trepOption">
+                            <button id="1" #first ion-button color="dark">{{data.option}}</button>
+                        </div>
+                        <!-- <button id="1" #first ion-button color="dark" (click)="btnActivate(first)">Option_1</button>
                         <button id="1" #second ion-button color="dark" (click)="btnActivate(second)">Option_2</button>
                         <button id="1" #third ion-button color="dark" (click)="btnActivate(third)">Option_1</button>
                         <button id="1" #fourth ion-button color="dark" (click)="btnActivate(fourth)">Option_3</button>
                         <button id="1" #fifth ion-button color="dark" (click)="btnActivate(fifth)">Option_4</button>
-                        <button id="1" #sixth ion-button color="dark" (click)="btnActivate(sixth)">Option_5</button>
+                        <button id="1" #sixth ion-button color="dark" (click)="btnActivate(sixth)">Option_5</button> -->
                     </div>    
                 </div>   
             </div>     
@@ -72,6 +75,6 @@
     </ion-content>    
     <ion-footer>
         <ion-toolbar>
-            <button ion-button full color="primary" (click)="LoginUser()" class="btndesign loginbtn" tappable>Save</button>  
+            <button ion-button full color="primary" (click)="updateProfile()" class="btndesign loginbtn" tappable>Save</button>  
         </ion-toolbar>
     </ion-footer>

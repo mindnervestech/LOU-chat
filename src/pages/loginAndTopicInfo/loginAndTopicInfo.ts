@@ -96,30 +96,34 @@ export class loginAndTopicInfo {
         var msg = "";
         var convertDate = ripeDate.split("-");
         var start = startDate.split(":");
-        var end = endDate.split(":");
+        var st1 = parseInt(start[0]) - 2
+        //var end = endDate.split(":");
         var date = new Date();
         var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
         var todayDate = dateCreated.split(" ");
         var todayConvertDate = todayDate[0].split("-");
         var todayConvertTime = todayDate[1].split(":");
-        if(convertDate[0] != todayConvertDate[0] || convertDate[1] != todayConvertDate[1] || convertDate[2] != todayConvertDate[2]){
-             var st1 = parseInt(start[0]) - 2
-            msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
-            return msg;
-        }else{
-            if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0]) && parseInt(start[1]) <= parseInt(todayConvertTime[1]) ){
-                if(parseInt(end[0]) >= parseInt(todayConvertTime[0])){
-                    msg = "";
-                    return msg;
+        if(convertDate[0] == todayConvertDate[0] && convertDate[1] == todayConvertDate[1] && convertDate[2] == todayConvertDate[2]){
+            if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0])){
+              if(parseInt(start[0]) - 2 == parseInt(todayConvertTime[0])){
+                if(parseInt(start[1]) >= parseInt(todayConvertTime[1])){
+                  msg = "";
+                  return msg;
                 }else{
-                    msg = "This group chat is end at " + ripeDate + " " + endDate;
-                    return msg;
+                  msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
+                  return msg;
                 }
+              }else{
+                msg = "";
+                return msg;
+              }
             }else{
-                var st = parseInt(start[0]) - 2
-                    msg = "This group chat not start yet. It's start at " + ripeDate + " " + st + ":" + start[1];
-                    return msg;
+              msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
+              return msg;
             }
+        }else{
+          msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
+          return msg;
         }
     }
 
@@ -202,7 +206,7 @@ export class loginAndTopicInfo {
   					 	profilePic : phofilePic,
   					 	status: "",
   					 	gender:"",
-  					 	email: "",
+  					 	age: "",
   					 	pushToken: "123456",
               tripe : {
                 HomeWork : me.navParams.data.selectedOption1,
