@@ -1,11 +1,10 @@
 import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController, AlertController,ViewController } from 'ionic-angular';
 import { CommonProvider } from '../../providers/common/common';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Network } from '@ionic-native/network';
 import * as Message from '../../providers/message/message';
 declare var firebase;
-
 @IonicPage()
 
 @Component({
@@ -20,6 +19,25 @@ declare var firebase;
         </ion-navbar>
     </ion-header>
     <ion-content class="friendlist-page-content">
+        <div class="modal_content" id="modal_content" *ngIf="hideMe">
+            <div class="div_main">
+                <ion-row class="ion_row_atmosphere_margin">
+                    <img class="img_arrow_down_n" src="{{profilePic}}">
+                </ion-row>
+                <ion-row class="ion_row_sub_margin">
+                    <h2 class="subheading_content">You have match with {{usersListLength}} member</h2>
+                    <p class="common-topic">Your common topic:</p>
+                    <p class="common-topic">- Info1</p>
+                    <p class="common-topic">- Info2</p>
+                </ion-row>
+                <div class="div_bottom">
+                    <ion-row justify-content-center align-items-center class="ion_row_heiht_bottam">
+                        <button class="dismiss" (click)='dismiss_dialog()' style="position:absolute;left: 0;">Dismiss</button>
+                        <button class="dismiss" (click)='dismiss_dialog()' style="position:absolute;right: 0;">Add to chat list</button>
+                    </ion-row>
+                </div>
+            </div>
+        </div>
         <ion-list [virtualScroll]="groupData" [approxItemHeight]="'70px'" >
             <ion-item *virtualItem="let data" tappable>
                 <ion-avatar item-left class="ion-pro">
@@ -56,17 +74,20 @@ declare var firebase;
 
 export class FriendlistPage {
     usersList: any = new Array();
+    usersListLength: any = Number;
     groupData: any = new Array();
     tripeUsersList: any = new Array();
     msg: any;
     hide: boolean = false;
+    hideMe: boolean = true;
     sqlDb: SQLiteObject;
-
-    constructor(public alertCtrl: AlertController,public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
+    profilePic: string = "";
+    constructor(public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
         var me = this;
         me.menu.swipeEnable(true);
         //var user = firebase.auth().currentUser;
         var user = JSON.parse(localStorage.getItem("loginUser"));
+        this.profilePic = (user.profilePic == "") ? 'assets/image/profile.png' : user.profilePic; 
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
         }
@@ -105,6 +126,9 @@ export class FriendlistPage {
         this.navCtrl.setRoot("ChatRoomMembers",item);
     }
 
+    dismiss_dialog(){
+        this.hideMe = false;
+    }
     match(){
         var userID = localStorage.getItem("userId");
         var me = this;
@@ -168,6 +192,7 @@ export class FriendlistPage {
                  if(me.tripeUsersList.length != 0){
 
                      me.usersList = me.tripeUsersList; 
+                     me.usersListLength = me.usersList.length;
                  }
              });
         });
@@ -436,6 +461,7 @@ export class FriendlistPage {
         }
     }
 
+    
     joinGroup(){
         
     }
