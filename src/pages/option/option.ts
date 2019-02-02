@@ -25,7 +25,8 @@ export class OptionPage {
 
   ionViewDidLoad() {
     var me = this;
-    firebase.database().ref().child('option/').on('value',function(optionData){
+    var language = localStorage.getItem("language");
+    firebase.database().ref().child('option/').orderByChild("language").equalTo(language).on('value',function(optionData){
       var value = optionData.val();
       me.option = [];
       for(var data in value){
@@ -33,7 +34,7 @@ export class OptionPage {
       }
     });
 
-    firebase.database().ref().child('treapOtion/').on('value',function(optionData){
+    firebase.database().ref().child('treapOtion/').orderByChild("language").equalTo(language).on('value',function(optionData){
       var value = optionData.val();
       me.trepOption = [];
       for(var data in value){

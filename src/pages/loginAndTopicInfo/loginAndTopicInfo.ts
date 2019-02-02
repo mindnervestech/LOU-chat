@@ -23,6 +23,7 @@ export class loginAndTopicInfo {
 
 	usernameInfo : any;
 	base64Image: any;
+  trepOption: any = new Array();
 	nickName: string = "";
     groupInfo: any;
     userProfilePic : string = ""; 

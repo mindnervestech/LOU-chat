@@ -21,8 +21,9 @@ export class WelcomePage {
     
   }
 
-  redirect() {
-		// this will redirect to login page when tap to continue button of slider. 
+  redirect(text) {
+    localStorage.setItem("language",text);
+		// this will redirect to login page when tap to continue button of slider.
 		this.navCtrl.push("StartPage");
 	}
 }
