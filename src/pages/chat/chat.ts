@@ -382,7 +382,7 @@ export class ChatPage {
 
     global.Is_CHAT_PAGE = false;
     //it is for unreadCount Message update in firebase if user leaves the chat page then the current user message will be update in firebase as unReadCount as 0;
-    firebase.database().ref().child('Friends/' + me.navParams.data.key + '/' + user.uid).update({
+    firebase.database().ref().child('Friends/' + user.uid + '/' + me.navParams.data.key).update({
       unreadCount: 0
     });
   }
@@ -405,6 +405,7 @@ export class ChatPage {
     var userId = user.uid;
     var userEmail = user.email;
     var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    var mylastDate = me.getLastDate(dateCreated);
     var senderName = (global.USER_NAME == "") ? userEmail : global.USER_NAME;
     if (this.message != "") {
       var lastDisplaymessage = this.message.replace(/\r?\n/g, '<br />');;
@@ -432,7 +433,7 @@ export class ChatPage {
             firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).once('value').then(function (snapshot) {
               var friendRef = firebase.database().ref('Friends/' + me.senderUser.senderId);
               friendRef.child(userId).update({
-                lastDate: dateCreated,
+                lastDate: mylastDate,
                 lastMessage: lastDisplaymessage
               }).then(function () {
                 console.log("Message send successfully");
@@ -446,7 +447,7 @@ export class ChatPage {
             firebase.database().ref('Friends/' + userId + '/' + me.senderUser.senderId).once('value').then(function (snapshot) {
               var friendRef = firebase.database().ref('Friends/' + userId);
               friendRef.child(me.senderUser.senderId).update({
-                lastDate: dateCreated,
+                lastDate: mylastDate,
                 unreadCount: parseInt(snapshot.val().unreadCount) + 1,
                 lastMessage: lastDisplaymessage
               }).then(function () {
@@ -459,6 +460,27 @@ export class ChatPage {
 
     }
   }
+
+  getLastDate(userlastDate) {
+        var mylastDate = userlastDate;
+        var convertDate = mylastDate.split(" ");
+        var dateValue = convertDate[0].split("-");
+        var timeValue = convertDate[1].split(":");
+        var lastDate = new Date(dateValue[0], dateValue[1] - 1, dateValue[2], timeValue[0], timeValue[1], timeValue[2], 0);
+        var thelastDate = new Date(dateValue[0], dateValue[1] - 1, dateValue[2], timeValue[0], timeValue[1], timeValue[2], 0);
+        var todaysDate = new Date();
+        if (lastDate.setHours(0, 0, 0, 0) == todaysDate.setHours(0, 0, 0, 0)) {
+            var time = this.CommonProvider.formatAMPM(thelastDate);
+            mylastDate = time;
+
+        } else if (thelastDate.getFullYear() == todaysDate.getFullYear() && thelastDate.getMonth() == todaysDate.getMonth() && thelastDate.getDate() == (todaysDate.getDate() - 1)) {
+            mylastDate = "Yesterday";
+        } else {
+            mylastDate = thelastDate.getDate() + "/" + (thelastDate.getMonth() + 1) + "/" + thelastDate.getFullYear();
+        }
+        return mylastDate;
+    }
+    
   strip(html) {
     var tmp = document.createElement("DIV");
     tmp.innerHTML = html;
