@@ -17,3 +17,17 @@ h2{
     font-weight: 500 !important;
     color: #000;
 }
+.image {
+    display: inline-block;
+    margin: 14px 5px;
+    .imgstyle{
+        width: 76px;
+        border-radius: 52%;
+        height: 76px;
+        max-width: 98px;
+        background-color: rgba(244, 244, 244, 0.67);
+    }
+    .hideimage{
+        visibility: hidden;
+    }
+}

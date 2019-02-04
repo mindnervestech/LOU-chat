@@ -20,16 +20,14 @@ declare var firebase;
         </ion-navbar>
     </ion-header>
     <ion-content>
-        <ion-list [virtualScroll]="groupList" [approxItemHeight]="'70px'" >
-            <ion-item *virtualItem="let item" (click)='showProfile(item)' tappable>
-                <ion-avatar item-left>
-                    <ion-img class="imgstyle" src='{{item.profilePic}}' ></ion-img>
-                </ion-avatar>                
-                <h2 *ngIf="item.name" >{{ item.name }} </h2>
-                <h2 *ngIf="!item.name">{{ item.email }} </h2>
-                <p>{{ item.status }} </p>            
-            </ion-item>          
-        </ion-list>
+        
+        <div class="image">
+            <span *ngFor="let item of groupList">
+           <img class="imgstyle" src='{{item.profilePic}}' (click)="showProfile(item)">
+           <img class="imgstyle hideimage" src='{{item.profilePic}}' >
+            </span>
+        </div>
+        
     </ion-content>
     `,
 })

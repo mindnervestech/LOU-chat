@@ -188,7 +188,7 @@ export class loginAndTopicInfo {
             }else{
               me.LoadingProvider.closeLoading();
                 let actionSheet = me.alertCtrl.create({
-                title: 'The chat room is not yet opened, but you can already see some tips for your topics',
+                title: 'The chat room is not yet opened, but you can already see some tips for your trip',
                 buttons: [
                     {
                         text: 'Go',

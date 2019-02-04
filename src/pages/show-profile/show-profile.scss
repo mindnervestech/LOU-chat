@@ -17,7 +17,21 @@ page-show-profile {
         bottom: -32%;
         margin: auto;
     }
-
+    .chat-icon-div{
+        height: 80px;
+        width: 80px;
+        text-align: center;
+        vertical-align: middle;
+        display: table-cell;
+        background: #7bd7e0;
+        border-radius: 50%;
+        color: #000;
+        font-size: 22px;
+        float: right;
+        left: 75%;
+        bottom: 16px;
+        padding-top: 25px;
+    }
     .profile-image-container {
         background: rgba(192, 204, 218, 0.29);
         border-bottom: 1px solid #dbdbdb;
@@ -61,23 +75,21 @@ page-show-profile {
     .footer-md::before{
         background-image: none;
     }
-    .footer{
-        height: 80px;
-        width: 80px;
-        text-align: center;
-        vertical-align: middle;
-        display: table-cell;
-        background: #7bd7e0;
-        border-radius: 50%;
-        color: #000;
-        font-size: 22px;
-        float: right;
-        left: 75%;
-        bottom: 25px;
-    }
+    // .footer{
+    //     height: 80px;
+    //     width: 80px;
+    //     text-align: center;
+    //     vertical-align: middle;
+    //     display: table-cell;
+    //     background: #7bd7e0;
+    //     border-radius: 50%;
+    //     color: #000;
+    //     font-size: 22px;
+    //     float: right;
+    //     left: 75%;
+    //     bottom: 25px;
+    // }
     .chat-icon-div{
-        position: absolute;
-        top: 30%;
-        left: 20%;
+        position: fixed;
     }
 }
