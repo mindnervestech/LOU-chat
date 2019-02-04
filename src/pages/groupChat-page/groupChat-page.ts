@@ -156,7 +156,7 @@ export class GroupChatPage {
       });
     }
     ionViewDidEnter() {
-        this. counterZero();
+      
     }
     counterZero(){
       if(this.groupData.groupName != undefined){

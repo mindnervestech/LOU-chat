@@ -37,6 +37,7 @@ declare var firebase;
 export class ChatRoomMembers {
     groupList: any = new Array();
     groupMemberKey: any = new Array();
+    temp: any = new Array();
     msg: any;
     hide: boolean = false;
     count = 0;
@@ -82,13 +83,16 @@ export class ChatRoomMembers {
                                 age: value.age,
                                 gender: value.gender
                             };
-                            me.groupList.push(groupDetail);
+
+                            me.temp.push(groupDetail);
                             me.count++;
                     });  
                     setTimeout(() => {
                       
                     }, 500);  
             }
+            me.groupList = me.temp;
+            me.temp = [];
          });
         
     }

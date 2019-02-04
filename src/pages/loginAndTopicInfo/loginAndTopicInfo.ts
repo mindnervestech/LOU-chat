@@ -28,67 +28,7 @@ export class loginAndTopicInfo {
     groupInfo: any;
     userProfilePic : string = ""; 
     user_profilePic: string = "assets/image/profile.png";
-    englishInfo: Array<any> = ["Topicality", 
-        "Policy", 
-        "Culture", 
-        "Languages", 
-        "Fashion",
-        "Cinema", 
-        "Religion", 
-        "Literature", 
-        "Developer", 
-        "Management", 
-        "Economy and Finances", 
-        "Business", 
-        "Artificial Intelligence", 
-        "Big Data", 
-        "Block chain", 
-        "Bitcoin", 
-        "IoT", 
-        "Technology", 
-        "Autonomous car", 
-        "Sport", 
-        "Trip", 
-        "Family", 
-        "Education",
-        "Child",
-        "Health",
-        "Job",
-        "Immovable",
-        "Mobility",
-        "Gastronomy",
-        "Love"];
-    frenchInfo: Array<any> = ["Actualité",
-        "politique",
-        "culture", 
-        "langues",
-        "mode",
-        "cinéma", 
-        "religion", 
-        "littérature",  
-        "développeur", 
-        "management", 
-        "économie et finance", 
-        "entreprise",
-        "Intelligence artificielle", 
-        "BigData",
-        "Block chain", 
-        "Bitcoin",
-        "IoT", 
-        "Technologie", 
-        "Voiture autonome", 
-        "sport", 
-        "voyage", 
-        "famille", 
-        "éducation", 
-        "enfant", 
-        "santé", 
-        "travail", 
-        "immobilier", 
-        "mobilité", 
-        "gastronomie", 
-        "amour"    
-    ];
+
 	constructor(public LoadingProvider: LoadingProvider,
 	public CommonProvider: CommonProvider,
 	private network: Network,
@@ -119,7 +59,6 @@ export class loginAndTopicInfo {
         }
         me.trepOption.push(info);
       }
-      console.log(me.trepOption);
     });
 
      var user = JSON.parse(localStorage.getItem("loginUser"));

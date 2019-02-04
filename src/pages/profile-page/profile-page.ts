@@ -7,7 +7,7 @@ import { Events } from 'ionic-angular';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Clipboard } from '@ionic-native/clipboard';
 import { CommonProvider } from '../../providers/common/common';
-import * as Message from '../../providers/message/message';
+//import * as Message from '../../providers/message/message';
 import { Network } from '@ionic-native/network';
 declare var firebase;
 
@@ -252,7 +252,7 @@ export class ProfilePage {
                 me.userInfo.user_profilePic = downloadFlyerURL;
                 var user = JSON.parse(localStorage.getItem("loginUser"));
                 var userId = user.uid;
-                var name = user.name;
+                //var name = user.name;
                 var usersRef = firebase.database().ref('users');
                 var hopperRef = usersRef.child(userId);
                 hopperRef.update({
@@ -349,21 +349,24 @@ export class ProfilePage {
 
     updateProfile() {
         var me = this;
+        if(me.age == "" && me.status == "" && me.gender == ""){
+            let alert = me.alertCtrl.create({ subTitle: 'Please add value in filed', buttons: ['OK'] });
+            alert.present();
+        }else{
+            var user = JSON.parse(localStorage.getItem("loginUser"));
+            var userId = user.uid;
+            var usersRef = firebase.database().ref('users');
+            var hopperRef = usersRef.child(userId);
+            hopperRef.update({
+                "age":me.age,
+                "status": me.status,
+                "gender": me.gender
+            });
 
-        var user = JSON.parse(localStorage.getItem("loginUser"));
-
-        var userId = user.uid;
-        var usersRef = firebase.database().ref('users');
-        var hopperRef = usersRef.child(userId);
-        hopperRef.update({
-            "age":me.age,
-            "status": me.status,
-            "gender": me.gender
-        });
-
-        let alert = me.alertCtrl.create({ subTitle: 'Profile updated successfully', buttons: ['OK'] });
-        alert.present();
-        me.PublishEventUserUpdate();
+            let alert = me.alertCtrl.create({ subTitle: 'Profile updated successfully', buttons: ['OK'] });
+            alert.present();
+            me.PublishEventUserUpdate();
+        }
     }
     PublishEventUserUpdate() {
         var me = this;

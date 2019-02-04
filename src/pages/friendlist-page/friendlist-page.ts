@@ -79,15 +79,17 @@ export class FriendlistPage {
     groupData: any = new Array();
     tripeUsersList: any = new Array();
     trepOption: any = new Array();
+    preveseFriendList: any = new Array();
     msg: any;
     hide: boolean = false;
     hideMe: boolean = false;
     sqlDb: SQLiteObject;
     profilePic: string = "";
+    checkForEntery: boolean = false;
+    check: boolean = true;
     constructor(public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
         var me = this;
         me.menu.swipeEnable(true);
-        //var user = firebase.auth().currentUser;
         var user = JSON.parse(localStorage.getItem("loginUser"));
         me.profilePic = (user.profilePic == "") ? 'assets/image/profile.png' : user.profilePic; 
         if (!user) {
@@ -107,7 +109,17 @@ export class FriendlistPage {
                 //me.LoadList();
             });*/
              var popup = localStorage.getItem("popUp");
+             if(popup == "true"){
+                 var redirect = localStorage.getItem("redirect");
+                 if(redirect == "true"){
+
+                 }else{
+                     me.checkForEntery = true;
+                     me.getUserData();
+                 }
+             }else{
                 me.match();
+             }
             me.LoadList();
     }
     ionViewDidEnter() {
@@ -131,13 +143,105 @@ export class FriendlistPage {
 
     dismiss_dialog(){
         this.hideMe = false;
-        localStorage.setItem("popUpRedirect","true");
+        localStorage.setItem("redirect","true");
     }
+
     addToChat(){
-        this.hideMe = false;
+        var me = this;
+        me.hideMe = false;
+        me.usersList = me.tripeUsersList;
         localStorage.setItem("popUp","true");
-        localStorage.setItem("popUpRedirect","true");
-        this.usersList = this.tripeUsersList; 
+        var user = JSON.parse(localStorage.getItem("loginUser"));
+            firebase.database().ref().child('Friends/' + user.uid).on('value' ,function(data){
+                if(me.check){
+                    if(data.val() == null){
+                        //console.log("check in if",me.check);
+                        me.check = false;
+                        me.addFriend();
+                    }else{
+                        //console.log(data.val());
+                        //console.log("check in else",me.check);
+                        me.check = false;
+                        for(var value in data.val()){
+                            firebase.database().ref().child('Friends/' + user.uid + '/' + value).update({
+                                access : false
+                            });
+                        }
+                        me.addFriend();
+                    }
+                }
+            });
+    }
+
+    addFriend(){
+        var user = JSON.parse(localStorage.getItem("loginUser"));
+        var me = this;
+        var date = new Date();
+        var myProfilePhoto = "assets/image/profile.png";
+        var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        firebase.database().ref().child('users/' + user.uid).on('value', function(user){
+            myProfilePhoto = user.val().profilePic != "" ? user.val().profilePic : "assets/image/profile.png";
+        });
+         for(var i = 0; i< me.usersList.length; i++){
+                firebase.database().ref().child('Friends/' + user.uid + '/' + me.usersList[i].userId).on('value',function(allFriend){
+                    //console.log(allFriend.val());
+                    if(allFriend.val() == null){
+                         firebase.database().ref().child('Friends/' + user.uid + '/' + me.usersList[i].userId).set({
+                            DateCreated : dateCreated,
+                            lastDate :me.usersList[i].lastDate,
+                            lastMessage :"",
+                            SenderId :me.usersList[i].senderId,
+                            block: 0,
+                            access : true,
+                            unreadCount : 0,
+                            name : me.usersList[i].name,
+                            profilePic : me.usersList[i].profilePic,
+                        });
+                        firebase.database().ref().child('Friends/' + me.usersList[i].userId + '/' + user.uid).set({
+                            DateCreated : dateCreated,
+                            lastDate :me.usersList[i].lastDate,
+                            lastMessage :"",
+                            SenderId :user.uid,
+                            block: 0,
+                            access : true,
+                            unreadCount : 0,
+                            name : user.name,
+                            profilePic : myProfilePhoto,
+                        });
+                    }else{
+                        firebase.database().ref().child('Friends/' + user.uid + '/' + me.usersList[i].userId).update({
+                            access : true
+
+                        });
+                    }
+                });
+            }
+    }
+
+    getUserData(){
+        var me = this;
+        var user = JSON.parse(localStorage.getItem("loginUser"));
+         firebase.database().ref().child('Friends/' + user.uid).orderByChild("access").equalTo(true).on('value',function(friend){
+             if(me.checkForEntery){
+                 me.usersList = [];
+                 for(var data in friend.val()){
+                     var userinfo = {
+                            name: friend.val()[data].name,
+                            profilePic: friend.val()[data].profilePic,
+                            date: friend.val()[data].lastDate,
+                            lastDate:  friend.val()[data].lastDate,
+                            senderId:  friend.val()[data].SenderId,
+                            userId: user.uid,
+                            key: friend.val()[data].SenderId,
+                            unreadMessage: friend.val()[data].unreadCount,
+                            lastMessage: friend.val()[data].lastMessage,
+                            block: friend.val()[data].block,
+                        };
+                     me.usersList.push(userinfo);
+                 }
+                 //me.checkForEntery = false;
+             }
+         });
     }
 
     match(){
@@ -201,20 +305,12 @@ export class FriendlistPage {
                      push = "true";
                  }
                  if(me.tripeUsersList.length != 0){
-                     var popup = localStorage.getItem("popUp");
-                     if(popup == "true"){
-                         me.usersList = me.tripeUsersList; 
-                     }else{
-                         var popupRedirect = localStorage.getItem("popUpRedirect");
-                         if(popupRedirect == "true"){
-
-                         }else{
                              me.hideMe = true;
                              var user = JSON.parse(localStorage.getItem("loginUser"));
                              var userId = user.uid;
                              firebase.database().ref('users/' + userId).on('value', function (snapshot) {
                                 for(var i in snapshot.val().tripe){
-                                    if(snapshot.val().tripe[i]){
+                                    if(snapshot.val().tripe[i] == true){
                                         var option ={
                                             option: i
                                         };
@@ -223,8 +319,6 @@ export class FriendlistPage {
                                 }
                             });
                              me.usersListLength = me.tripeUsersList.length;
-                         }
-                     }
                  }
              });
         });

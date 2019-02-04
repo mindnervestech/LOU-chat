@@ -377,14 +377,13 @@ export class ChatPage {
 
   ionViewWillLeave() {
     var me = this;
-    var friendRef = firebase.database().ref('Friends/' + me.myuserid);
+    //var friendRef = firebase.database().ref('Friends/' + me.myuserid);
+    var user = JSON.parse(localStorage.getItem("loginUser"));
 
     global.Is_CHAT_PAGE = false;
     //it is for unreadCount Message update in firebase if user leaves the chat page then the current user message will be update in firebase as unReadCount as 0;
-    friendRef.child(me.friendkey).update({
+    firebase.database().ref().child('Friends/' + me.navParams.data.key + '/' + user.uid).update({
       unreadCount: 0
-    }).then(function () {
-      console.log("updated view count to 0");
     });
   }
 
@@ -430,10 +429,9 @@ export class ChatPage {
           type: type
         }).then(function () {
           if (type == "text") {
-            /*firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).once('value').then(function (snapshot) {
+            firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).once('value').then(function (snapshot) {
               var friendRef = firebase.database().ref('Friends/' + me.senderUser.senderId);
               friendRef.child(userId).update({
-                unreadCount: parseInt(snapshot.val().unreadCount) + 1,
                 lastDate: dateCreated,
                 lastMessage: lastDisplaymessage
               }).then(function () {
@@ -449,11 +447,12 @@ export class ChatPage {
               var friendRef = firebase.database().ref('Friends/' + userId);
               friendRef.child(me.senderUser.senderId).update({
                 lastDate: dateCreated,
+                unreadCount: parseInt(snapshot.val().unreadCount) + 1,
                 lastMessage: lastDisplaymessage
               }).then(function () {
                 console.log("Message send successfully");
               });
-            });*/
+            });
           }
         });
       });
