@@ -16,7 +16,7 @@ import { IonicPage, NavController, Slides } from 'ionic-angular';
         <ion-slide class="slider">
              
             <img src="assets/image/banner1.jpg" class="slide-image"/>
-            <h2>Select option</h2>
+            <h2>Select your trip</h2>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
             <div class="bottom-btn">
                 <button ion-button small outline class="next" icon-right (click)="slideNext($index)">
@@ -27,7 +27,7 @@ import { IonicPage, NavController, Slides } from 'ionic-angular';
         </ion-slide>
         <ion-slide class="slider">
             <img src="assets/image/banner2.jpg" class="slide-image"/>
-            <h2>Search Member</h2>
+            <h2>Define your favorite topics</h2>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
             <div class="bottom-btn">
                 <button ion-button small outline class="next" icon-right (click)="slideNext($index)">
@@ -38,7 +38,7 @@ import { IonicPage, NavController, Slides } from 'ionic-angular';
         </ion-slide>
         <ion-slide class="slider">
             <img src="assets/image/banner3.png" class="slide-image1"/>
-            <h2>Connect member</h2>
+            <h2>Receive matches</h2>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
             <div class="bottom-btn">
                 <button ion-button small outline class="next" icon-right (click)="slideNext($index)">

@@ -1,6 +1,5 @@
 <ion-content padding>
     <ion-list no-lines id="ProfileDP">
-        <ion-label class="main-label">Optional</ion-label>  
         <ion-item class="upload-image">
             <div id="profileimage"  [ngStyle]="{'background-image': 'url(' + user_profilePic + ')'}"                
             (click)="presentActionSheet()" tappable>
@@ -8,13 +7,12 @@
         </ion-item>
     </ion-list>
     <div class="input-label">
-        <ion-label>Choose your nickname (mandatory)</ion-label>
+        <ion-label>Choose your nickname</ion-label>
         <ion-item>
             <ion-input type="text" placeholder="Your Entry" name="nickName" [(ngModel)]="nickName"></ion-input>
         </ion-item>
     </div>    
     <h2>Topic information</h2>
-    <p>This information is not mandatory</p>
     <div class="topic-info">
         <div class="row">
                 <div class="multiple-option">

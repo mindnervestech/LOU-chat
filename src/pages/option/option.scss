@@ -10,6 +10,30 @@ page-option {
         .select-text {
             color: #000;
         }
+        .transport{
+           padding: 10px 25px;
+            height: 3.8rem;
+            font-size: 17px;
+            margin-right: 28px;
+            background-color: transparent;
+            border: 2px solid #000;
+            color: #000;
+            border-radius: 6px !important;
+            text-transform: capitalize;
+        }
+    
+        .select-option,.train{
+            margin-bottom: 20px !important;
+        }
+        .select-option .item-inner {
+            padding-right: 8px;
+            border-bottom: 0px solid #dedede;
+        }
+        .select-option .label-md {
+            margin: 12px 8px 0px 0px;
+        }
+
+
         // .button-md-primary,.button-md-lightprimary,.button-md-primary{
         //     color: #fff;
         //     background-color: transparent;
@@ -74,7 +98,7 @@ page-option {
             padding-left: 0px;
         }
         .item-block{
-            min-height: 3.4rem;
+            min-height: 4.3rem;
         }
         .label-md {
             margin: 30px 8px 0px 0px;
@@ -144,8 +168,9 @@ page-option {
     background: transparent;
     color: white;
 }
-@media(max-height: 600px){
+@media(max-height: 750px){
     .multiple-option{
-        overflow: auto;
+        height: 48vh;
+        overflow-y: auto;
     }    
 }

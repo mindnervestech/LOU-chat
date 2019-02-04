@@ -61,7 +61,7 @@ loginAndTopicInfo {
       }  
   }  
   .topic-info{
-    margin-top:29px;
+    margin-top:15px;
     ion-label {
       margin-left: 0;
       color: #000000;
@@ -87,8 +87,6 @@ loginAndTopicInfo {
   }
   
   .multiple-option{
-    height: 220px;
-    overflow-y: auto;
     .button-md {
         overflow: hidden;
         margin: 0.6rem 0.2rem;
@@ -120,6 +118,7 @@ loginAndTopicInfo {
   }
   .scroll-content{
     padding-bottom: 0px !important;
+    overflow-y: hidden;
   }
 }
 .footer-md .toolbar-md {
@@ -157,4 +156,28 @@ ion-footer {
     margin-bottom: 0px;
     border-radius: 0px !important;
   }
+}
+@media(min-height: 750px){
+    .multiple-option{
+        height: 54vh;
+        overflow-y: auto;
+    }
+}
+@media(max-height: 750px){
+    .multiple-option{
+        height: 48vh;
+        overflow-y: auto;
+    }    
+}
+@media(max-height: 680px){
+    .multiple-option{
+        height: 45vh !important;
+        overflow-y: auto;
+    }    
+}
+@media(max-height: 580px){
+    .multiple-option{
+        height: 40vh !important;
+        overflow-y: auto;
+    }    
 }

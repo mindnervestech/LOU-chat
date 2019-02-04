@@ -14,7 +14,7 @@
 
 
 <ion-content padding>
-    <h1>Choose your option</h1>
+    <h1>Choose your transport</h1>
     <form>
         <p class="error">{{ error_message }}</p>
         <ion-label>Select option</ion-label>
@@ -25,13 +25,16 @@
             </ion-option>
           </ion-select>
         </ion-item>
+        <ion-item class="select-option">
+          <button *ngFor ="let data of option" class="transport" id="1" #first ion-button color="dark">{{data.option}}</button>
+        </ion-item>
 
-        <ion-label>Sub option</ion-label>
-        <ion-item class="txtdesign1">
+        <ion-label>Flight or Train number</ion-label>
+        <ion-item class="txtdesign1 train">
             <ion-input type="text" placeholder="Enter selected option number" name="number" [(ngModel)]="TrainOrFliteNumber"></ion-input>
         </ion-item>
         
-        <ion-label class="info">Information</ion-label>
+        <ion-label class="info">What is the purpose of your trip</ion-label>
         <!-- <ion-item class="txtdesign1 remove-border">
           <ion-label>Info_1</ion-label>    
           <ion-checkbox></ion-checkbox>
