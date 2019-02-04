@@ -434,6 +434,7 @@ export class ChatPage {
               var friendRef = firebase.database().ref('Friends/' + me.senderUser.senderId);
               friendRef.child(userId).update({
                 lastDate: mylastDate,
+                unreadCount: parseInt(snapshot.val().unreadCount) + 1,
                 lastMessage: lastDisplaymessage
               }).then(function () {
                 console.log("Message send successfully");
@@ -448,7 +449,6 @@ export class ChatPage {
               var friendRef = firebase.database().ref('Friends/' + userId);
               friendRef.child(me.senderUser.senderId).update({
                 lastDate: mylastDate,
-                unreadCount: parseInt(snapshot.val().unreadCount) + 1,
                 lastMessage: lastDisplaymessage
               }).then(function () {
                 console.log("Message send successfully");
