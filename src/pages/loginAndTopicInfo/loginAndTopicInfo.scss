@@ -120,6 +120,30 @@ loginAndTopicInfo {
     padding-bottom: 0px !important;
     overflow-y: hidden;
   }
+  @media(min-height: 750px){
+    .multiple-option{
+        height: 54vh;
+        overflow-y: auto;
+    }
+}
+@media(max-height: 750px){
+    .multiple-option{
+        height: 48vh;
+        overflow-y: auto;
+    }    
+}
+@media(max-height: 680px){
+    .multiple-option{
+        height: 45vh !important;
+        overflow-y: auto;
+    }    
+}
+@media(max-height: 580px){
+    .multiple-option{
+        height: 40vh !important;
+        overflow-y: auto;
+    }    
+}
 }
 .footer-md .toolbar-md {
   padding: 0px;
@@ -156,28 +180,4 @@ ion-footer {
     margin-bottom: 0px;
     border-radius: 0px !important;
   }
-}
-@media(min-height: 750px){
-    .multiple-option{
-        height: 54vh;
-        overflow-y: auto;
-    }
-}
-@media(max-height: 750px){
-    .multiple-option{
-        height: 48vh;
-        overflow-y: auto;
-    }    
-}
-@media(max-height: 680px){
-    .multiple-option{
-        height: 45vh !important;
-        overflow-y: auto;
-    }    
-}
-@media(max-height: 580px){
-    .multiple-option{
-        height: 40vh !important;
-        overflow-y: auto;
-    }    
 }

@@ -1,8 +1,6 @@
     page-profile{
       .profile-scroll {
         margin-top: 5px;
-        height: 189px;
-        overflow: auto;
       }
       .multiple-option{
         .button-md {
@@ -261,14 +259,40 @@
 
     .secondary-color{
         color: #488aff;
-    }}
+    }
+    .scroll-content{
+      margin-bottom: 0px !important;
+    }
+    @media(min-height: 750px){
+      .profile-scroll {
+        margin-top: 5px;
+        height: 46vh;
+        overflow: auto;
+        padding-bottom: 70px;
+      }
+      .scroll-content{
+        overflow-y: hidden;
+      }
+    }
+    @media(max-height: 750px){
+      .profile-scroll {
+          margin-top: 5px;
+          height: 38vh;
+          overflow: auto;
+          padding-bottom: 70px;
+      }
+      .scroll-content{
+        overflow-y: hidden;
+      }
+    }
+}
     .btndesign{
       height: 4.2rem;
       width: 100%;
       padding: 22px 56px;
       margin-left: auto;
       margin-right: auto;
-      margin-top: 35px;
+      margin-top: 0px;
       text-transform: capitalize;
       font-size: 19px;
       background: rgba(0,152,169,1);
