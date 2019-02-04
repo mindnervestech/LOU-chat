@@ -43,6 +43,13 @@ export class OptionPage {
     });
 
   }
+  optionClick(event,text){
+    if(text == "Train"){
+      this.optionValue = text;
+    }else{
+      this.optionValue = text;
+    }
+  }
 
   nextPage(){
     var data = {

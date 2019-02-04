@@ -18,15 +18,15 @@
     <form>
         <p class="error">{{ error_message }}</p>
         <ion-label>Select option</ion-label>
-        <ion-item class="txtdesign1 select">
+        <!-- <ion-item class="txtdesign1 select">
           <ion-select placeholder="Select option" interface="popover" name="option" [(ngModel)]="optionValue">
             <ion-option *ngFor ="let data of option" [value]="data.option">
               {{data.option}}
             </ion-option>
           </ion-select>
-        </ion-item>
+        </ion-item> -->
         <ion-item class="select-option">
-          <button *ngFor ="let data of option" class="transport" id="1" #first ion-button color="dark">{{data.option}}</button>
+          <button *ngFor ="let data of option" name="option-button" class="transport" id="1" #first ion-button color="dark" [(ngModel)]="optionValue" (click)="optionClick($event,data.option)">{{data.option}}</button>
         </ion-item>
 
         <ion-label>Flight or Train number</ion-label>

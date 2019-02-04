@@ -216,6 +216,8 @@ export class FriendlistPage {
                     }
                 });
             }
+             me.checkForEntery = true;
+             me.getUserData();
     }
 
     getUserData(){
