@@ -107,7 +107,7 @@ export class ShowProfilePage {
         }
     }
     goToChatPage(){
-        this.navCtrl.push("ChatPage",this.navParams.data);
+        this.navCtrl.push(global.backPage,this.navParams.data);
     }
 
 

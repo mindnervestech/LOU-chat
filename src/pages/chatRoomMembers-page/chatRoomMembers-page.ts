@@ -50,6 +50,9 @@ export class ChatRoomMembers {
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
         }
+        if(global.backPage == "ChatRoomMembers"){
+            global.backPage = "FriendlistPage";
+        }
     }
 
     ionViewDidLoad() {
