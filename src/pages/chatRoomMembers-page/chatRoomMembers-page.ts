@@ -53,7 +53,8 @@ export class ChatRoomMembers {
     }
 
     ionViewDidLoad() {
-        this.getChatMemberData(this.navParams.data);
+        var data = JSON.parse(localStorage.getItem("Group"));
+        this.getChatMemberData(data.key);
     }
     ionViewDidEnter() {
         

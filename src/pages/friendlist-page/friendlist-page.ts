@@ -141,7 +141,7 @@ export class FriendlistPage {
     }
     gotToChatRoomMembersPage(item){
         global.backPage = "FriendlistPage";
-        this.navCtrl.setRoot("ChatRoomMembers",item);
+        this.navCtrl.setRoot("ChatRoomMembers");
     }
 
     dismiss_dialog(){

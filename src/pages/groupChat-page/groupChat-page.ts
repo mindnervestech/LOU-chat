@@ -178,7 +178,7 @@ export class GroupChatPage {
     }
     goToChatRoomMember(){
       global.backPage = "GroupChatPage";
-        this.navCtrl.setRoot("ChatRoomMembers",this.groupData.groupId);
+        this.navCtrl.setRoot("ChatRoomMembers");
     }
     setScroll() {
       if (this.content._scroll) this.content.scrollToBottom(280);

@@ -517,6 +517,7 @@ export class ChatPage {
   }
 
   showProfile(user) {
+    global.backPage = "ChatPage";
     this.navCtrl.push("ShowProfilePage", user);
   }
 
