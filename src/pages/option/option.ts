@@ -14,6 +14,7 @@ export class OptionPage {
    trepOption: any = new Array();
    TrainOrFliteNumber : string = "";
    optionValue : string = "";
+   selected: any;
    public selectedOption1:boolean = false;
    public selectedOption2:boolean = false;
    public selectedOption3:boolean = false;
@@ -46,13 +47,16 @@ export class OptionPage {
 
   }
   optionClick(event,text){
+    this.selected = text; 
     if(text == "Train"){
       this.optionValue = text;
     }else{
       this.optionValue = text;
     }
   }
-
+  isActive(text){
+    return this.selected === text;
+  }
   nextPage(){
     var data = {
       option : this.optionValue,

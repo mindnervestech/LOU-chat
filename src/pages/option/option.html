@@ -26,7 +26,7 @@
           </ion-select>
         </ion-item> -->
         <ion-item class="select-option">
-          <button *ngFor ="let data of option" name="option-button" class="transport" id="1" #first ion-button color="dark" [(ngModel)]="optionValue" (click)="optionClick($event,data.option)">{{data.option}}</button>
+          <button *ngFor ="let data of option" [ngClass]="{active: isActive(data.option)}"  name="option-button" class="transport" id="1" #first ion-button color="dark" [(ngModel)]="optionValue" (click)="optionClick($event,data.option)"><span><img src="{{data.image}}"></span> {{data.option}}</button>
         </ion-item>
 
         <ion-label>Flight or Train number</ion-label>

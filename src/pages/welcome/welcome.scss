@@ -3,7 +3,11 @@ page-welcome {
 }
 .welcome{    
     background: #fff;
-    
+    background: url('../assets/image/wel.png');
+    /* height: 54vh; */
+    background-size: 100% 58%;
+    background-repeat: no-repeat;
+    background-position: top;
     button{
         color: #4c5660;
     }

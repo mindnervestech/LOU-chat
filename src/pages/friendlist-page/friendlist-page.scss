@@ -1,4 +1,7 @@
 page-friendlist{
+    ion-img.img-loaded img,ion-avatar img, ion-thumbnail img{
+        display: block !important;
+    }
     .main-view{
         background: transparent;
       }
