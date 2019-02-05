@@ -405,7 +405,7 @@ export class ChatPage {
     var userId = user.uid;
     var userEmail = user.email;
     var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    var mylastDate = me.getLastDate(dateCreated);
+    //var mylastDate = me.getLastDate(dateCreated);
     var senderName = (global.USER_NAME == "") ? userEmail : global.USER_NAME;
     if (this.message != "") {
       var lastDisplaymessage = this.message.replace(/\r?\n/g, '<br />');;
@@ -433,7 +433,7 @@ export class ChatPage {
             firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).once('value').then(function (snapshot) {
               var friendRef = firebase.database().ref('Friends/' + me.senderUser.senderId);
               friendRef.child(userId).update({
-                lastDate: mylastDate,
+                lastDate: dateCreated,
                 unreadCount: parseInt(snapshot.val().unreadCount) + 1,
                 lastMessage: lastDisplaymessage
               }).then(function () {
@@ -448,7 +448,7 @@ export class ChatPage {
             firebase.database().ref('Friends/' + userId + '/' + me.senderUser.senderId).once('value').then(function (snapshot) {
               var friendRef = firebase.database().ref('Friends/' + userId);
               friendRef.child(me.senderUser.senderId).update({
-                lastDate: mylastDate,
+                lastDate: dateCreated,
                 lastMessage: lastDisplaymessage
               }).then(function () {
                 console.log("Message send successfully");

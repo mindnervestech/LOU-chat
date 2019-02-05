@@ -188,7 +188,7 @@ export class FriendlistPage {
                     if(allFriend.val() == null){
                          firebase.database().ref().child('Friends/' + user.uid + '/' + me.usersList[i].userId).set({
                             DateCreated : dateCreated,
-                            lastDate :me.usersList[i].lastDate,
+                            lastDate :dateCreated,
                             lastMessage :"",
                             SenderId :me.usersList[i].senderId,
                             block: 0,
@@ -199,7 +199,7 @@ export class FriendlistPage {
                         });
                         firebase.database().ref().child('Friends/' + me.usersList[i].userId + '/' + user.uid).set({
                             DateCreated : dateCreated,
-                            lastDate :me.usersList[i].lastDate,
+                            lastDate :dateCreated,
                             lastMessage :"",
                             SenderId :user.uid,
                             block: 0,
@@ -227,11 +227,13 @@ export class FriendlistPage {
              if(me.checkForEntery){
                  me.usersList = [];
                  for(var data in friend.val()){
+                     var mylastDate = me.getLastDate(friend.val()[data].lastDate);
+                     console.log(mylastDate);
                      var userinfo = {
                             name: friend.val()[data].name,
                             profilePic: friend.val()[data].profilePic,
                             date: friend.val()[data].lastDate,
-                            lastDate:  friend.val()[data].lastDate,
+                            lastDate: mylastDate,
                             senderId:  friend.val()[data].SenderId,
                             userId: user.uid,
                             key: friend.val()[data].SenderId,
