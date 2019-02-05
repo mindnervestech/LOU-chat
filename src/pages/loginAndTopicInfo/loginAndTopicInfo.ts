@@ -157,6 +157,7 @@ export class loginAndTopicInfo {
           var group_id = this.groupInfo.groupId;
           var date = new Date();
           var key = localStorage.getItem("userId");
+          localStorage.setItem("IsLogin", 'true');
           var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
           firebase.database().ref().child('GroupMember/'+ group_id + '/' + key).set({
             groupId : group_id,
