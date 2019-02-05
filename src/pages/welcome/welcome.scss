@@ -5,7 +5,7 @@ page-welcome {
     background: #fff;
     background: url('../assets/image/wel.png');
     /* height: 54vh; */
-    background-size: 100% 58%;
+    background-size: 100% 55%;
     background-repeat: no-repeat;
     background-position: top;
     button{
@@ -16,7 +16,7 @@ page-welcome {
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 11px;
+    bottom: 0px;
     margin: auto;
     height: fit-content;
     width: fit-content;
@@ -46,5 +46,10 @@ page-welcome {
             display: block;
             border-radius: 113px !important;
         }
+    }
+}
+@media(max-width: 350px){
+    .welcome-start .language-btn {
+        margin: 32px 0;
     }
 }
