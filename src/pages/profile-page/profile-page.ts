@@ -251,13 +251,13 @@ export class ProfilePage {
             me.profilePhoto = me.base64Image;
             
             var user = JSON.parse(localStorage.getItem("loginUser"));    
-            var logInUser = {
+            /*var logInUser = {
                 name :  user.name,
 				access_code : user.access_code,
 			    profilePic : me.profilePhoto,
 				uid : user.uid
             }
-            localStorage.setItem("loginUser", JSON.stringify(logInUser));
+            localStorage.setItem("loginUser", JSON.stringify(logInUser));*/
             var uploadTask = firebase.storage().ref().child(me.CommonProvider.Guid() + ".png").putString(imageData, "base64");
             uploadTask.on('state_changed', function (snapshot) {
             }, function (error) {
@@ -334,13 +334,13 @@ export class ProfilePage {
             me.profilePhoto = me.base64Image;
             //this.captureDataUrl=this.base64Image;
             var user = JSON.parse(localStorage.getItem("loginUser"));
-            var logInUser = {
+            /*var logInUser = {
                 name :  user.name,
 				access_code : user.access_code,
 			    profilePic : me.profilePhoto,
 				uid : user.uid
             }
-            localStorage.setItem("loginUser", JSON.stringify(logInUser));
+            localStorage.setItem("loginUser", JSON.stringify(logInUser));*/
             var uploadTask = firebase.storage().ref().child(`${filename}.jpg`).putString(imageData, "base64");
             uploadTask.on('state_changed', function (snapshot) {
             }, function (error) {
@@ -378,7 +378,14 @@ export class ProfilePage {
                 "gender": me.gender,
                 "profilePic" :me.profilePhoto
             });
-
+            var logInUser = {
+                name :  user.name,
+                access_code : user.access_code,
+                profilePic : me.profilePhoto,
+                uid : user.uid
+            }
+            localStorage.setItem("loginUser", JSON.stringify(logInUser));
+            
             let alert = me.alertCtrl.create({ subTitle: 'Profile updated successfully', buttons: ['OK'] });
             alert.present();
             me.PublishEventUserUpdate();
