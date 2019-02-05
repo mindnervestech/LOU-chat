@@ -133,6 +133,10 @@ export class MyApp {
         
         var user = JSON.parse(localStorage.getItem("loginUser"));
         //this.usernameInfo.profilePic = (user.profilePic == "") ? 'assets/image/profile.png' : user.profilePic;
+        if(user){
+            this.usernameInfo.displayname = user.name;
+            this.usernameInfo.profilePic = (user.profilePic != "") ? user.profilePic  : "assets/image/profile.png";
+        }
         var me = this;
         this.storage.clear();
         me.storage.forEach((value, key, index) => {

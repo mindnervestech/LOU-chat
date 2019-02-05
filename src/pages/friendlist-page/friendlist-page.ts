@@ -144,6 +144,7 @@ export class FriendlistPage {
     dismiss_dialog(){
         this.hideMe = false;
         localStorage.setItem("redirect","true");
+        localStorage.setItem("popUp","true");
     }
 
     addToChat(){
@@ -513,14 +514,17 @@ export class FriendlistPage {
         this.navCtrl.push("ChatPage", item);
     }
     groupMessageBox(item){
+        var me = this;
         var groupData = JSON.parse(localStorage.getItem("Group"));
-        var msg = this.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
-        if(msg == ""){
-            this.navCtrl.setRoot("GroupChatPage",item);
-        }else{
-            let alert = this.alertCtrl.create({ subTitle: msg, buttons: ['OK'] });
-              alert.present();
-        }
+        firebase.database().ref('Group/' + groupData.key).on('value', function(group){
+            var msg = me.tripeDateValidation(group.val().tripeDate,group.val().startTime,group.val().endTime);
+            if(msg == ""){
+                me.navCtrl.setRoot("GroupChatPage",item);
+            }else{
+                let alert = me.alertCtrl.create({ subTitle: msg, buttons: ['OK'] });
+                  alert.present();
+            }
+        });
     }
 
     tripeDateValidation(ripeDate,startDate,endDate){
