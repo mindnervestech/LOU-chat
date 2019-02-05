@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angul
 import { CommonProvider } from '../../providers/common/common';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Network } from '@ionic-native/network';
+import { global } from '../global/global';
 //import * as Message from '../../providers/message/message';
 declare var firebase;
 
@@ -49,6 +50,7 @@ export class ChatRoomMembers {
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
         }
+        global.backPage = "GroupChatPage";
     }
 
     ionViewDidLoad() {
@@ -95,6 +97,7 @@ export class ChatRoomMembers {
         
     }
     showProfile(item) {
+        global.backPage = "ChatRoomMembers";
         this.navCtrl.push("ShowProfilePage", item);
     }
 }

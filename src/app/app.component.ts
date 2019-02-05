@@ -1,5 +1,5 @@
 import { Component, ViewChild, NgZone } from '@angular/core';
-import { Nav, Platform, AlertController, LoadingController, ActionSheetController } from 'ionic-angular';
+import { Nav, Platform, AlertController, LoadingController, ActionSheetController,NavController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { global } from '../pages/global/global';
@@ -116,7 +116,7 @@ export class MyApp {
         accessCode: ""
     };
     base64Image: any;
-    constructor(private fb: Facebook,public googlePlus: GooglePlus, /*public _DomSanitizer: DomSanitizer,*/ private network: Network, public deploy: Deploy, private push: Push, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private _zone: NgZone, public events: Events, public platform: Platform, private storage: Storage, public statusBar: StatusBar, public actionSheetCtrl: ActionSheetController, public splashScreen: SplashScreen, private clipboard: Clipboard, private camera: Camera, private sqlite: SQLite) {
+    constructor(public navCtrl: NavController,private fb: Facebook,public googlePlus: GooglePlus, /*public _DomSanitizer: DomSanitizer,*/ private network: Network, public deploy: Deploy, private push: Push, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private _zone: NgZone, public events: Events, public platform: Platform, private storage: Storage, public statusBar: StatusBar, public actionSheetCtrl: ActionSheetController, public splashScreen: SplashScreen, private clipboard: Clipboard, private camera: Camera, private sqlite: SQLite) {
         this.initializeApp();
 
           /***********/
@@ -142,6 +142,14 @@ export class MyApp {
         me.storage.forEach((value, key, index) => {
             me.storage.remove(key);
         });
+
+        me.platform.registerBackButtonAction(() => { 
+            if(global.backPage == "EXIT"){
+                me.platform.exitApp()
+            }else{
+                me.navCtrl.setRoot(global.backPage);
+            }
+        }); 
     }
 
     initializeApp() {

@@ -114,6 +114,7 @@ export class GroupChatPage {
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
         }
+        global.backPage = "FriendlistPage";
     }
 
     ionViewDidLoad() {
@@ -378,6 +379,7 @@ export class GroupChatPage {
 
     }
     showProfile(user) {
+      global.backPage = "GroupChatPage";
       console.log(user);
       var userData = {
         senderId : user.sender_id

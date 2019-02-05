@@ -4,6 +4,7 @@ import { CommonProvider } from '../../providers/common/common';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Network } from '@ionic-native/network';
 import * as Message from '../../providers/message/message';
+import { global } from '../global/global';
 declare var firebase;
 @IonicPage()
 
@@ -95,6 +96,7 @@ export class FriendlistPage {
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
         }
+        global.backPage = "EXIT";
     }
 
     ionViewDidLoad() {

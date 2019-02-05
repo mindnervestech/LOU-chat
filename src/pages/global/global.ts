@@ -26,6 +26,7 @@ export var global = {
   USER_NAME: "",
   USER_IMAGE: "",
   USER_ACCESS_CODE: "",
-  Is_CHAT_PAGE:false
+  Is_CHAT_PAGE:false,
+  backPage:"",
 }
 

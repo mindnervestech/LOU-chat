@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController, ActionSheetContro
 import { Camera } from '@ionic-native/camera';
 import { Events } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
+import { global } from '../global/global';
 declare var firebase;
 
 @IonicPage()
