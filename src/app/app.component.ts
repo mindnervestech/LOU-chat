@@ -147,7 +147,11 @@ export class MyApp {
             if(global.backPage == "EXIT"){
                 me.platform.exitApp()
             }else{
-                me.nav.setRoot(global.backPage);
+                if(global.backPage == ""){
+
+                }else{
+                    me.nav.setRoot(global.backPage);
+                }
             }
         }); 
     }

@@ -1,5 +1,6 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Slides } from 'ionic-angular';
+import { global } from '../global/global';
 
 /**
  * Generated class for the StartPage page.
@@ -58,7 +59,9 @@ import { IonicPage, NavController, Slides } from 'ionic-angular';
 
 export class StartPage {
     @ViewChild(Slides) slides: Slides;
-	constructor(public navCtrl: NavController, private _zone: NgZone) { }
+	constructor(public navCtrl: NavController, private _zone: NgZone) { 
+        global.backPage = "";
+    }
 
 	ionViewDidLoad() {
         

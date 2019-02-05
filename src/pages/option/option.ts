@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 declare var firebase;
 import * as Message from '../../providers/message/message';
+import { global } from '../global/global';
 
 @IonicPage()
 @Component({
@@ -21,6 +22,7 @@ export class OptionPage {
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public alertCtrl: AlertController) {
+    global.backPage = "";
   }
 
   ionViewDidLoad() {
