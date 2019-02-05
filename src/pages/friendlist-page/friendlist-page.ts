@@ -246,7 +246,14 @@ export class FriendlistPage {
                             lastMessage: friend.val()[data].lastMessage,
                             block: friend.val()[data].block,
                         };
-                     me.usersList.push(userinfo);
+                        if(userinfo.unreadMessage > 0){
+                             me.usersList.push(userinfo);
+                        }else{
+                             me.preveseFriendList.push(userinfo);
+                        }
+                 }
+                 for(var i = 0; i < me.preveseFriendList.length;i++){
+                     me.usersList.push(me.preveseFriendList[i]);
                  }
                  //me.checkForEntery = false;
              }
