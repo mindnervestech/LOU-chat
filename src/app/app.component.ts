@@ -116,7 +116,7 @@ export class MyApp {
         accessCode: ""
     };
     base64Image: any;
-    constructor(public navCtrl: NavController,private fb: Facebook,public googlePlus: GooglePlus, /*public _DomSanitizer: DomSanitizer,*/ private network: Network, public deploy: Deploy, private push: Push, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private _zone: NgZone, public events: Events, public platform: Platform, private storage: Storage, public statusBar: StatusBar, public actionSheetCtrl: ActionSheetController, public splashScreen: SplashScreen, private clipboard: Clipboard, private camera: Camera, private sqlite: SQLite) {
+    constructor(private fb: Facebook,public googlePlus: GooglePlus, /*public _DomSanitizer: DomSanitizer,*/ private network: Network, public deploy: Deploy, private push: Push, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private _zone: NgZone, public events: Events, public platform: Platform, private storage: Storage, public statusBar: StatusBar, public actionSheetCtrl: ActionSheetController, public splashScreen: SplashScreen, private clipboard: Clipboard, private camera: Camera, private sqlite: SQLite) {
         this.initializeApp();
 
           /***********/
@@ -147,7 +147,7 @@ export class MyApp {
             if(global.backPage == "EXIT"){
                 me.platform.exitApp()
             }else{
-                me.navCtrl.setRoot(global.backPage);
+                me.nav.setRoot(global.backPage);
             }
         }); 
     }

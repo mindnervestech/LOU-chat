@@ -140,6 +140,7 @@ export class FriendlistPage {
          this.navCtrl.setRoot("AddMembersPage");   
     }
     gotToChatRoomMembersPage(item){
+        global.backPage = "FriendlistPage";
         this.navCtrl.setRoot("ChatRoomMembers",item);
     }
 
@@ -154,6 +155,7 @@ export class FriendlistPage {
         me.hideMe = false;
         me.usersList = me.tripeUsersList;
         localStorage.setItem("popUp","true");
+        localStorage.setItem("redirect","false");
         var user = JSON.parse(localStorage.getItem("loginUser"));
             firebase.database().ref().child('Friends/' + user.uid).on('value' ,function(data){
                 if(me.check){
@@ -231,7 +233,6 @@ export class FriendlistPage {
                  me.usersList = [];
                  for(var data in friend.val()){
                      var mylastDate = me.getLastDate(friend.val()[data].lastDate);
-                     console.log(mylastDate);
                      var userinfo = {
                             name: friend.val()[data].name,
                             profilePic: friend.val()[data].profilePic,

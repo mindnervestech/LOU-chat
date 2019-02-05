@@ -50,7 +50,6 @@ export class ChatRoomMembers {
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
         }
-        global.backPage = "GroupChatPage";
     }
 
     ionViewDidLoad() {

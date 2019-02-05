@@ -174,6 +174,7 @@ export class ChatPage {
       me.navCtrl.setRoot("OptionPage");
     }
     global.Is_CHAT_PAGE = true;
+    global.backPage = "FriendlistPage";
   }
   setScroll() {
     if (this.content._scroll) this.content.scrollToBottom(280);

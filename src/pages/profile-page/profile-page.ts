@@ -86,6 +86,7 @@ export class ProfilePage {
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
         }
+        global.backPage = "FriendlistPage";
 
         me.userInfo = {
             user_id: "",

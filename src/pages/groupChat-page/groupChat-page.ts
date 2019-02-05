@@ -127,8 +127,8 @@ export class GroupChatPage {
         firebase.database().ref().child('users/'+userId).on('value',function(user){
           me.usersData = user.val();
         });
-        firebase.database().ref().child('GroupChats/' + me.groupData.groupId).limitToLast(me.limit).off("child_added");
-      firebase.database().ref().child('GroupChats/' +  me.groupData.groupId).limitToLast(me.limit).on("child_added", function (messages) {
+        firebase.database().ref().child('GroupChats/' + me.groupData.key).limitToLast(me.limit).off("child_added");
+      firebase.database().ref().child('GroupChats/' +  me.groupData.key).limitToLast(me.limit).on("child_added", function (messages) {
         //me.lastKeyProcess = true;
         me.loadingmessageCounter++;
         var convertDate = messages.val().DateCreated.split(" ");
@@ -173,9 +173,11 @@ export class GroupChatPage {
          this.navCtrl.setRoot("FriendlistPage");
     }
     findChatData(){
-       this.groupData = this.navParams.data;
+      var data = JSON.parse(localStorage.getItem("Group"));
+       this.groupData = data;
     }
     goToChatRoomMember(){
+      global.backPage = "GroupChatPage";
         this.navCtrl.setRoot("ChatRoomMembers",this.groupData.groupId);
     }
     setScroll() {
