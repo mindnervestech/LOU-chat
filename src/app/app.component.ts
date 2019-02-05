@@ -144,6 +144,18 @@ export class MyApp {
         });
 
         me.platform.registerBackButtonAction(() => { 
+            if(global.page == "group"){
+                var userId = user.uid;
+                var data = JSON.parse(localStorage.getItem("Group"));
+                firebase.database().ref('GroupMember/' + data.groupId +'/'+userId).update({
+                   unreadCount: 0
+                });
+            }
+            if(global.page == "single"){
+                firebase.database().ref().child('Friends/' + user.uid + '/' + global.singleChatUserKey).update({
+                  unreadCount: 0
+                });
+            }
             if(global.backPage == "EXIT"){
                 me.platform.exitApp()
             }else{
@@ -153,6 +165,7 @@ export class MyApp {
                     me.nav.setRoot(global.backPage);
                 }
             }
+            global.page = "";
         }); 
     }
 

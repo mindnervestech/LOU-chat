@@ -28,5 +28,7 @@ export var global = {
   USER_ACCESS_CODE: "",
   Is_CHAT_PAGE:false,
   backPage:"",
+  page: "",
+  singleChatUserKey: "",
 }
 

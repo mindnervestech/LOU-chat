@@ -175,6 +175,7 @@ export class ChatPage {
     }
     global.Is_CHAT_PAGE = true;
     global.backPage = "FriendlistPage";
+    global.page = "single";
   }
   setScroll() {
     if (this.content._scroll) this.content.scrollToBottom(280);
@@ -198,7 +199,11 @@ export class ChatPage {
     var block1;
     block1 = me.senderUser.block;
     me.block1 = block1;
+    global.singleChatUserKey = me.navParams.data.key;
     me.friendkey = me.senderUser.key;
+    firebase.database().ref().child('Friends/' + user.uid + '/' + me.navParams.data.key).update({
+      unreadCount: 0
+    });
     /*firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).off();
     //it will call if you blocked someone or blocked by someone.
     firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).on('value', function (snapshot) {

@@ -115,6 +115,7 @@ export class GroupChatPage {
             me.navCtrl.setRoot("OptionPage");
         }
         global.backPage = "FriendlistPage";
+        global.page = "group";
     }
 
     ionViewDidLoad() {
@@ -159,7 +160,7 @@ export class GroupChatPage {
       });
     }
     ionViewDidEnter() {
-      
+      this.counterZero();
     }
     counterZero(){
       if(this.groupData.groupName != undefined){
