@@ -23,7 +23,7 @@ export class OptionPage {
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public alertCtrl: AlertController) {
-    global.backPage = "";
+    global.backPage = "EXIT";
   }
 
   ionViewDidLoad() {
