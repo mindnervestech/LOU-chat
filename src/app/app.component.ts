@@ -104,7 +104,7 @@ declare var senderId: any; // senderId
 export class MyApp {
     @ViewChild(Nav) nav: Nav;
 
-    rootPage: any = (localStorage.getItem("isFirstTimeLoginTrue") == 'true') ? ((localStorage.getItem("isFirstTimeLoginTrue") == 'true') ? "FriendlistPage" : "OptionPage") : "WelcomePage";
+    rootPage: any = (localStorage.getItem("isFirstTimeLoginTrue") == 'true') ? ((localStorage.getItem("IsLogin") == 'true') ? "FriendlistPage" : "OptionPage") : "WelcomePage";
     sqlstorage: SQLite;
     sqlDb: SQLiteObject;
     items: Array<Object>;
