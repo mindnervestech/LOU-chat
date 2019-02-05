@@ -59,7 +59,7 @@ export class ChatRoomMembers {
         
     }
     goToFriendPage(){
-         this.navCtrl.setRoot("FriendlistPage");
+         this.navCtrl.setRoot(global.backPage);
     }
     getChatMemberData(groupId){
         var me = this;
