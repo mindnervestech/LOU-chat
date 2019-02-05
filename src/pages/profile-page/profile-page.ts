@@ -375,7 +375,8 @@ export class ProfilePage {
             hopperRef.update({
                 "age":me.age,
                 "status": me.status,
-                "gender": me.gender
+                "gender": me.gender,
+                "profilePic" :me.profilePhoto
             });
 
             let alert = me.alertCtrl.create({ subTitle: 'Profile updated successfully', buttons: ['OK'] });

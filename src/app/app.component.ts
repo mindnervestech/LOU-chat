@@ -364,6 +364,12 @@ export class MyApp {
         });
         actionSheet.present();
     }
+    updateUserPoto(){
+        var user = JSON.parse(localStorage.getItem("loginUser"));
+        firebase.database().ref('users/' + user.uid).update({
+            "profilePic" : this.usernameInfo.profilePic
+        });
+    }
 
     gallaryUpload() {
         const filename = Math.floor(Date.now() / 1000);
@@ -389,6 +395,7 @@ export class MyApp {
 				uid : user.uid
             }
             localStorage.setItem("loginUser", JSON.stringify(logInUser));
+            me.updateUserPoto();
             var uploadTask = firebase.storage().ref().child(`${filename}.jpg`).putString(imageData, "base64");
             uploadTask.on('state_changed', function (snapshot) {
             }, function (error) {
@@ -463,6 +470,7 @@ export class MyApp {
 				uid : user.uid
             }
             localStorage.setItem("loginUser", JSON.stringify(logInUser));
+            me.updateUserPoto();
             var uploadTask = firebase.storage().ref().child(`${filename}.jpg`).putString(imageData, "base64");
             uploadTask.on('state_changed', function (snapshot) {
             }, function (error) {
