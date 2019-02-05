@@ -77,7 +77,6 @@ export class ChatRoomMembers {
                             var profilePic = value ? ((value.profilePic == "") ? 'assets/image/profile.png' : value.profilePic) : 'assets/image/profile.png';
                             var groupDetail = {
                                 name : value.name,
-                                email : value.email,
                                 access_code:value.access_code,
                                 profilePic : profilePic,
                                 status : value.status,
