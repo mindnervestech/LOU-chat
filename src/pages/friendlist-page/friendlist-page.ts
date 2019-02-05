@@ -64,7 +64,7 @@ declare var firebase;
                 
                 <p>{{ item.lastMessage }} </p>
                 <div item-right>
-                <span class="mytime" >{{ item.date }}</span>
+                <span class="mytime" >{{ item.lastDate }}</span>
                 <ion-badge style="float: right;" *ngIf="item.unreadMessage">{{ item.unreadMessage }}</ion-badge>  
                 </div>             
             </ion-item>          

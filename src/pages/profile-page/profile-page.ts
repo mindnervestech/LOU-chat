@@ -171,11 +171,25 @@ export class ProfilePage {
         var me = this;
         var user = JSON.parse(localStorage.getItem("loginUser"));
         var userId = user.uid;
+        var language = localStorage.getItem("language");
         firebase.database().ref('users/' + userId).on('value', function (snapshot) {
             for(var i in snapshot.val().tripe){
                 if(snapshot.val().tripe[i]){
+                    var value = i;
+                    if(i == "Home Work Trip" && language == "FN"){
+                        value = "Trajet domicile-travail";
+                    }
+                    if(i == "Tourism" && language == "FN"){
+                         value = "Tourisme";   
+                    }
+                    if(i == "Business Trip" && language == "FN"){
+                        value = "Voyage d’affaire";
+                    }
+                    if(i == "To Visit People" && language == "FN"){
+                        value = "Rendre visite à des personnes";
+                    }
                     var option ={
-                        option: i
+                        option: value
                     };
                     me.trepOption.push(option);
                 }
