@@ -204,7 +204,7 @@ export class ChatPage {
     firebase.database().ref().child('Friends/' + user.uid + '/' + me.navParams.data.key).update({
       unreadCount: 0
     });
-    /*firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).off();
+    firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).off();
     //it will call if you blocked someone or blocked by someone.
     firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).on('value', function (snapshot) {
       me.block2 = snapshot.val().block;
@@ -217,7 +217,7 @@ export class ChatPage {
         me.blockMsg = Message.SHOW_BLOCK_MSG;
         me.blockUser = 1;
       }
-    });*/
+    });
 
     me.readMessage();
     // in case of ofline this function will call and load message data from SQLite.
