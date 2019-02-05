@@ -17,6 +17,7 @@ declare var firebase;
             <button ion-button menuToggle>
                 <ion-icon name='menu'></ion-icon>
             </button>
+            <span class="user-profile"><img src="{{profilePic}}"></span>
         </ion-navbar>
     </ion-header>
     <ion-content class="friendlist-page-content">

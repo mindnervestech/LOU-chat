@@ -1,4 +1,16 @@
 page-friendlist{
+    .user-profile{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        left: -20px;
+        img{
+            width: 37px;
+            border-radius: 50%;
+            background: #eeeeee;
+        }
+    }
     ion-img.img-loaded img,ion-avatar img, ion-thumbnail img{
         display: block !important;
     }
