@@ -54,7 +54,7 @@ export class ChatRoomMembers {
 
     ionViewDidLoad() {
         var data = JSON.parse(localStorage.getItem("Group"));
-        this.getChatMemberData(data.key);
+        this.getChatMemberData(data.groupId);
     }
     ionViewDidEnter() {
         
@@ -84,15 +84,13 @@ export class ChatRoomMembers {
                                 gender: value.gender
                             };
 
-                            me.temp.push(groupDetail);
+                            me.groupList.push(groupDetail);
                             me.count++;
                     });  
                     setTimeout(() => {
                       
                     }, 500);  
             }
-            me.groupList = me.temp;
-            me.temp = [];
          });
         
     }

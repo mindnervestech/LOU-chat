@@ -122,13 +122,15 @@ export class GroupChatPage {
         var user = JSON.parse(localStorage.getItem("loginUser"));
         var userId = user.uid;
         me.myuserid = userId;
-        me.findChatData();
+        //me.findChatData();
+        var data = JSON.parse(localStorage.getItem("Group"));
+        me.groupData = data;
         me.setScroll();
         firebase.database().ref().child('users/'+userId).on('value',function(user){
           me.usersData = user.val();
         });
-        firebase.database().ref().child('GroupChats/' + me.groupData.key).limitToLast(me.limit).off("child_added");
-      firebase.database().ref().child('GroupChats/' +  me.groupData.key).limitToLast(me.limit).on("child_added", function (messages) {
+        firebase.database().ref().child('GroupChats/' + me.groupData.groupId).limitToLast(me.limit).off("child_added");
+      firebase.database().ref().child('GroupChats/' +  me.groupData.groupId).limitToLast(me.limit).on("child_added", function (messages) {
         //me.lastKeyProcess = true;
         me.loadingmessageCounter++;
         var convertDate = messages.val().DateCreated.split(" ");
