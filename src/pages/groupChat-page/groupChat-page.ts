@@ -128,7 +128,6 @@ export class GroupChatPage {
       }
   
     ionViewDidLoad() {
-        console.log();
         var me = this;
         var user = JSON.parse(localStorage.getItem("loginUser"));
         var userId = user.uid;

@@ -313,56 +313,87 @@ export class FriendlistPage {
             var date = new Date();
             var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
             var mylastDate = me.getLastDate(dateCreated);
-             firebase.database().ref('users/').on('value',function(Alluser){
-                 var userData = Alluser.val();
-
+            var groupInfo = JSON.parse(localStorage.getItem("Group"));
+             firebase.database().ref('GroupMember/'+ groupInfo.groupId).on('value',function(Alluser){
+                 var GroupUserData = Alluser.val();
                  me.tripeUsersList = [];
-                 for(var data in userData){
+                 for(var data in GroupUserData){
                      if(data != userID){
-                         var userinfo = {
-                            name: userData[data].name,
-                            profilePic: userData[data].profilePic ? userData[data].profilePic : "assets/image/profile.png",
-                            age: userData[data].age,
-                            lastDate: mylastDate,
-                            unreadMessage: 0,
-                            userId: data,
-                            lastMessage: "",
-                            date: mylastDate,
-                            senderId : data
-                         };
-
-                         if(myData.tripe["Home Work Trip"]){
-                             if(userData[data].tripe["Home Work Trip"] == myData.tripe["Home Work Trip"]){
-                                 me.tripeUsersList.push(userinfo);
-                                 push = "false";
+                         firebase.database().ref('users/' + data).on('value',function(alluser){
+                              var userData = alluser.val();
+                              var userinfo = {
+                                name: userData[data].name,
+                                profilePic: userData[data].profilePic ? userData[data].profilePic : "assets/image/profile.png",
+                                age: userData[data].age,
+                                lastDate: mylastDate,
+                                unreadMessage: 0,
+                                userId: data,
+                                lastMessage: "",
+                                date: mylastDate,
+                                senderId : data
+                             };
+                             if(myData.tripe["Home work trip"]){
+                                 if(userData[data].tripe["Home work trip"] == myData.tripe["Home work trip"]){
+                                     me.tripeUsersList.push(userinfo);
+                                     push = "false";
+                                 }
                              }
-                         }
-                         if(myData.tripe.Tourism){
-                             if(userData[data].tripe.Tourism == myData.tripe.Tourism){
-                                if(push == "true"){
-                                    me.tripeUsersList.push(userinfo);
-                                    push = "false";
-                                }
+                             if(myData.tripe.Tourism){
+                                 if(userData[data].tripe.Tourism == myData.tripe.Tourism){
+                                    if(push == "true"){
+                                        me.tripeUsersList.push(userinfo);
+                                        push = "false";
+                                    }
+                                 }
                              }
-                         }
-                         if(myData.tripe.Business){
-                             if(userData[data].tripe.Business == myData.tripe.Business){
+                             if(myData.tripe["Business tripe"]){
+                                 if(userData[data].tripe["Business tripe"] == myData.tripe["Business tripe"]){
+                                     if(push == "true"){
+                                        me.tripeUsersList.push(userinfo);
+                                        push = "false";
+                                    }
+                                 }
+                             }
+                             if(myData.tripe["To visit people"]){
+                                 if(userData[data].tripe["To visit people"] == myData.tripe["To visit people"]){
+                                     if(push == "true"){
+                                        me.tripeUsersList.push(userinfo);
+                                        push = "false";
+                                    }
+                                 }
+                             }
+                             if(myData.tripe["Participate to an event"]){
+                                 if(userData[data].tripe["Participate to an event"] == myData.tripe["Participate to an event"]){
+                                     if(push == "true"){
+                                        me.tripeUsersList.push(userinfo);
+                                        push = "false";
+                                    }
+                                 }
+                             }
+                             if(push == "true"){
+                                 for(var i = 0; i < myData.services.length; i++){
+                                    if(myData.services[i].value){
+                                         if(myData.services[i].value == userData.services[i].value){
+                                              me.tripeUsersList.push(userinfo);
+                                              push = "false";
+                                         }
+                                    }
+                                 }
                                  if(push == "true"){
-                                    me.tripeUsersList.push(userinfo);
-                                    push = "false";
-                                }
+                                     for(var i = 0; i < myData.information.length; i++){
+                                        if(myData.information[i].value){
+                                             if(myData.information[i].value == userData.information[i].value){
+                                                  me.tripeUsersList.push(userinfo);
+                                                  push = "false";
+                                             }
+                                        }
+                                     }   
+                                 }
                              }
-                         }
-                         if(myData.tripe["To Visit People"]){
-                             if(userData[data].tripe["To Visit People"] == myData.tripe["To Visit People"]){
-                                 if(push == "true"){
-                                    me.tripeUsersList.push(userinfo);
-                                    push = "false";
-                                }
-                             }
-                         }
-                     }
-                     push = "true";
+                         });
+                 
+                   }
+                      push = "true";
                  }
                  if(me.tripeUsersList.length != 0){
                              me.hideMe = true;
@@ -498,7 +529,7 @@ export class FriendlistPage {
                             gender: users.gender,
                             status: users.status
                         };
-                 me.usersList.push(userinfo);
+                 me.usersList.push(userinfo); */
              /* me.sqlDb.executeSql('select * from friendsList where senderId = ?', [request.SenderId]).then((data) => {
                             if (data.rows.length > 0) {
 
@@ -592,45 +623,90 @@ export class FriendlistPage {
         var todayDate = dateCreated.split(" ");
         var todayConvertDate = todayDate[0].split("-");
         var todayConvertTime = todayDate[1].split(":");
-        if(convertDate[0] != todayConvertDate[0] || convertDate[1] != todayConvertDate[1] || convertDate[2] != todayConvertDate[2]){
+        var groupInfo = JSON.parse(localStorage.getItem("Group"));
+        if(groupInfo.type == "Train"){
+            if(convertDate[0] != todayConvertDate[0] || convertDate[1] != todayConvertDate[1] || convertDate[2] != todayConvertDate[2]){
              var st1 = parseInt(start[0]) - 2
             msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
             return msg;
-        }else{
-            if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0])){
-                if(parseInt(start[0]) - 2 == parseInt(todayConvertTime[0])){
-                    if(parseInt(start[1]) <= parseInt(todayConvertTime[1])){
-                        if(parseInt(end[0]) >= parseInt(todayConvertTime[0])){
-                           if(parseInt(end[0]) == parseInt(todayConvertTime[0])){
-                               if(parseInt(end[1]) >= parseInt(todayConvertTime[1])){
-                                   msg = "";
-                                  return msg;
+            }else{
+                if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0])){
+                    if(parseInt(start[0]) - 2 == parseInt(todayConvertTime[0])){
+                        if(parseInt(start[1]) <= parseInt(todayConvertTime[1])){
+                            if(parseInt(end[0]) >= parseInt(todayConvertTime[0])){
+                               if(parseInt(end[0]) == parseInt(todayConvertTime[0])){
+                                   if(parseInt(end[1]) >= parseInt(todayConvertTime[1])){
+                                       msg = "";
+                                      return msg;
+                                   }else{
+                                       msg = "This group chat is end at " + ripeDate + " " + endDate;
+                                        return msg;
+                                   }
                                }else{
-                                   msg = "This group chat is end at " + ripeDate + " " + endDate;
-                                    return msg;
+                                  msg = "";
+                                  return msg; 
                                }
-                           }else{
-                              msg = "";
-                              return msg; 
-                           }
+                            }else{
+                                msg = "This group chat is end at " + ripeDate + " " + endDate;
+                                return msg;
+                            }
+
                         }else{
-                            msg = "This group chat is end at " + ripeDate + " " + endDate;
+                            var st = parseInt(start[0]) - 2
+                            msg = "This group chat not start yet. It's start at " + ripeDate + " " + st + ":" + start[1];
                             return msg;
                         }
-
                     }else{
-                        var st = parseInt(start[0]) - 2
-                        msg = "This group chat not start yet. It's start at " + ripeDate + " " + st + ":" + start[1];
+                        msg = "";
                         return msg;
                     }
                 }else{
-                    msg = "";
-                    return msg;
+                    var st = parseInt(start[0]) - 2
+                        msg = "This group chat not start yet. It's start at " + ripeDate + " " + st + ":" + start[1];
+                        return msg;
                 }
+            }
+        }else{
+             if(convertDate[0] != todayConvertDate[0] || convertDate[1] != todayConvertDate[1] || convertDate[2] != todayConvertDate[2]){
+             var st1 = parseInt(start[0]) - 4
+            msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
+            return msg;
             }else{
-                var st = parseInt(start[0]) - 2
-                    msg = "This group chat not start yet. It's start at " + ripeDate + " " + st + ":" + start[1];
-                    return msg;
+                if(parseInt(start[0]) - 4 <= parseInt(todayConvertTime[0])){
+                    if(parseInt(start[0]) - 4 == parseInt(todayConvertTime[0])){
+                        if(parseInt(start[1]) <= parseInt(todayConvertTime[1])){
+                            if(parseInt(end[0]) >= parseInt(todayConvertTime[0])){
+                               if(parseInt(end[0]) == parseInt(todayConvertTime[0])){
+                                   if(parseInt(end[1]) >= parseInt(todayConvertTime[1])){
+                                       msg = "";
+                                      return msg;
+                                   }else{
+                                       msg = "This group chat is end at " + ripeDate + " " + endDate;
+                                        return msg;
+                                   }
+                               }else{
+                                  msg = "";
+                                  return msg; 
+                               }
+                            }else{
+                                msg = "This group chat is end at " + ripeDate + " " + endDate;
+                                return msg;
+                            }
+
+                        }else{
+                            var st = parseInt(start[0]) - 4
+                            msg = "This group chat not start yet. It's start at " + ripeDate + " " + st + ":" + start[1];
+                            return msg;
+                        }
+                    }else{
+                        msg = "";
+                        return msg;
+                    }
+                }else{
+                    var st = parseInt(start[0]) - 4
+                        msg = "This group chat not start yet. It's start at " + ripeDate + " " + st + ":" + start[1];
+                        return msg;
+                }
             }
         }
     }

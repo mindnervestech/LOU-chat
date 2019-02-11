@@ -77,6 +77,7 @@ export class ProfilePage {
     status : string = "";
     trepOption: any = new Array();
     information: any = new Array();
+    services: any = new Array();
 
     constructor(public CommonProvider: CommonProvider, public _zone: NgZone, public events: Events, public navCtrl: NavController, public sqlite: SQLite, public navParams: NavParams, public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController, private camera: Camera, private clipboard: Clipboard,private network: Network) {
@@ -177,17 +178,20 @@ export class ProfilePage {
             for(var i in snapshot.val().tripe){
                 if(snapshot.val().tripe[i]){
                     var value = i;
-                    if(i == "Home Work Trip" && language == "FN"){
+                    if(i == "Home work trip" && language == "FN"){
                         value = "Trajet domicile-travail";
                     }
                     if(i == "Tourism" && language == "FN"){
                          value = "Tourisme";   
                     }
-                    if(i == "Business Trip" && language == "FN"){
+                    if(i == "Business trip" && language == "FN"){
                         value = "Voyage d’affaire";
                     }
-                    if(i == "To Visit People" && language == "FN"){
+                    if(i == "To visit people" && language == "FN"){
                         value = "Rendre visite à des personnes";
+                    }
+                    if(i == "Participate to an event" && language == "FN"){
+                        value = "Participer à un évènement";
                     }
                     var option ={
                         option: value
@@ -199,6 +203,11 @@ export class ProfilePage {
             for(var j = 0; j < snapshot.val().information.length; j++){
                 if(snapshot.val().information[j].value){
                     me.information.push(snapshot.val().information[j]);
+                }
+            }
+            for(var j = 0; j < snapshot.val().services.length; j++){
+                if(snapshot.val().services[j].value){
+                    me.services.push(snapshot.val().services[j]);
                 }
             }
             me.age = snapshot.val() ? snapshot.val().age : "";

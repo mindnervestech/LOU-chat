@@ -23,7 +23,9 @@ export class loginAndTopicInfo {
 
 	usernameInfo : any;
 	base64Image: any;
+  counter = 0;
   trepOption: any = new Array();
+  servesOption: any = new Array();
 	nickName: string = "";
     groupInfo: any;
     userProfilePic : string = ""; 
@@ -47,7 +49,7 @@ export class loginAndTopicInfo {
 
 	ionViewDidEnter() {
     var language = localStorage.getItem("language");
-
+    var me = this;
     firebase.database().ref().child('information/').orderByChild("language").equalTo(language).on('value',function(optionData){
       var value = optionData.val();
       me.trepOption = [];
@@ -60,18 +62,29 @@ export class loginAndTopicInfo {
         me.trepOption.push(info);
       }
     });
+    firebase.database().ref().child('services/').orderByChild("language").equalTo(language).on('value',function(optionData){
+      var value = optionData.val();
+      me.servesOption = [];
+      for(var data in value){
+        var info = {
+          option : value[data].option,
+          optionNumber : value[data].optionNumber,
+          value : false
+        }
+        me.servesOption.push(info);
+      }
+      console.log(me.servesOption);
+    });
 
      var user = JSON.parse(localStorage.getItem("loginUser"));
       if (!user) {
-            this.user_profilePic = "assets/image/profile.png";
+            me.user_profilePic = "assets/image/profile.png";
         }else{
-          this.nickName = user.name;
-          this.user_profilePic = user.profilePic;
-          this.user_profilePic = (user.profilePic != '') ? user.profilePic : "assets/image/profile.png";
+          me.nickName = user.name;
+          me.user_profilePic = user.profilePic;
+          me.user_profilePic = (user.profilePic != '') ? user.profilePic : "assets/image/profile.png";
         }
-    	this.navParams.data
-      var me = this;
-      var trainData = this.navParams.data;
+      var trainData = me.navParams.data;
       firebase.database().ref('Group').orderByChild("trainNumber").equalTo(trainData.optionValue).on('value', function (group) {
               var groupKey = Object.keys(group.val())[0];
               firebase.database().ref('Group/'+ groupKey).on("value", function(GroupInformation){
@@ -84,6 +97,7 @@ export class loginAndTopicInfo {
                   tripeDate : GroupInformation.val().tripeDate,
                   startTime:  GroupInformation.val().startTime,
                   endTime:  GroupInformation.val().endTime,
+                  type :  GroupInformation.val().type,
                 }
                 me.groupInfo = groupData;
                 localStorage.setItem("Group", JSON.stringify(groupData));
@@ -100,10 +114,12 @@ export class loginAndTopicInfo {
     if(ionicButton._color === 'dark'){
       ionicButton.color =  'primary';
       this.trepOption[text - 1].value = true;
+      this.counter++;
     }
     else{
       ionicButton.color = 'dark';
       this.trepOption[text - 1].value = false;
+      this.counter--;
     }
   }
 
@@ -116,47 +132,75 @@ export class loginAndTopicInfo {
         var msg = "";
         var convertDate = ripeDate.split("-");
         var start = startDate.split(":");
-        var st1 = parseInt(start[0]) - 2
         //var end = endDate.split(":");
         var date = new Date();
         var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
         var todayDate = dateCreated.split(" ");
         var todayConvertDate = todayDate[0].split("-");
         var todayConvertTime = todayDate[1].split(":");
-        if(convertDate[0] == todayConvertDate[0] && convertDate[1] == todayConvertDate[1] && convertDate[2] == todayConvertDate[2]){
-            if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0])){
-              if(parseInt(start[0]) - 2 == parseInt(todayConvertTime[0])){
-                if(parseInt(start[1]) >= parseInt(todayConvertTime[1])){
-                  msg = "";
-                  return msg;
+        var groupInfo = JSON.parse(localStorage.getItem("Group"));
+        if(groupInfo.type == "Train"){
+          var st1 = parseInt(start[0]) - 2
+          if(convertDate[0] == todayConvertDate[0] && convertDate[1] == todayConvertDate[1] && convertDate[2] == todayConvertDate[2]){
+              if(parseInt(start[0]) - 2 <= parseInt(todayConvertTime[0])){
+                if(parseInt(start[0]) - 2 == parseInt(todayConvertTime[0])){
+                  if(parseInt(start[1]) >= parseInt(todayConvertTime[1])){
+                    msg = "";
+                    return msg;
+                  }else{
+                    msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
+                    return msg;
+                  }
                 }else{
-                  msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
+                  msg = "";
                   return msg;
                 }
               }else{
-                msg = "";
+                msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
                 return msg;
               }
-            }else{
-              msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
-              return msg;
-            }
+          }else{
+            msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
+            return msg;
+          }
         }else{
-          msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
-          return msg;
+          var st1 = parseInt(start[0]) - 4
+          if(convertDate[0] == todayConvertDate[0] && convertDate[1] == todayConvertDate[1] && convertDate[2] == todayConvertDate[2]){
+              if(parseInt(start[0]) - 4 <= parseInt(todayConvertTime[0])){
+                if(parseInt(start[0]) - 4 == parseInt(todayConvertTime[0])){
+                  if(parseInt(start[1]) >= parseInt(todayConvertTime[1])){
+                    msg = "";
+                    return msg;
+                  }else{
+                    msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
+                    return msg;
+                  }
+                }else{
+                  msg = "";
+                  return msg;
+                }
+              }else{
+                msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
+                return msg;
+              }
+          }else{
+            msg = "This group chat not start yet. It's start at " + ripeDate + " " + st1 + ":" + start[1];
+            return msg;
+          }
         }
     }
 
     LoginUser(){
       var user = JSON.parse(localStorage.getItem("loginUser"));
+      var me = this;
       if (!user) {
-            this.newLoginUser();
+            me.newLoginUser();
         }else{
           //user data update and add member to group
-          this.LoadingProvider.startLoading();
-          var group_id = this.groupInfo.groupId;
+          me.LoadingProvider.startLoading();
+          var group_id = me.groupInfo.groupId;
           var date = new Date();
-          var key = localStorage.getItem("userId");
+          var key = user.uid;
           localStorage.setItem("IsLogin", 'true');
           var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
           firebase.database().ref().child('GroupMember/'+ group_id + '/' + key).set({
@@ -164,28 +208,39 @@ export class loginAndTopicInfo {
             DateCreated: dateCreated,
             userId : user.access_code,
             lastDate : dateCreated,
-            unreadCount : this.groupInfo.unreadCount,
-            lastMessage: this.groupInfo.lastMessage
+            unreadCount : me.groupInfo.unreadCount,
+            lastMessage: me.groupInfo.lastMessage
           });
 
-          var phofilePic = this.userProfilePic;
-
+          var phofilePic = me.userProfilePic;
+          console.log(me.servesOption);
+          me.servesOption[0].value = me.navParams.data.servesOption1;
+          me.servesOption[1].value = me.navParams.data.servesOption2,
+          me.servesOption[2].value = me.navParams.data.servesOption3,
           firebase.database().ref().child('users/'+ key).update({
             "profilePic" : phofilePic,
+            "groupName" : me.groupInfo.groupName,
             "tripe" : {
-              "Home Work Trip" : this.navParams.data.selectedOption1,
-              "Tourism" : this.navParams.data.selectedOption2,
-              "Business" : this.navParams.data.selectedOption3,
-              "To Visit People" :this.navParams.data.selectedOption4,
+              "Home work trip" : me.navParams.data.selectedOption1,
+              "Tourism" : me.navParams.data.selectedOption2,
+              "Business tripe" : me.navParams.data.selectedOption3,
+              "To visit people" :me.navParams.data.selectedOption4,
+              "Participate to an event" : me.navParams.data.selectedOption5,
             },
-            "information" : this.trepOption
+            "information" : me.trepOption,
+            "services" : me.servesOption,
           }).then(()=>{
             var groupData = JSON.parse(localStorage.getItem("Group"));
-            var me = this;
             var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
             if(msg == ""){
-              me.LoadingProvider.closeLoading();
-              me.navCtrl.setRoot("FriendlistPage");
+              if(me.counter == 0){
+                me.LoadingProvider.closeLoading();
+                let alert = me.alertCtrl.create({ subTitle: "Please select at list one option", buttons: ['OK'] });
+                alert.present();
+              }else{
+                me.LoadingProvider.closeLoading();
+                me.navCtrl.setRoot("FriendlistPage");
+              }
             }else{
               me.LoadingProvider.closeLoading();
                 let actionSheet = me.alertCtrl.create({
@@ -214,46 +269,53 @@ export class loginAndTopicInfo {
 
   			firebase.database().ref('users').orderByChild("name").equalTo(me.nickName).on('value', function (user) {
   				if(user.val() == null){
-  					localStorage.setItem("value", "false");
-  					var phofilePic = "";
-  					if(me.base64Image != undefined){
-  						phofilePic = me.base64Image;
-  					}
-  					var profilePhoto = (me.base64Image == undefined) ? 'assets/image/profile.png' : me.base64Image;
-  					var access_code = me.CommonProvider.randomString();
-  					firebase.database().ref().child('users').push({
-            			created : new Date().getTime(),
-  					 	name : me.nickName,
-  					 	access_code: access_code,
-  					 	profilePic : phofilePic,
-  					 	status: "",
-  					 	gender:"",
-  					 	age: "",
-  					 	pushToken: "123456",
+            var groupData = JSON.parse(localStorage.getItem("Group"));
+            localStorage.setItem("value", "false");
+            var phofilePic = "";
+            if(me.base64Image != undefined){
+              phofilePic = me.base64Image;
+            }
+            var profilePhoto = (me.base64Image == undefined) ? 'assets/image/profile.png' : me.base64Image;
+            var access_code = me.CommonProvider.randomString();
+            me.servesOption[0].value = me.navParams.data.servesOption1;
+            me.servesOption[1].value = me.navParams.data.servesOption2,
+            me.servesOption[2].value = me.navParams.data.servesOption3,
+            firebase.database().ref().child('users').push({
+                  created : new Date().getTime(),
+               name : me.nickName,
+               access_code: access_code,
+               profilePic : phofilePic,
+               status: "",
+               gender:"",
+               age: "",
+               groupName : me.groupInfo.groupName,
+               pushToken: "123456",
               tripe : {
-                "Home Work Trip" : me.navParams.data.selectedOption1,
+                "Home work trip" : me.navParams.data.selectedOption1,
                 "Tourism" : me.navParams.data.selectedOption2,
-                "Business" : me.navParams.data.selectedOption3,
-                "To Visit People" : me.navParams.data.selectedOption4,
+                "Business tripe" : me.navParams.data.selectedOption3,
+                "To visit people" : me.navParams.data.selectedOption4,
+                "Participate to an event" : me.navParams.data.selectedOption5,
               },
-              information : me.trepOption
-          			}).then(()=>{
-		            	setTimeout(() => {
-		            	firebase.database().ref('users').orderByChild("name").equalTo(me.nickName).on('value', function (userInfo) {
-							      var key = Object.keys(userInfo.val())[0];
-							      global.USER_IMAGE = profilePhoto;
-		            		global.USER_NAME = me.nickName;
-		            		global.USER_ACCESS_CODE = access_code;
-		            		me.events.publish("LOAD_USER_UPDATE", "");
-		            		localStorage.setItem("IsLogin", 'true');
-		              	localStorage.setItem("userId", key);
-		              	var logInUser = {
-								        name :  me.nickName,
-								        access_code : access_code,
-								        profilePic : phofilePic,
-								        uid : key
-		              	};
-							      localStorage.setItem("loginUser", JSON.stringify(logInUser));
+              information : me.trepOption,
+              services : me.servesOption,
+                }).then(()=>{
+                  setTimeout(() => {
+                  firebase.database().ref('users').orderByChild("name").equalTo(me.nickName).on('value', function (userInfo) {
+                    var key = Object.keys(userInfo.val())[0];
+                    global.USER_IMAGE = profilePhoto;
+                    global.USER_NAME = me.nickName;
+                    global.USER_ACCESS_CODE = access_code;
+                    me.events.publish("LOAD_USER_UPDATE", "");
+                    localStorage.setItem("IsLogin", 'true');
+                    localStorage.setItem("userId", key);
+                    var logInUser = {
+                        name :  me.nickName,
+                        access_code : access_code,
+                        profilePic : phofilePic,
+                        uid : key
+                    };
+                    localStorage.setItem("loginUser", JSON.stringify(logInUser));
                     var group_id = me.groupInfo.groupId;
                     var date = new Date();
                     var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
@@ -265,11 +327,16 @@ export class loginAndTopicInfo {
                         unreadCount : me.groupInfo.unreadCount,
                         lastMessage: me.groupInfo.lastMessage
                     });
-                    var groupData = JSON.parse(localStorage.getItem("Group"));
                         var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
                         if(msg == ""){
-                          me.LoadingProvider.closeLoading();
-                          me.navCtrl.setRoot("FriendlistPage");
+                          if(me.counter == 0){
+                            me.LoadingProvider.closeLoading();
+                            let alert = me.alertCtrl.create({ subTitle: "Please select at list one option", buttons: ['OK'] });
+                            alert.present();
+                          }else{
+                            me.LoadingProvider.closeLoading();
+                            me.navCtrl.setRoot("FriendlistPage");
+                          }
                         }else{
                           me.LoadingProvider.closeLoading();
                             let actionSheet = me.alertCtrl.create({
