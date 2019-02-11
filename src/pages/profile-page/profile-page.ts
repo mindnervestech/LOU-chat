@@ -78,7 +78,7 @@ export class ProfilePage {
     trepOption: any = new Array();
     information: any = new Array();
     services: any = new Array();
-
+    profilePage: boolean = false;
     constructor(public CommonProvider: CommonProvider, public _zone: NgZone, public events: Events, public navCtrl: NavController, public sqlite: SQLite, public navParams: NavParams, public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController, private camera: Camera, private clipboard: Clipboard,private network: Network) {
         //var user = firebase.auth().currentUser;
@@ -119,8 +119,21 @@ export class ProfilePage {
 
     ionViewDidLoad() {
         this.loadUserProfileData();
+        this.profilePage = true;
     }
     
+    chatPage(){
+        this.navCtrl.push("FriendlistPage");   
+    }
+
+    infoPage(){
+        this.navCtrl.push("InfoPage");   
+    }
+
+    mePage(){
+        this.navCtrl.push("ProfilePage");   
+    }
+
     btnActivate(ionicButton) {
         if(ionicButton._color === 'dark')
           ionicButton.color =  'primary';

@@ -22,22 +22,30 @@ page-friendlist{
         background: transparent;
       }
       .div_main{
-        padding: 48px 23px;
+        padding: 20px 20px;
         background: #fff;
-        width: 80%;
         position: fixed;
         top: calc(0%);
         left: 0;
         right: 0;
-        width: 80%;
+        width: 86%;
         bottom: 0;
         margin: auto;
         bottom: 0;
         /* margin-top: 26%; */
-        height: 68%;
+        height: fit-content;
+        ion-slides {
+            width: 100%;
+            height: auto;
+            display: block;
+            position: relative;
+        }
+        ion-slide.swiper-slide.swiper-slide-active {
+            width: 100% !important;
+        }
           img{
-            height: 123px;
-            width: 123px;
+            height: 100px;
+            width: 100px;
             display: block;
             margin-left: auto;
             margin-right: auto;
@@ -51,6 +59,7 @@ page-friendlist{
             display: block;
             text-align: center;
             width: 100%;
+            margin-top: 12px;
           }
           p{
             font-size: 16px !important;
@@ -63,7 +72,7 @@ page-friendlist{
              width: 100%;
          } 
         .div_bottom{
-            margin-top: 40px;
+            margin-top: 15px;
             ion-row{
                 position: relative;
                 button{
@@ -78,18 +87,23 @@ page-friendlist{
                     background: -ms-linear-gradient(left, rgba(0,152,169,1) 0%, rgba(28,205,214,1) 50%, rgba(75,202,209,1) 55%, rgba(0,152,169,1) 100%);
                     background: linear-gradient(to right, rgba(0,152,169,1) 0%, rgba(28,205,214,1) 50%, rgba(75,202,209,1) 55%, rgba(0,152,169,1) 100%);
                     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0098a9', endColorstr='#0098a9', GradientType=1 );
+                    margin-left: 10px;
                 }
             }
         } 
         .btnPrev {
             position: absolute;
-            top: 30%;
+            top: 0;
+            bottom: 0;
             background: transparent;
             color: #000;
+            -webkit-box-shadow: none;
             box-shadow: none;
             left: 25px;
             padding: 0 0;
             z-index: 999;
+            margin: auto;
+            height: 32px;
             .button-inner{
                 font-size: 4rem;
             }
@@ -97,13 +111,17 @@ page-friendlist{
         .btnNext{
             position: absolute;
             right: 0;
-            top: 30%;
+            top: 0;
             background: transparent;
             color: #000;
+            -webkit-box-shadow: none;
             box-shadow: none;
             right: 25px;
             padding: 0 0;
             z-index: 999;
+            bottom: 0;
+            margin: auto;
+            height: 100%;
             .button-inner{
                 font-size: 4rem;
             }
@@ -205,17 +223,27 @@ page-friendlist{
     }    
     .tab{
         opacity: 1;
-        background: #7bd7e0;
-        padding: 16px 0px;
+        background: transparent;
         width: 100%;
         .tab-content {
             margin: 0;
             font-size: 17px;
-            color: #fff;
+            color: #000000;
             text-align: center;
             max-width: 32%;
             display: inline-block;
             width: 32%;
-        }    
+            padding: 11px 0px;
+            ion-icon {
+                display: inline-block;
+                font-size: 30px;
+            }
+        }   
+        .tab-active{
+            border-bottom: 2px solid #000000;
+            ion-icon {
+                color: #7bd7e0;
+            }
+        } 
     }
 }

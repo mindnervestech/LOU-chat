@@ -28,6 +28,10 @@ declare var firebase;
                     <ion-slide *ngFor="let data of tripeUsersList">
                         <img class="img_arrow_down_n" src="{{data.profilePic}}">
                         <h2 class="subheading_content">You have match with {{data.name}}</h2>
+                        <p class="common-topic">Your common topic:</p>
+                        <div class="option" *ngFor="let data of trepOption">
+                            <p class="common-topic">- {{data.option}}</p>
+                        </div>
                     </ion-slide>    
                 </ion-slides>
                 <button type="submit" float-left ion-button  color="primary" class="btnPrev" (click)="prev()">&#8249;</button>
@@ -44,8 +48,8 @@ declare var firebase;
                 </ion-row> -->
                 <div class="div_bottom">
                     <ion-row justify-content-center align-items-center class="ion_row_heiht_bottam">
-                        <button class="dismiss" (click)='dismiss_dialog()' style="position:absolute;left: 0;">Dismiss</button>
-                        <button class="dismiss" (click)='addToChat()' style="position:absolute;right: 0;">Add to chat list</button>
+                        <button class="dismiss" (click)='dismiss_dialog()'>Dismiss</button>
+                        <button class="dismiss" (click)='addToChat()'>Add to chat list</button>
                     </ion-row>
                 </div>
             </div>
@@ -81,21 +85,21 @@ declare var firebase;
             </ion-item>          
         </ion-list>
     </ion-content>
-    <!--<ion-footer>
+    <ion-footer>
         <ion-toolbar class="option">
             <div class="tab">
-                <div class="tab-content" (click)="chatPage()">
-                    Chat
+                <div class="tab-content" (click)="chatPage()" [ngClass]="{'tab-active': friendList == true}">
+                    <ion-icon name="chatbubbles"></ion-icon>
                 </div>
                 <div class="tab-content" (click)="infoPage()">
-                    Info
+                    <ion-icon name="bulb"></ion-icon>
                 </div>
                 <div class="tab-content" (click)="mePage()">
-                    Me
+                    <ion-icon name="settings"></ion-icon>
                 </div>
             </div>
         </ion-toolbar>
-    </ion-footer>-->
+    </ion-footer>
     `,
 })
 
@@ -116,6 +120,7 @@ export class FriendlistPage {
     check: boolean = true;
     sort: any;
     showPage: boolean = false;
+    friendList: boolean = false;
     constructor(public modalCtrl: ModalController,public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
         var me = this;
         me.menu.swipeEnable(true);
@@ -138,7 +143,7 @@ export class FriendlistPage {
 
     ionViewDidLoad() {
         var me = this;
-
+        me.friendList = true;
        /* this.sqlite.create({
             name: 'data.db',
             location: 'default'
@@ -163,10 +168,10 @@ export class FriendlistPage {
     }
     
     chatPage(){
-        this.navCtrl.setRoot("FriendlistPage");   
+        this.navCtrl.push("FriendlistPage");   
     }
     infoPage(){
-        this.navCtrl.setRoot("ProfilePage");   
+        this.navCtrl.push("InfoPage");   
     }
     mePage(){
         this.navCtrl.push("ProfilePage");   

@@ -2,6 +2,34 @@
       .profile-scroll {
         margin-top: 5px;
       }
+      .loginbtn{
+        margin-bottom: 60px;
+      }
+      .tab{
+        opacity: 1;
+        background: #fff;
+        width: 100%;
+        .tab-content {
+            margin: 0;
+            font-size: 17px;
+            color: #000000;
+            text-align: center;
+            max-width: 32%;
+            display: inline-block;
+            width: 32%;
+            padding: 11px 0px;
+            ion-icon {
+                display: inline-block;
+                font-size: 30px;
+            }
+        }   
+        .tab-active{
+            border-bottom: 2px solid #000000;
+            ion-icon {
+                color: #7bd7e0;
+            }
+        } 
+      }  
       .multiple-option{
         .button-md {
             overflow: hidden;
@@ -263,7 +291,7 @@
     .scroll-content{
       margin-bottom: 0px !important;
     }
-    @media(min-height: 750px){
+/*     @media(min-height: 750px){
       .profile-scroll {
         margin-top: 5px;
         height: 46vh;
@@ -284,7 +312,7 @@
       .scroll-content{
         overflow-y: hidden;
       }
-    }
+    } */
 }
     .btndesign{
       height: 4.2rem;

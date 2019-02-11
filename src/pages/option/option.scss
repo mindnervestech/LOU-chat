@@ -27,14 +27,14 @@ page-option {
         }
     
         .select-option,.train{
-            margin-bottom: 20px !important;
+            margin-bottom: 15px !important;
         }
         .select-option .item-inner {
             padding-right: 8px;
             border-bottom: 0px solid #dedede;
         }
         .select-option .label-md {
-            margin: 12px 8px 0px 0px;
+            margin: 5px 8px 0px 0px;
         }
 
 
@@ -59,8 +59,6 @@ page-option {
             width: 100%;
         }
         .multiple-option{
-            height: 217px;
-            overflow: auto;
             .button-md {
                 overflow: hidden;
                 margin: 0.6rem 0.2rem;
@@ -70,7 +68,7 @@ page-option {
                 border-radius: 30px !important;
                 font-size: 17px;
                 font-weight: 400;
-                text-transform: capitalize;
+                text-transform: none;
             }
             .button-md-dark {
                 color: #000;
@@ -105,7 +103,7 @@ page-option {
             min-height: 4.3rem;
         }
         .label-md {
-            margin: 30px 8px 0px 0px;
+            margin: 15px 8px 0px 0px;
             color: #7c8ea5;
             font-weight: 600;
             font-size: 17px;
@@ -139,7 +137,8 @@ page-option {
             margin: 0px 36px 0px 4px;
         }
         .info{
-            margin-bottom: 15px;
+            margin-bottom: 5px;
+            margin-top: 10px;
         }
     }
 }

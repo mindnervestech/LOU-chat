@@ -80,9 +80,20 @@
                 </div>
             </div>
         </div>    
+        <button ion-button full color="primary" (click)="updateProfile()" class="btndesign loginbtn" tappable>Save</button>  
     </ion-content>    
     <ion-footer>
-        <ion-toolbar>
-            <button ion-button full color="primary" (click)="updateProfile()" class="btndesign loginbtn" tappable>Save</button>  
+        <ion-toolbar class="option">
+            <div class="tab">
+                <div class="tab-content" (click)="chatPage()">
+                    <ion-icon name="chatbubbles"></ion-icon>
+                </div>
+                <div class="tab-content" (click)="infoPage()">
+                    <ion-icon name="bulb"></ion-icon>
+                </div>
+                <div class="tab-content" (click)="mePage()" [ngClass]="{'tab-active': profilePage == true}">
+                    <ion-icon name="settings"></ion-icon>
+                </div>
+            </div>
         </ion-toolbar>
     </ion-footer>
