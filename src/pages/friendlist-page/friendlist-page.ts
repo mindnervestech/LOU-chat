@@ -24,7 +24,7 @@ declare var firebase;
     <ion-content class="friendlist-page-content">
         <div class="modal_content" id="modal_content" *ngIf="hideMe">
             <div class="div_main">
-                <!--<ion-slides #slides>
+                <ion-slides #slides>
                     <ion-slide *ngFor="let data of tripeUsersList">
                         <img class="img_arrow_down_n" src="{{data.profilePic}}">
                         <h2 class="subheading_content">You have match with {{data.name}}</h2>
@@ -32,8 +32,7 @@ declare var firebase;
                 </ion-slides>
                 <button type="submit" float-left ion-button  color="primary" class="btnPrev" (click)="prev()">&#8249;</button>
                 <button type="submit" float-right ion-button color="primary" class="btnNext" (click)="next()">&#8250;</button>
-                -->    
-                <ion-row class="ion_row_atmosphere_margin">
+               <!-- <ion-row class="ion_row_atmosphere_margin">
                     <img class="img_arrow_down_n" src="{{profilePic}}">
                 </ion-row>
                 <ion-row class="ion_row_sub_margin">
@@ -42,7 +41,7 @@ declare var firebase;
                     <div class="option" *ngFor="let data of trepOption">
                         <p class="common-topic">- {{data.option}}</p>
                     </div>
-                </ion-row>
+                </ion-row> -->
                 <div class="div_bottom">
                     <ion-row justify-content-center align-items-center class="ion_row_heiht_bottam">
                         <button class="dismiss" (click)='dismiss_dialog()' style="position:absolute;left: 0;">Dismiss</button>
@@ -317,14 +316,17 @@ export class FriendlistPage {
              firebase.database().ref('GroupMember/'+ groupInfo.groupId).on('value',function(Alluser){
                  var GroupUserData = Alluser.val();
                  me.tripeUsersList = [];
+                 var groupMemberCount = Alluser.numChildren();
+                 var count = 1;
                  for(var data in GroupUserData){
                      if(data != userID){
+                         count++;
                          firebase.database().ref('users/' + data).on('value',function(alluser){
                               var userData = alluser.val();
                               var userinfo = {
-                                name: userData[data].name,
-                                profilePic: userData[data].profilePic ? userData[data].profilePic : "assets/image/profile.png",
-                                age: userData[data].age,
+                                name: userData.name,
+                                profilePic: userData.profilePic ? userData.profilePic : "assets/image/profile.png",
+                                age: userData.age,
                                 lastDate: mylastDate,
                                 unreadMessage: 0,
                                 userId: data,
@@ -333,13 +335,13 @@ export class FriendlistPage {
                                 senderId : data
                              };
                              if(myData.tripe["Home work trip"]){
-                                 if(userData[data].tripe["Home work trip"] == myData.tripe["Home work trip"]){
+                                 if(userData.tripe["Home work trip"] == myData.tripe["Home work trip"]){
                                      me.tripeUsersList.push(userinfo);
                                      push = "false";
                                  }
                              }
                              if(myData.tripe.Tourism){
-                                 if(userData[data].tripe.Tourism == myData.tripe.Tourism){
+                                 if(userData.tripe.Tourism == myData.tripe.Tourism){
                                     if(push == "true"){
                                         me.tripeUsersList.push(userinfo);
                                         push = "false";
@@ -347,7 +349,7 @@ export class FriendlistPage {
                                  }
                              }
                              if(myData.tripe["Business tripe"]){
-                                 if(userData[data].tripe["Business tripe"] == myData.tripe["Business tripe"]){
+                                 if(userData.tripe["Business tripe"] == myData.tripe["Business tripe"]){
                                      if(push == "true"){
                                         me.tripeUsersList.push(userinfo);
                                         push = "false";
@@ -355,7 +357,7 @@ export class FriendlistPage {
                                  }
                              }
                              if(myData.tripe["To visit people"]){
-                                 if(userData[data].tripe["To visit people"] == myData.tripe["To visit people"]){
+                                 if(userData.tripe["To visit people"] == myData.tripe["To visit people"]){
                                      if(push == "true"){
                                         me.tripeUsersList.push(userinfo);
                                         push = "false";
@@ -363,7 +365,7 @@ export class FriendlistPage {
                                  }
                              }
                              if(myData.tripe["Participate to an event"]){
-                                 if(userData[data].tripe["Participate to an event"] == myData.tripe["Participate to an event"]){
+                                 if(userData.tripe["Participate to an event"] == myData.tripe["Participate to an event"]){
                                      if(push == "true"){
                                         me.tripeUsersList.push(userinfo);
                                         push = "false";
@@ -390,11 +392,15 @@ export class FriendlistPage {
                                      }   
                                  }
                              }
+                             if(count == groupMemberCount){
+                                 me.hideMe = true;
+                             }
                          });
                  
                    }
                       push = "true";
                  }
+                 /*console.log("me.tripeUsersList.length",me.tripeUsersList.length);
                  if(me.tripeUsersList.length != 0){
                              me.hideMe = true;
                              var user = JSON.parse(localStorage.getItem("loginUser"));
@@ -410,7 +416,7 @@ export class FriendlistPage {
                                 }
                             });
                              me.usersListLength = me.tripeUsersList.length;
-                 }
+                 }*/
              });
         });
 
