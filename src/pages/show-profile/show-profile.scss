@@ -1,21 +1,20 @@
 page-show-profile {
+    // .back-button.show-back-button {
+    //     display: inline-block !important;
+    // }
     #profile-image
     {        
         border-radius: 50%;
         overflow: visible;
-        position: absolute;
+        // position: absolute;
         margin-top: 0;
-        display: block;
+        display: inline-block;
         margin-bottom: 2%;
-        height: 35vw;
-        width: 35vw;
-        box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
-        -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
-        -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
-        left: 0;
-        right: 0;
-        bottom: -32%;
-        margin: auto;
+        height: 27vw;
+        width: 27vw;
+    }
+    .scroll-content {
+        margin: 0 15px;
     }
     .chat-icon-div{
         height: 80px;
@@ -33,34 +32,65 @@ page-show-profile {
         padding-top: 25px;
     }
     .profile-image-container {
-        background: rgba(192, 204, 218, 0.29);
-        border-bottom: 1px solid #dbdbdb;
-        height: 30%;
+        // background: rgba(192, 204, 218, 0.29);
+        // border-bottom: 1px solid #dbdbdb;
+        // height: 30%;
+        margin-top: 35px;
         position: relative;
+        margin-left: 15px;
+        margin-bottom: 25px !important;
+        img{
+            height: 100%;
+        }
     }
-
+    .data-option{
+        padding: 0 0px !important;
+        border-top: 1px solid rgba(0, 0, 0, 0.15);
+        margin-bottom: 25px !important;
+    }
+    .info-b {
+        width: fit-content;
+        display: inline-block;
+        font-size: 19px;
+        margin: 0 12px 10px 12px;
+        font-weight: lighter;
+    }
     .secondary-color{
         color:#488aff;
     }
     .user-info{
-        margin-top: 19%;
-        width: fit-content;
-        margin-left: auto;
-        margin-right: auto;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 20px;
+        span.info-label {
+            display: block;
+            margin-bottom: 8px;
+            .icon{
+                color: #c8c7cc;
+            }
+            .name{
+                font-size: 19px;
+                margin-left: 15px;
+            }
+        }
     }
     .item-inner {
         border-bottom: 0px solid #dedede !important;
     }
     .label-md {
-        margin: 0px 8px 0px 0;
+        margin: 0px 0px 0px 0;
+        white-space: unset;
     }
     .item-block{
         min-height: 2.4rem;
     }
     h2{
         text-align: center;
-        font-size: 24px;
+        font-size: 23px !important;
         font-weight: 500;   
+        margin-bottom: 19px !important;
+        margin-top: 20px !important;
+        text-transform: capitalize;
     }
     p{
         font-size: 19px !important;

@@ -1,5 +1,5 @@
-import { Component, NgZone, ViewChild } from '@angular/core';
-import { Content, IonicPage, NavController, NavParams, MenuController, ToastController, ActionSheetController, Platform, ModalController } from 'ionic-angular';
+import { Component, NgZone, ViewChild,HostListener, ElementRef } from '@angular/core';
+import {  Content, IonicPage, NavController, NavParams, MenuController, ToastController, ActionSheetController, Platform, ModalController} from 'ionic-angular';
 import { CommonProvider } from '../../providers/common/common';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Network } from '@ionic-native/network';
@@ -7,6 +7,10 @@ import { Camera } from '@ionic-native/camera';
 import { LoadingProvider } from '../../providers/loading/loading';
 import { global } from '../global/global';
 import { DomSanitizer } from '@angular/platform-browser';
+import {
+  Router
+} from '@angular/router';
+
 //import * as Message from '../../providers/message/message';
 declare var firebase;
 
@@ -16,7 +20,7 @@ declare var firebase;
    selector: 'AddMembersPage',
     template: `
     <ion-header>
-        <ion-navbar>
+        <ion-navbar class="grop-exit">
             <button ion-button icon-only class="back-btn" (click)="goToFriendPage()">
                 <ion-icon name='arrow-back'></ion-icon>
             </button>
@@ -43,23 +47,25 @@ declare var firebase;
     <ion-item  class="chat-page-ion-item">
      <div  *ngIf="message.type == 'text'" >
             <ion-row *ngIf="message.sender_id == myuserid" id="quote-{{message.mkey}}">
-                <p class="the-message right-msg" style="width:100%;"><span class="myright"><span  [innerHTML]="message.message" ></span><span class="mtime">{{ message.time}}</span></span>
-                </p>
+              <p class="right-mtime">{{ message.time}}</p>
+              <p class="the-message right-msg" style="width:100%;"><span class="myright"><span  [innerHTML]="message.message" ></span></span></p>
             </ion-row>
-            <ion-row *ngIf="message.sender_id != myuserid" id="quote-{{message.mkey}}" style="margin: 0px;">
-                <p class="the-message left-msg" style="width:100%;">
-                <img (click)="imageTap(message.profilePic)" style="opacity: 0.5;" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.profilePic)"/>
-                <span class="myleft"><span [innerHTML]="message.message"></span><span class="mtime">{{ message.time}}</span></span>
-                </p>
+            <ion-row *ngIf="message.sender_id != myuserid" id="quote-{{message.mkey}}">
+              <p class="left-mtime"><span> <img (click)="imageTap(message.profilePic)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.profilePic)"/><span class="sender-name">{{message.name}}, </span><span>{{message.time}}</span></span></p>
+              <p class="the-message left-msg" style="width:100%;">
+                <span class="myleft"><span [innerHTML]="message.message"></span></span>
+              </p>
             </ion-row>
       </div>
       <div *ngIf="message.type == 'image'">
         <ion-row *ngIf="message.sender_id == myuserid" id="quote-{{message.mkey}}">
-          <p class="the-message" style="width:100%;"><span class="myright-image"><span > <img (click)="imageTap(message.message)" style="opacity: 0.5;" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/> </span><br><span class="mtime-image">{{ message.time}}</span></span>
+          <p class="right-mtime">{{ message.time}}</p>
+          <p class="the-message" style="width:100%;"><span class="myright-image"><span> <img (click)="imageTap(message.message)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/> </span></span>
           </p>
         </ion-row>
         <ion-row *ngIf="message.sender_id != myuserid" id="quote-{{message.mkey}}">
-          <p class="the-message" style="width:100%;"><span class="myleft-image"><span>  <img style="opacity: 0.5;"  (click)="imageTap(message.message)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/></span><br><span class="mtime-image">{{ message.time}}</span></span>
+          <p class="left-mtime"><span> <img (click)="imageTap(message.profilePic)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.profilePic)"/><span class="sender-name">{{message.time}}</span></span></p>  
+          <p class="the-message" style="width:100%;"><span class="myleft-image"><span>  <img (click)="imageTap(message.message)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/></span></span>
           </p>
         </ion-row>
       </div>
@@ -93,7 +99,10 @@ declare var firebase;
 export class GroupChatPage {
 
     @ViewChild(Content) content: Content;
-
+    @HostListener("input", ["$event.target"])
+    onInput(textArea: HTMLTextAreaElement): void {
+      this.adjust();
+    }
     usersList: any = new Array();
     groupData: any = {};
     messagesList: any[] = [];
@@ -110,15 +119,16 @@ export class GroupChatPage {
         var me = this;
         me.menu.swipeEnable(true);
         var user = JSON.parse(localStorage.getItem("loginUser"));
-
+        global.Is_CHAT_PAGE = true;
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
         }
         global.backPage = "FriendlistPage";
-        global.page = "group";
-    }
-
+        global.page = "group";  
+      }
+  
     ionViewDidLoad() {
+        console.log();
         var me = this;
         var user = JSON.parse(localStorage.getItem("loginUser"));
         var userId = user.uid;
@@ -150,8 +160,8 @@ export class GroupChatPage {
           "userId": me.myuserid,
           "type": messages.val().type,
           "profilePic": (messages.val().profilePic != "") ? messages.val().profilePic  : "assets/image/profile.png",
+          "name": messages.val().name,
         }));
-        
           if (me.loadingmessageCounter > 5) {
             setTimeout(() => {
               me.setScroll();
@@ -159,6 +169,22 @@ export class GroupChatPage {
           } 
       });
     }
+
+    adjust(): void {
+      //  let ta = this.element.nativeElement.querySelector("textarea");
+      let ta = document.getElementById('contentMessage');
+      ta.style.height = "45px";
+      if (ta.scrollHeight > 45) {
+        ta.style.overflow = "hidden";
+        ta.style.height = "auto";
+        ta.style.height = ta.scrollHeight + "px";
+        if (ta.scrollHeight > 120) {
+          ta.style.height = "120px";
+          ta.style.overflow = "scroll";
+        }
+      }
+    }
+
     ionViewDidEnter() {
       this.counterZero();
     }
@@ -286,7 +312,8 @@ export class GroupChatPage {
           message: lastDisplaymessage,
           sender_id: userId,
           type : type,
-          profilePic : me.usersData.profilePic
+          profilePic : me.usersData.profilePic,
+          name: me.usersData.name
         }).then(function () {
           if (type == "text") {
             firebase.database().ref('GroupMember/' + me.groupData.groupId).once('value').then(function (snapshot) {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ActionSheetController, ModalController} from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
 import { Events } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
@@ -21,15 +21,28 @@ declare var firebase;
 
     <ion-content>
         <div class="profile-image-container">
-        <ion-img  id="profile-image" [src]="userInfo.user_profilePic" *ngIf="this.captureDataUrl" ></ion-img>
-      <!-- <img id="profile-image" [src]="userInfo.user_profilePic" *ngIf="this.captureDataUrl" /> -->
-         </div>
-        <div padding class="user-info">
-            <ion-item><p><span class="label">Name:</span> <span class="info-label">{{userInfo.user_name}}</span></p></ion-item>
-            <ion-item *ngIf="userInfo.user_gender != ''"><p><span class="label">Gender:</span> <span class="info-label">{{userInfo.user_gender}}</span></p></ion-item>
-            <ion-item *ngIf="userInfo.user_age != ''"><p><span class="label">Age:</span> <span class="info-label">{{userInfo.user_age}}</span></p></ion-item>
-            <ion-item *ngIf="userInfo.user_status != ''"><p><span class="label">Status:</span> <span class="info-label">{{userInfo.user_status}}</span></p></ion-item>  
+            <ion-img  id="profile-image" [src]="userInfo.user_profilePic" *ngIf="this.captureDataUrl" (click)="imageTap(userInfo.user_profilePic)"></ion-img>
+            <div class="user-info">
+                <span class="info-label"><ion-icon name="person"></ion-icon> <span class="name">{{userInfo.user_name}}</span><span class="name" *ngIf="userInfo.user_name == ''">-</span></span>
+                <span class="info-label"><ion-icon name="woman"></ion-icon><ion-icon name="man"></ion-icon> <span class="name">{{userInfo.user_gender}}</span><span class="name" *ngIf="userInfo.user_gender == ''">-</span></span>
+                <span class="info-label"><ion-icon name="body"></ion-icon> <span class="name">{{userInfo.user_age}}</span><span class="name" *ngIf="userInfo.user_age == ''">-</span></span>
+                <span class="info-label"><ion-icon name="text"></ion-icon> <span class="name">{{userInfo.user_status}}</span><span class="name" *ngIf="userInfo.user_status == ''">-</span></span>
+            </div>
+                <!-- <img id="profile-image" [src]="userInfo.user_profilePic" *ngIf="this.captureDataUrl" /> -->
         </div>
+        <!--<div padding class="user-info">
+            <ion-item><p><span class="label">Gender:</span> <span class="info-label">{{userInfo.user_gender}}</span></p></ion-item>
+            <ion-item><p><span class="label">Age:</span> <span class="info-label">{{userInfo.user_age}}</span></p></ion-item>
+            <ion-item><p><span class="label">Status:</span> <span class="info-label">{{userInfo.user_status}}</span></p></ion-item>  
+        </div>-->
+        <ion-item class="data-option">
+            <h2>Purpose of trip</h2>
+            <div class="info-b" *ngFor="let data of trepOption">{{data.option}}</div>
+        </ion-item>
+        <ion-item class="data-option">
+            <h2>Topic information</h2>
+            <div class="info-b" *ngFor="let value of information">{{value.option}}</div>
+        </ion-item>
     </ion-content>
     <ion-footer>
         <div *ngIf="block == 1" class="chat-icon-div">
@@ -49,7 +62,9 @@ export class ShowProfilePage {
     block = 1;
     captureDataUrl: string = "assets/image/sea.jpg";
     base64Image: any;
-    constructor(private network: Network, public events: Events, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController,
+    trepOption: any = new Array();
+    information: any = new Array();
+    constructor(public modalCtrl: ModalController,private network: Network, public events: Events, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController, private camera: Camera) {
         var user = JSON.parse(localStorage.getItem("loginUser"));
         var me = this;
@@ -64,6 +79,9 @@ export class ShowProfilePage {
                 user_age: "",
             }
             var userId = me.navParams.data.senderId;
+            console.log(me.navParams.data);
+            global.singleChatData = me.navParams.data;
+            console.log(global.singleChatData);
             var loginUserId = user.uid;
             if(me.navParams.data.senderId == loginUserId){
                 me.block = 0;
@@ -146,5 +164,51 @@ export class ShowProfilePage {
         me.navCtrl.push("ChatPage",me.navParams.data);
     }
 
-
+    imageTap(src) {
+        let modal = this.modalCtrl.create("ImagePopupPage", { imageSrc: src });
+        modal.present();
+    
+    }
+    ionViewDidLoad(){
+        this.loadUserProfileData();
+        
+    }
+    loadUserProfileData() {
+        // this function will load user profile data. from firebase and insert and update in SQLite.
+        var me = this;
+        var user = JSON.parse(localStorage.getItem("loginUser"));
+        var userId = user.uid;
+        var language = localStorage.getItem("language");
+        firebase.database().ref('users/' + me.navParams.data.senderId).on('value', function (snapshot) {
+            console.log(snapshot.val());
+            for(var i in snapshot.val().tripe){
+                if(snapshot.val().tripe[i]){
+                    var value = i;
+                    if(i == "Home Work Trip" && language == "FN"){
+                        value = "Trajet domicile-travail";
+                    }
+                    if(i == "Tourism" && language == "FN"){
+                         value = "Tourisme";   
+                    }
+                    if(i == "Business Trip" && language == "FN"){
+                        value = "Voyage d?affaire";
+                    }
+                    if(i == "To Visit People" && language == "FN"){
+                        value = "Rendre visite ? des personnes";
+                    }
+                    var option ={
+                        option: value
+                    };
+                    me.trepOption.push(option);
+                }
+            }
+            console.log(snapshot.val().information);
+            for(var j = 0; j < snapshot.val().information.length; j++){
+                if(snapshot.val().information[j].value == true){
+                    console.log(snapshot.val().information[j]);
+                    me.information.push(snapshot.val().information[j]);
+                } 
+            }
+        });
+    }    
 }

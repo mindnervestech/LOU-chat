@@ -30,5 +30,6 @@ export var global = {
   backPage:"",
   page: "",
   singleChatUserKey: "",
+  singleChatData: new Array(),
 }
 

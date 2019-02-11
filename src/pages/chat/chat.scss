@@ -1,4 +1,7 @@
 page-chat {
+    .back-btn{
+        margin-top: 10px;
+    }
     .title-item{
         background:transparent;
         color:white;
@@ -20,6 +23,7 @@ page-chat {
         z-index: -999; 
     }
     .right-msg:after {
+        display: none;
         width: 0;
         height: 0;
         content: '';
@@ -37,6 +41,7 @@ page-chat {
         position: relative;
     }
     .left-msg:before {
+        display: none;
         width: 0;
         height: 0;
         content: '';
@@ -81,12 +86,31 @@ page-chat {
     .chat-page-ion-item .mtime{
         font-size:1rem;
     }
-    .myright .mtime{
-        color: rgba(255, 255, 255, 0.81);
+    .right-mtime{
+        color: #999 !important;
         display: block;
         text-align: right;
-        margin-top: 12px;
+        margin-top: 12px !important;
+        font-size: 16px !important;
+        width: 100%;
+    }
+    .left-mtime{
+        color: #999;
+        display: block;
+        text-align: left;
+        margin-top: 0px;
         font-size: 16px;
+        width: 100%;
+        img{
+            width: 35px;
+            border-radius: 50%;
+            vertical-align: top;
+            background: #e6e5eb;
+        }
+        .sender-name {
+            display: inline;
+            margin-left: 8px;
+        }
     }
     .myright-image .mtime-image{
         color: #FFFFFF;
@@ -109,7 +133,9 @@ page-chat {
         margin-top: 12px;
         font-size: 16px;
     }
-
+    .myleft:before{
+        display: none;
+    }
     .title-item ion-avatar{
         margin-right:8px;
     }
@@ -120,6 +146,7 @@ page-chat {
      .the-message{
          padding:0;
          background: #fff;
+         margin-bottom: 0;
      }
      ion-item-divider,ion-item{
          padding:0!important;
@@ -134,24 +161,28 @@ page-chat {
         max-width: 85%;
         background-color: #4bb1bb;
         color: #fff;
-        padding: 18px 15px 10px 20px;
+        padding: 11px 20px;
         position: relative;
         vertical-align: top;
         border: 1px solid #4bb1bb;
-        border-radius: 12px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 0;
         font-size: 19px;
         font-weight: 500;
     }
      .the-message .myright-image {
         width: 50%;
-        background: rgb(75, 177, 187);
-        padding: 1px 5px;
+        background: #4bb1bb;
+        padding: 6px 4px 1px 3px !important;
         position: relative;
         float: right;
         vertical-align: top;
-        position: relative;
-        border-radius: 18px;
-         padding: 6px 4px 1px 3px;
+        border-top-left-radius: 10px !important;
+        border-top-right-radius: 10px !important;
+        border-bottom-left-radius: 10px !important;
+        border-bottom-right-radius: 0 !important;
         img{
             opacity: 1 !important;
         }
@@ -162,24 +193,32 @@ page-chat {
         max-width: 85%;
         background-color: #E6E5EB;
         color: black;
-        padding: 10px 15px 10px 20px;
+        padding: 11px 20px;
         position: relative;
         vertical-align: top;
-        border: 1px solid lavender;
-        border-radius: 12px;
+        border-top-left-radius: 0px !important;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
         font-size: 16px;
         font-weight: 500;
-    }
-    .left-msg{
-        margin-top: 20px;
+        left: 13%;
+        top: -13px;
     }
    .the-message  .myleft-image{
         float:left !important;
-        background: rgb(75, 177, 187);
+        background: #e6e5eb;
         border-radius: 18px;
         padding: 6px 4px 1px 3px;
+        border-top-left-radius: 0px !important;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-radius: 12px;
         position: relative;
         vertical-align: top;
+        left: 13%;
+        top: -13px;
         img{
             opacity: 1 !important;
         }

@@ -142,31 +142,39 @@ export class MyApp {
         me.storage.forEach((value, key, index) => {
             me.storage.remove(key);
         });
-
-        me.platform.registerBackButtonAction(() => { 
-            if(global.page == "group"){
-                var userId = user.uid;
-                var data = JSON.parse(localStorage.getItem("Group"));
-                firebase.database().ref('GroupMember/' + data.groupId +'/'+userId).update({
-                   unreadCount: 0
-                });
-            }
-            if(global.page == "single"){
-                firebase.database().ref().child('Friends/' + user.uid + '/' + global.singleChatUserKey).update({
-                  unreadCount: 0
-                });
-            }
-            if(global.backPage == "EXIT"){
-                me.platform.exitApp()
-            }else{
-                if(global.backPage == ""){
-
-                }else{
-                    me.nav.setRoot(global.backPage);
+        if(user){
+            me.platform.registerBackButtonAction(() => { 
+                if(global.page == "group"){
+                    var userId = user.uid;
+                    var data = JSON.parse(localStorage.getItem("Group"));
+                    firebase.database().ref('GroupMember/' + data.groupId +'/'+userId).update({
+                       unreadCount: 0
+                    });
                 }
-            }
-            global.page = "";
-        }); 
+                if(global.page == "single"){
+                    firebase.database().ref().child('Friends/' + user.uid + '/' + global.singleChatUserKey).update({
+                      unreadCount: 0
+                    });
+                }
+                console.log("global.backPage",global.backPage);
+                if(global.backPage == "EXIT"){
+                    me.platform.exitApp();
+                }else{
+                    if(global.backPage == ""){
+    
+                    }else{
+                        if(global.backPage =="ChatPage"){
+                            console.log("udr data",global.singleChatData);
+                            me.nav.setRoot(global.backPage,global.singleChatData);
+                        }else{
+                            me.nav.setRoot(global.backPage);
+                        }
+                    }
+                }
+                global.page = "";
+            });
+        }
+         
     }
 
     initializeApp() {
@@ -254,7 +262,7 @@ export class MyApp {
     }
 
     openPage(page) {
-        this.nav.setRoot(page.component);
+        this.nav.push(page.component);
     }
 
 

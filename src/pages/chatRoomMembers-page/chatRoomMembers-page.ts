@@ -14,9 +14,9 @@ declare var firebase;
     template: `
     <ion-header>
         <ion-navbar>
-            <button ion-button icon-only class="back-btn" (click)="goToFriendPage()">
+            <!--<button ion-button icon-only class="back-btn" (click)="goToFriendPage()">
                 <ion-icon name='arrow-back'></ion-icon>
-            </button>
+            </button>-->
             <ion-title  class="title">Chat Room Members</ion-title>
         </ion-navbar>
     </ion-header>
@@ -63,7 +63,7 @@ export class ChatRoomMembers {
         
     }
     goToFriendPage(){
-         this.navCtrl.setRoot(global.backPage);
+         this.navCtrl.push(global.backPage);
     }
     getChatMemberData(groupId){
         var me = this;

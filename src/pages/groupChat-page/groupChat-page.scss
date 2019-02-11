@@ -1,7 +1,37 @@
+.grop-exit .back-button{
+    display: none;
+}
 .group-chat .toolbar-background-md {
     border-color: #b2b2b2;
     background: #7bd7e0 !important;
     color: white;
+}
+.left-mtime img {
+    width: 35px;
+    border-radius: 50%;
+    vertical-align: top;
+    background: #e6e5eb;
+    height: 35px;
+}
+.left-mtime {
+    color: #999 !important;
+    display: block;
+    text-align: left;
+    margin-top: 0px !important;
+    font-size: 16px !important;
+    width: 100%;
+}
+ .left-mtime .sender-name {
+    display: inline;
+    margin-left: 15px;
+}
+.right-mtime {
+    color: #999 !important;
+    display: block;
+    text-align: right;
+    margin-top: 12px !important;
+    font-size: 16px !important;
+    width: 100%;
 }
 .left-msg ion-img, .left-msg img {
     width: 40px;
@@ -51,11 +81,13 @@
         color: #000 !important;
     }
 }
+
 .right-msg{
     position: relative;
     z-index: -999; 
 }
 .right-msg:after {
+    display: none;
     width: 0;
     height: 0;
     content: '';
@@ -73,6 +105,7 @@
     position: relative;
 }
 .myleft:before {
+    display: none;
     width: 0;
     height: 0;
     content: '';
@@ -160,12 +193,15 @@
         max-width: 85%;
         background-color: #4bb1bb;
         color: #fff;
-        padding: 10px 15px 10px 20px;
+        padding: 11px 20px;
         position: relative;
         vertical-align: top;
         border: 1px solid #4bb1bb;
-        border-radius: 12px;
-        font-size: 16px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 0;
+        font-size: 19px;
         font-weight: 500;
     }
      .the-message .myright-image {
@@ -176,6 +212,10 @@
         float: right;
         vertical-align: top;
         border-radius: 18px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 0;
         img{
             opacity: 1 !important;
             border-radius: 9px;
@@ -186,24 +226,32 @@
         max-width: 85%;
         background-color: #E6E5EB;
         color: black;
-        padding: 10px 15px 10px 20px;
+        padding: 11px 20px;
         position: relative;
         vertical-align: top;
-        border: 1px solid lavender;
-        border-radius: 12px;
+        border-top-left-radius: 0px !important;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
         font-size: 16px;
         font-weight: 500;
         left: 13%;
+        top: -13px;
     }
    .the-message  .myleft-image{
         float:left!important;
        width: 50%;
-       background: #4bb1bb;
+       background: #e6e5eb;
        padding: 6px 4px 1px 3px;
         position: relative;
-   // height: 50%;
+        // height: 50%;
         vertical-align: top;
-        border-radius: 18px;
+        border-top-left-radius: 0px !important;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        left: 13%;
+        top: -13px;
         img{
             opacity: 1 !important;
             border-radius: 9px;
@@ -277,6 +325,7 @@
     padding-top:10px;
 }
 .editableContent {
+    margin-bottom: 3px;
     background: rgba(255, 255, 255, 0.83); height: 45px;padding-left:16px;padding-top:12px; user-select: text;width: 100%;border-radius: 50px;
     }.editableContent:hover {
 cursor:text;

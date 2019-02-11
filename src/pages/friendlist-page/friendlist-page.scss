@@ -7,8 +7,12 @@ page-friendlist{
         left: -20px;
         img{
             width: 37px;
+            height: 37px;
             border-radius: 50%;
             background: #eeeeee;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
         }
     }
     ion-img.img-loaded img,ion-avatar img, ion-thumbnail img{
@@ -30,7 +34,7 @@ page-friendlist{
         margin: auto;
         bottom: 0;
         /* margin-top: 26%; */
-        height: fit-content;
+        height: 68%;
           img{
             height: 123px;
             width: 123px;
@@ -76,7 +80,34 @@ page-friendlist{
                     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0098a9', endColorstr='#0098a9', GradientType=1 );
                 }
             }
-        }  
+        } 
+        .btnPrev {
+            position: absolute;
+            top: 30%;
+            background: transparent;
+            color: #000;
+            box-shadow: none;
+            left: 25px;
+            padding: 0 0;
+            z-index: 999;
+            .button-inner{
+                font-size: 4rem;
+            }
+        }
+        .btnNext{
+            position: absolute;
+            right: 0;
+            top: 30%;
+            background: transparent;
+            color: #000;
+            box-shadow: none;
+            right: 25px;
+            padding: 0 0;
+            z-index: 999;
+            .button-inner{
+                font-size: 4rem;
+            }
+        } 
       }      
       .overlay {
         position: fixed;
@@ -167,5 +198,24 @@ page-friendlist{
         color: #fff;
         background-color: #488aff;
         margin: 3px 11px;
+    }
+    .footer-md .toolbar-md {
+        padding: 0px;
+        min-height: 56px !important;
+    }    
+    .tab{
+        opacity: 1;
+        background: #7bd7e0;
+        padding: 16px 0px;
+        width: 100%;
+        .tab-content {
+            margin: 0;
+            font-size: 17px;
+            color: #fff;
+            text-align: center;
+            max-width: 32%;
+            display: inline-block;
+            width: 32%;
+        }    
     }
 }

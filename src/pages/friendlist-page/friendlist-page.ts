@@ -1,11 +1,12 @@
-import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController, AlertController,ViewController } from 'ionic-angular';
+import { Component, NgZone, ViewChild } from '@angular/core';
+import { Slides,Tabs,IonicPage, NavController, NavParams, MenuController, AlertController,ViewController, ModalController} from 'ionic-angular';
 import { CommonProvider } from '../../providers/common/common';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Network } from '@ionic-native/network';
 import * as Message from '../../providers/message/message';
 import { global } from '../global/global';
 declare var firebase;
+
 @IonicPage()
 
 @Component({
@@ -17,12 +18,21 @@ declare var firebase;
             <button ion-button menuToggle>
                 <ion-icon name='menu'></ion-icon>
             </button>
-            <span class="user-profile"><img src="{{profilePic}}"></span>
+            <span class="user-profile" (click)="imageTap(profilePic)"><img src="{{profilePic}}"></span>
         </ion-navbar>
     </ion-header>
     <ion-content class="friendlist-page-content">
         <div class="modal_content" id="modal_content" *ngIf="hideMe">
             <div class="div_main">
+                <!--<ion-slides #slides>
+                    <ion-slide *ngFor="let data of tripeUsersList">
+                        <img class="img_arrow_down_n" src="{{data.profilePic}}">
+                        <h2 class="subheading_content">You have match with {{data.name}}</h2>
+                    </ion-slide>    
+                </ion-slides>
+                <button type="submit" float-left ion-button  color="primary" class="btnPrev" (click)="prev()">&#8249;</button>
+                <button type="submit" float-right ion-button color="primary" class="btnNext" (click)="next()">&#8250;</button>
+                -->    
                 <ion-row class="ion_row_atmosphere_margin">
                     <img class="img_arrow_down_n" src="{{profilePic}}">
                 </ion-row>
@@ -72,10 +82,26 @@ declare var firebase;
             </ion-item>          
         </ion-list>
     </ion-content>
+    <!--<ion-footer>
+        <ion-toolbar class="option">
+            <div class="tab">
+                <div class="tab-content" (click)="chatPage()">
+                    Chat
+                </div>
+                <div class="tab-content" (click)="infoPage()">
+                    Info
+                </div>
+                <div class="tab-content" (click)="mePage()">
+                    Me
+                </div>
+            </div>
+        </ion-toolbar>
+    </ion-footer>-->
     `,
 })
 
 export class FriendlistPage {
+    @ViewChild('slides') slides: Slides;
     usersList: any = new Array();
     usersListLength: any = Number;
     groupData: any = new Array();
@@ -89,7 +115,9 @@ export class FriendlistPage {
     profilePic: string = "";
     checkForEntery: boolean = false;
     check: boolean = true;
-    constructor(public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
+    sort: any;
+    showPage: boolean = false;
+    constructor(public modalCtrl: ModalController,public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
         var me = this;
         me.menu.swipeEnable(true);
         var user = JSON.parse(localStorage.getItem("loginUser"));
@@ -98,7 +126,16 @@ export class FriendlistPage {
             me.navCtrl.setRoot("OptionPage");
         }
         global.backPage = "EXIT";
+        this.showPage = true;
     }
+
+    next() {
+        this.slides.slideNext();
+      }
+    
+      prev() {
+        this.slides.slidePrev();
+      }
 
     ionViewDidLoad() {
         var me = this;
@@ -125,6 +162,16 @@ export class FriendlistPage {
              }
             me.LoadList();
     }
+    
+    chatPage(){
+        this.navCtrl.setRoot("FriendlistPage");   
+    }
+    infoPage(){
+        this.navCtrl.setRoot("ProfilePage");   
+    }
+    mePage(){
+        this.navCtrl.push("ProfilePage");   
+    }
     ionViewDidEnter() {
        /* var me = this;
         this.sqlite.create({
@@ -142,7 +189,7 @@ export class FriendlistPage {
     }
     gotToChatRoomMembersPage(item){
         global.backPage = "FriendlistPage";
-        this.navCtrl.setRoot("ChatRoomMembers");
+        this.navCtrl.push("ChatRoomMembers");
     }
 
     dismiss_dialog(){
@@ -234,6 +281,8 @@ export class FriendlistPage {
                  me.usersList = [];
                  for(var data in friend.val()){
                      var mylastDate = me.getLastDate(friend.val()[data].lastDate);
+                     let time = new Date(friend.val()[data].lastDate);
+                     var timestamp = time.getTime();
                      var userinfo = {
                             name: friend.val()[data].name,
                             profilePic: friend.val()[data].profilePic,
@@ -245,16 +294,11 @@ export class FriendlistPage {
                             unreadMessage: friend.val()[data].unreadCount,
                             lastMessage: friend.val()[data].lastMessage,
                             block: friend.val()[data].block,
+                            checkDate : timestamp
                         };
-                        if(userinfo.unreadMessage > 0){
-                             me.usersList.push(userinfo);
-                        }else{
-                             me.preveseFriendList.push(userinfo);
-                        }
+                        me.usersList.push(userinfo);      
                  }
-                 for(var i = 0; i < me.preveseFriendList.length;i++){
-                     me.usersList.push(me.preveseFriendList[i]);
-                 }
+                 me.usersList.sort(function(a,b){return b.checkDate - a.checkDate});
                  //me.checkForEntery = false;
              }
          });
@@ -454,7 +498,7 @@ export class FriendlistPage {
                             gender: users.gender,
                             status: users.status
                         };
-                 me.usersList.push(userinfo); */
+                 me.usersList.push(userinfo);
              /* me.sqlDb.executeSql('select * from friendsList where senderId = ?', [request.SenderId]).then((data) => {
                             if (data.rows.length > 0) {
 
@@ -530,7 +574,7 @@ export class FriendlistPage {
         firebase.database().ref('Group/' + groupData.key).on('value', function(group){
             var msg = me.tripeDateValidation(group.val().tripeDate,group.val().startTime,group.val().endTime);
             if(msg == ""){
-                me.navCtrl.setRoot("GroupChatPage",item);
+                me.navCtrl.push("GroupChatPage",item);
             }else{
                 let alert = me.alertCtrl.create({ subTitle: msg, buttons: ['OK'] });
                   alert.present();
@@ -604,7 +648,11 @@ export class FriendlistPage {
         }
     }
 
+    imageTap(src) {
+        let modal = this.modalCtrl.create("ImagePopupPage", { imageSrc: src });
+        modal.present();
     
+      }
     joinGroup(){
         
     }

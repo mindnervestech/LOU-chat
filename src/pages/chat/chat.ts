@@ -64,21 +64,25 @@ declare var firebase;
     <ion-item  class="chat-page-ion-item">
       <div  *ngIf="message.type == 'text'" >
         <ion-row *ngIf="message.sender_id == myuserid" id="quote-{{message.mkey}}">
-          <p class="the-message right-msg" style="width:100%;"><span class="myright"><span  [innerHTML]="message.message" ></span><span class="mtime">{{ message.time}}</span></span>
+          <p class="right-mtime">{{ message.time}}</p>
+          <p class="the-message right-msg" style="width:100%;"><span class="myright"><span  [innerHTML]="message.message" ></span></span>
           </p>
         </ion-row>
         <ion-row *ngIf="message.sender_id == senderUser.senderId" id="quote-{{message.mkey}}">
-          <p class="the-message left-msg" style="width:100%;"><span class="myleft"><span    [innerHTML]="message.message"></span><br><span class="mtime">{{ message.time}}</span></span>
+          <p class="left-mtime"><span (click)="showProfile(senderUser)"><img  [src]="_DomSanitizer.bypassSecurityTrustUrl(senderUser.profilePic)"/> <span class="sender-name">{{senderUser.name}}</span>, {{ message.time}}</span></p>
+          <p class="the-message left-msg" style="width:100%;"><span class="myleft"><span    [innerHTML]="message.message"></span></span>
           </p>
         </ion-row>
       </div>
       <div *ngIf="message.type == 'image'">
         <ion-row *ngIf="message.sender_id == myuserid" id="quote-{{message.mkey}}">
-          <p class="the-message" style="width:100%;"><span class="myright-image"><span > <img (click)="imageTap(message.message)" style="opacity: 0.5;" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/> </span><br><span class="mtime-image">{{ message.time}}</span></span>
+          <p class="right-mtime">{{ message.time}}</p>
+          <p class="the-message" style="width:100%;"><span class="myright-image"><span> <img (click)="imageTap(message.message)" style="opacity: 0.5;" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/> </span></span>
           </p>
         </ion-row>
         <ion-row *ngIf="message.sender_id == senderUser.senderId" id="quote-{{message.mkey}}">
-          <p class="the-message" style="width:100%;"><span class="myleft-image"><span>  <img style="opacity: 0.5;"  (click)="imageTap(message.message)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/></span><br><span class="mtime-image">{{ message.time}}</span></span>
+          <p class="left-mtime"><span (click)="showProfile(senderUser)"><img  [src]="_DomSanitizer.bypassSecurityTrustUrl(senderUser.profilePic)"/> <span class="sender-name">{{senderUser.name}}</span>, {{ message.time}}</span></p>      
+          <p class="the-message" style="width:100%;"><span class="myleft-image"><span>  <img style="opacity: 0.5;"  (click)="imageTap(message.message)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/></span></span>
           </p>
         </ion-row>
       </div>
@@ -177,6 +181,7 @@ export class ChatPage {
     global.backPage = "FriendlistPage";
     global.page = "single";
   }
+  
   setScroll() {
     if (this.content._scroll) this.content.scrollToBottom(280);
   }
@@ -189,6 +194,7 @@ export class ChatPage {
 
     }
   }
+
   ionViewDidLoad() {
     //when user comes to this page this function will call.
     var me = this;
@@ -378,7 +384,6 @@ export class ChatPage {
     friendRef.child(me.friendkey).update({
       unreadCount: 0
     });
-
   }
 
   ionViewWillLeave() {
