@@ -86,7 +86,7 @@ export class OptionPage {
       servesOption3 : this.servesOption3,
     };
     var me = this;
-    if(this.servesOption1 == false && this.servesOption2 == false && this.servesOption3 == false && this.selectedOption4 == false){
+    if(this.servesOption1 == false && this.servesOption2 == false && this.servesOption3 == false){
       let alert = me.alertCtrl.create({ subTitle: "Please select at list one option", buttons: ['OK'] });
       alert.present();
     }else{

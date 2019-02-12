@@ -25,33 +25,38 @@ declare var firebase;
         <div class="modal_content" id="modal_content" *ngIf="hideMe">
             <div class="div_main">
                 <ion-slides #slides>
-                    <ion-slide *ngFor="let data of tripeUsersList">
+                    <ion-slide *ngFor="let data of tripeUsersList; let i = index">
                         <img class="img_arrow_down_n" src="{{data.profilePic}}">
                         <h2 class="subheading_content">You have match with {{data.name}}</h2>
-                        <p class="common-topic">Your common topic:</p>
-                        <div class="option" *ngFor="let data of trepOption">
-                            <p class="common-topic">- {{data.option}}</p>
+                        <p *ngIf="data.trepOption.length > 0" class="common-topic">You are traveling for </p>
+                        <div class="option" *ngFor="let value of data.trepOption">
+                            <p class="common-topic"> {{value}}, </p>
+                        </div>
+                        <p *ngIf="data.informationOption.length > 0" class="common-topic">and You have the topics:</p>
+                        <div class="option" *ngFor="let value of data.informationOption">
+                            <p class="common-topic"> {{value}}, </p>
+                        </div>
+                        <p *ngIf="data.servesOption.length > 0" class="common-topic">and You have</p>
+                        <div class="option" *ngFor="let value of data.servesOption">
+                            <p class="common-topic"> {{value}}, </p>
+                        </div> 
+                        <p *ngIf="data.servesOption.length > 0">service in common</p>
+                        <div class="div_bottom">
+                            <ion-row justify-content-center align-items-center class="ion_row_heiht_bottam">
+                                <button class="dismiss" (click)='dismiss(i)'>Dismiss</button>
+                                <button class="dismiss" (click)='addToChat(data,i)'>Add to chat list</button>
+                            </ion-row>
                         </div>
                     </ion-slide>    
                 </ion-slides>
                 <button type="submit" float-left ion-button  color="primary" class="btnPrev" (click)="prev()">&#8249;</button>
                 <button type="submit" float-right ion-button color="primary" class="btnNext" (click)="next()">&#8250;</button>
-               <!-- <ion-row class="ion_row_atmosphere_margin">
-                    <img class="img_arrow_down_n" src="{{profilePic}}">
-                </ion-row>
-                <ion-row class="ion_row_sub_margin">
-                    <h2 class="subheading_content">You have match with {{usersListLength}} member</h2>
-                    <p class="common-topic">Your common topic:</p>
-                    <div class="option" *ngFor="let data of trepOption">
-                        <p class="common-topic">- {{data.option}}</p>
-                    </div>
-                </ion-row> -->
-                <div class="div_bottom">
+                <!-- <div class="div_bottom">
                     <ion-row justify-content-center align-items-center class="ion_row_heiht_bottam">
-                        <button class="dismiss" (click)='dismiss_dialog()'>Dismiss</button>
+                        <button class="dismiss" (click)='dismiss()'>Dismiss</button>
                         <button class="dismiss" (click)='addToChat()'>Add to chat list</button>
                     </ion-row>
-                </div>
+                </div> -->
             </div>
         </div>
         <ion-list [virtualScroll]="groupData" [approxItemHeight]="'70px'" >
@@ -106,11 +111,15 @@ declare var firebase;
 export class FriendlistPage {
     @ViewChild('slides') slides: Slides;
     usersList: any = new Array();
+    addToChatList: any = new Array();
     usersListLength: any = Number;
     groupData: any = new Array();
     tripeUsersList: any = new Array();
     trepOption: any = new Array();
+    servesOption: any = new Array();
+    informationOption: any = new Array();
     preveseFriendList: any = new Array();
+    usersKey: any = new Array();
     msg: any;
     hide: boolean = false;
     hideMe: boolean = false;
@@ -154,13 +163,8 @@ export class FriendlistPage {
             });*/
              var popup = localStorage.getItem("popUp");
              if(popup == "true"){
-                 var redirect = localStorage.getItem("redirect");
-                 if(redirect == "true"){
-
-                 }else{
-                     me.checkForEntery = true;
-                     me.getUserData();
-                 }
+                me.checkForEntery = true;
+                me.getUserData();
              }else{
                 me.match();
              }
@@ -198,36 +202,78 @@ export class FriendlistPage {
 
     dismiss_dialog(){
         this.hideMe = false;
-        localStorage.setItem("redirect","true");
         localStorage.setItem("popUp","true");
     }
 
-    addToChat(){
+    dismiss(index){
         var me = this;
-        me.hideMe = false;
-        me.usersList = me.tripeUsersList;
-        localStorage.setItem("popUp","true");
-        localStorage.setItem("redirect","false");
+        me.tripeUsersList.splice(index, 1);
+        if(me.tripeUsersList.length == 0){
+            me.dismiss_dialog();
+            me.usersList = me.addToChatList;
+            me.addToChatList= [];
+            me.checkForEntery = true;
+            me.getUserData();
+        }
+    }
+
+    addToChat(data,index){
+        var me = this;
+        me.addToChatList.push(data);
+        me.checkForEntery = false;
+        var check = true;
         var user = JSON.parse(localStorage.getItem("loginUser"));
-            firebase.database().ref().child('Friends/' + user.uid).on('value' ,function(data){
-                if(me.check){
-                    if(data.val() == null){
-                        //console.log("check in if",me.check);
-                        me.check = false;
-                        me.addFriend();
-                    }else{
-                        //console.log(data.val());
-                        //console.log("check in else",me.check);
-                        me.check = false;
-                        for(var value in data.val()){
-                            firebase.database().ref().child('Friends/' + user.uid + '/' + value).update({
-                                access : false
-                            });
-                        }
-                        me.addFriend();
-                    }
+        firebase.database().ref().child('Friends/' + user.uid).orderByChild("name").equalTo(data.name).on('value' ,function(friend){
+            if(friend.val() == null){
+                if(me.checkForEntery != true){
+                    me.checkForEntery = true;
+                    var date = new Date();
+                    var myProfilePhoto = user.profilePic =="" ? "assets/image/profile.png" : user.profilePic;
+                    var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+                    firebase.database().ref().child('Friends/' + user.uid + '/' + data.senderId).set({
+                        DateCreated : dateCreated,
+                        lastDate :dateCreated,
+                        lastMessage :"",
+                        SenderId :data.senderId,
+                        block: 0,
+                        access : true,
+                        unreadCount : 0,
+                        name :data.name,
+                        profilePic : data.profilePic =="" ? "assets/image/profile.png" : data.profilePic,
+                    }).then(()=>{
+                        firebase.database().ref().child('Friends/' + data.senderId + '/' + user.uid).set({
+                            DateCreated : dateCreated,
+                            lastDate :dateCreated,
+                            lastMessage :"",
+                            SenderId :user.uid,
+                            block: 0,
+                            access : true,
+                            unreadCount : 0,
+                            name : user.name,
+                            profilePic : myProfilePhoto,
+                        });
+                    }); 
+                }   
+            }else{
+                if(me.checkForEntery != true){
+                    me.checkForEntery = true;
+                        firebase.database().ref().child('Friends/' + user.uid + '/' + data.senderId).update({
+                            access : true
+                        });
                 }
-            });
+            }
+            if(check == true){
+                check = false;
+                me.tripeUsersList.splice(index, 1);
+                if(me.tripeUsersList.length == 0){
+                    me.dismiss_dialog();
+                    me.usersList = me.addToChatList;
+                    me.addToChatList= [];
+                    me.checkForEntery = true;
+                    me.getUserData();
+                }
+            }
+        });
     }
 
     addFriend(){
@@ -241,7 +287,6 @@ export class FriendlistPage {
         });
          for(var i = 0; i< me.usersList.length; i++){
                 firebase.database().ref().child('Friends/' + user.uid + '/' + me.usersList[i].userId).on('value',function(allFriend){
-                    //console.log(allFriend.val());
                     if(allFriend.val() == null){
                          firebase.database().ref().child('Friends/' + user.uid + '/' + me.usersList[i].userId).set({
                             DateCreated : dateCreated,
@@ -303,14 +348,16 @@ export class FriendlistPage {
                         me.usersList.push(userinfo);      
                  }
                  me.usersList.sort(function(a,b){return b.checkDate - a.checkDate});
-                 //me.checkForEntery = false;
+                 me.checkForEntery = false;
              }
          });
     }
 
     match(){
         var userID = localStorage.getItem("userId");
+        var language = localStorage.getItem("language");
         var me = this;
+        var chackFriend = true;
         firebase.database().ref('users/'+ userID).on('value',function(user){
             var myData = user.val();
             var push = "true";
@@ -318,88 +365,170 @@ export class FriendlistPage {
             var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
             var mylastDate = me.getLastDate(dateCreated);
             var groupInfo = JSON.parse(localStorage.getItem("Group"));
+            firebase.database().ref('Friends/'+ userID).on('value',function(friendData){
+                var friends = friendData.val();
+                if(friends == null){
+
+                }else{
+                    if(chackFriend){
+                        chackFriend = false;
+                        for(var value in friends){
+                            firebase.database().ref('Friends/'+ userID + '/' + value).update({
+                                access : false
+                            });
+                        }
+                    }
+                }
+            });
              firebase.database().ref('GroupMember/'+ groupInfo.groupId).on('value',function(Alluser){
                  var GroupUserData = Alluser.val();
                  me.tripeUsersList = [];
+                 me.usersKey = [];
                  var groupMemberCount = Alluser.numChildren();
                  var count = 1;
+                 var keyCount = 0;
                  for(var data in GroupUserData){
                      if(data != userID){
-                         count++;
+                         me.usersKey.push(data);
                          firebase.database().ref('users/' + data).on('value',function(alluser){
-                              var userData = alluser.val();
-                              var userinfo = {
-                                name: userData.name,
-                                profilePic: userData.profilePic ? userData.profilePic : "assets/image/profile.png",
-                                age: userData.age,
-                                lastDate: mylastDate,
-                                unreadMessage: 0,
-                                userId: data,
-                                lastMessage: "",
-                                date: mylastDate,
-                                senderId : data
-                             };
-                             if(myData.tripe["Home work trip"]){
-                                 if(userData.tripe["Home work trip"] == myData.tripe["Home work trip"]){
-                                     me.tripeUsersList.push(userinfo);
-                                     push = "false";
-                                 }
-                             }
-                             if(myData.tripe.Tourism){
-                                 if(userData.tripe.Tourism == myData.tripe.Tourism){
-                                    if(push == "true"){
-                                        me.tripeUsersList.push(userinfo);
-                                        push = "false";
-                                    }
-                                 }
-                             }
-                             if(myData.tripe["Business tripe"]){
-                                 if(userData.tripe["Business tripe"] == myData.tripe["Business tripe"]){
-                                     if(push == "true"){
-                                        me.tripeUsersList.push(userinfo);
-                                        push = "false";
-                                    }
-                                 }
-                             }
-                             if(myData.tripe["To visit people"]){
-                                 if(userData.tripe["To visit people"] == myData.tripe["To visit people"]){
-                                     if(push == "true"){
-                                        me.tripeUsersList.push(userinfo);
-                                        push = "false";
-                                    }
-                                 }
-                             }
-                             if(myData.tripe["Participate to an event"]){
-                                 if(userData.tripe["Participate to an event"] == myData.tripe["Participate to an event"]){
-                                     if(push == "true"){
-                                        me.tripeUsersList.push(userinfo);
-                                        push = "false";
-                                    }
-                                 }
-                             }
-                             if(push == "true"){
-                                 for(var i = 0; i < myData.services.length; i++){
-                                    if(myData.services[i].value){
-                                         if(myData.services[i].value == userData.services[i].value){
-                                              me.tripeUsersList.push(userinfo);
-                                              push = "false";
+                            count++;
+                            var userData = alluser.val();
+                            if(userData != null){
+                                  me.trepOption = [];
+                                  me.servesOption = [];
+                                  me.informationOption = [];
+                                  if(myData.tripe["Home work trip"]){
+                                     if(userData.tripe["Home work trip"] == myData.tripe["Home work trip"]){
+                                         if(language == "FN"){
+                                             me.trepOption.push("Trajet domicile-travail");
+                                         }else{
+                                             me.trepOption.push("Home work trip");
                                          }
-                                    }
+                                     }
+                                 }
+                                 if(myData.tripe.Tourism){
+                                     if(userData.tripe.Tourism == myData.tripe.Tourism){
+                                        if(language == "FN"){
+                                             me.trepOption.push("Tourisme");
+                                         }else{
+                                             me.trepOption.push("Tourism");
+                                         }
+                                     }
+                                 }
+                                 if(myData.tripe["Business tripe"]){
+                                     if(language == "FN"){
+                                             me.trepOption.push("Voyage d’affaire");
+                                         }else{
+                                             me.trepOption.push("Business tripe");
+                                         }
+                                 }
+                                 if(myData.tripe["To visit people"]){
+                                     if(language == "FN"){
+                                             me.trepOption.push("Rendre visite à des personnes");
+                                         }else{
+                                             me.trepOption.push("To visit people");
+                                         }
+                                 }
+                                 if(myData.tripe["Participate to an event"]){
+                                     if(language == "FN"){
+                                             me.trepOption.push("Participer à un évènement");
+                                         }else{
+                                             me.trepOption.push("Participate to an event");
+                                         }
+                                 }
+                                 for(var j= 0; j < myData.services; j++){
+                                     if(myData.services[j].value){
+                                         if(myData.services[j].value == userData.services[j].value){
+                                             me.servesOption.push(myData.services[j].option);
+                                         }
+                                     }
+                                 }
+                                  for(var k= 0; k < myData.information; k++){
+                                     if(myData.information[k].value){
+                                         if(myData.information[k].value == userData.information[k].value){
+                                             me.informationOption.push(myData.information[k].option);
+                                         }
+                                     }
+                                 }
+                                  var userinfo = {
+                                    name: userData.name,
+                                    profilePic: userData.profilePic ? userData.profilePic : "assets/image/profile.png",
+                                    age: userData.age,
+                                    lastDate: mylastDate,
+                                    unreadMessage: 0,
+                                    userId: me.usersKey[keyCount],
+                                    lastMessage: "",
+                                    date: mylastDate,
+                                    senderId : me.usersKey[keyCount],
+                                    trepOption : me.trepOption,
+                                    informationOption : me.informationOption,
+                                    servesOption : me.servesOption,
+                                 };
+                                 keyCount++;
+
+                                 if(myData.tripe["Home work trip"]){
+                                     if(userData.tripe["Home work trip"] == myData.tripe["Home work trip"]){
+                                         me.tripeUsersList.push(userinfo);
+                                         push = "false";
+                                     }
+                                 }
+                                 if(myData.tripe.Tourism){
+                                     if(userData.tripe.Tourism == myData.tripe.Tourism){
+                                        if(push == "true"){
+                                            me.tripeUsersList.push(userinfo);
+                                            push = "false";
+                                        }
+                                     }
+                                 }
+                                 if(myData.tripe["Business tripe"]){
+                                     if(userData.tripe["Business tripe"] == myData.tripe["Business tripe"]){
+                                         if(push == "true"){
+                                            me.tripeUsersList.push(userinfo);
+                                            push = "false";
+                                        }
+                                     }
+                                 }
+                                 if(myData.tripe["To visit people"]){
+                                     if(userData.tripe["To visit people"] == myData.tripe["To visit people"]){
+                                         if(push == "true"){
+                                            me.tripeUsersList.push(userinfo);
+                                            push = "false";
+                                        }
+                                     }
+                                 }
+                                 if(myData.tripe["Participate to an event"]){
+                                     if(userData.tripe["Participate to an event"] == myData.tripe["Participate to an event"]){
+                                         if(push == "true"){
+                                            me.tripeUsersList.push(userinfo);
+                                            push = "false";
+                                        }
+                                     }
                                  }
                                  if(push == "true"){
-                                     for(var i = 0; i < myData.information.length; i++){
-                                        if(myData.information[i].value){
-                                             if(myData.information[i].value == userData.information[i].value){
+                                     for(var i = 0; i < myData.services.length; i++){
+                                        if(myData.services[i].value){
+                                             if(myData.services[i].value == userData.services[i].value){
                                                   me.tripeUsersList.push(userinfo);
                                                   push = "false";
                                              }
                                         }
-                                     }   
+                                     }
+                                     if(push == "true"){
+                                         for(var i = 0; i < myData.information.length; i++){
+                                            if(myData.information[i].value){
+                                                 if(myData.information[i].value == userData.information[i].value){
+                                                      me.tripeUsersList.push(userinfo);
+                                                      push = "false";
+                                                 }
+                                            }
+                                         }   
+                                     }
                                  }
-                             }
-                             if(count == groupMemberCount){
-                                 me.hideMe = true;
-                             }
+                                 if(count == groupMemberCount){
+                                     me.hideMe = true;
+                                 }
+                            }
+                              
                          });
                  
                    }
@@ -456,7 +585,6 @@ export class FriendlistPage {
         return tmp.textContent || tmp.innerText || "";
     }
     LoadList() {
-        var user = JSON.parse(localStorage.getItem("loginUser"));
         var me = this;
         var GrouplastDate;
 

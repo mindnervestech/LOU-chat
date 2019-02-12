@@ -269,7 +269,7 @@ export class MyApp {
 
     logOutUser() {
         var me = this;
-        localStorage.setItem("IsLogin", 'false');
+        localStorage.setItem("IsLogin", "false");
         localStorage.setItem("popUp","false");
          if (this.network.type == "none") {
             //no internet connection

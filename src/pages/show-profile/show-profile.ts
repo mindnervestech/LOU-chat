@@ -43,6 +43,10 @@ declare var firebase;
             <h2>Topic information</h2>
             <div class="info-b" *ngFor="let value of information">{{value.option}}</div>
         </ion-item>
+        <ion-item class="data-option">
+            <h2>Services</h2>
+            <div class="info-b" *ngFor="let value of services">{{value.option}}</div>
+        </ion-item>
     </ion-content>
     <ion-footer>
         <div *ngIf="block == 1" class="chat-icon-div">
@@ -64,6 +68,7 @@ export class ShowProfilePage {
     base64Image: any;
     trepOption: any = new Array();
     information: any = new Array();
+    services: any = new Array();
     constructor(public modalCtrl: ModalController,private network: Network, public events: Events, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController, private camera: Camera) {
         var user = JSON.parse(localStorage.getItem("loginUser"));
@@ -79,9 +84,7 @@ export class ShowProfilePage {
                 user_age: "",
             }
             var userId = me.navParams.data.senderId;
-            console.log(me.navParams.data);
             global.singleChatData = me.navParams.data;
-            console.log(global.singleChatData);
             var loginUserId = user.uid;
             if(me.navParams.data.senderId == loginUserId){
                 me.block = 0;
@@ -180,21 +183,23 @@ export class ShowProfilePage {
         var userId = user.uid;
         var language = localStorage.getItem("language");
         firebase.database().ref('users/' + me.navParams.data.senderId).on('value', function (snapshot) {
-            console.log(snapshot.val());
             for(var i in snapshot.val().tripe){
                 if(snapshot.val().tripe[i]){
                     var value = i;
-                    if(i == "Home Work Trip" && language == "FN"){
+                    if(i == "Home work trip" && language == "FN"){
                         value = "Trajet domicile-travail";
                     }
                     if(i == "Tourism" && language == "FN"){
                          value = "Tourisme";   
                     }
-                    if(i == "Business Trip" && language == "FN"){
+                    if(i == "Business trip" && language == "FN"){
                         value = "Voyage d?affaire";
                     }
-                    if(i == "To Visit People" && language == "FN"){
+                    if(i == "To visit people" && language == "FN"){
                         value = "Rendre visite ? des personnes";
+                    }
+                    if(i == "Participate to an event" && language == "FN"){
+                        value = "Participer à un évènement";
                     }
                     var option ={
                         option: value
@@ -202,12 +207,16 @@ export class ShowProfilePage {
                     me.trepOption.push(option);
                 }
             }
-            console.log(snapshot.val().information);
+            
             for(var j = 0; j < snapshot.val().information.length; j++){
                 if(snapshot.val().information[j].value == true){
-                    console.log(snapshot.val().information[j]);
                     me.information.push(snapshot.val().information[j]);
                 } 
+            }
+            for(var j = 0; j < snapshot.val().services.length; j++){
+                if(snapshot.val().services[j].value){
+                    me.services.push(snapshot.val().services[j]);
+                }
             }
         });
     }    
