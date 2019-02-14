@@ -231,7 +231,7 @@ export class ProfilePage {
             me.status = snapshot.val() ? snapshot.val().status : "";
             me.gender = snapshot.val() ? snapshot.val().gender : "";
             //var profilePic = (snapshot.val().profilePic == "") ? 'assets/image/profile.png' : snapshot.val().profilePic;
-            var profilePic = (user.profilePic == "") ? 'assets/image/profile.png' : user.profilePic;
+            var profilePic = (snapshot.val().profilePic == "") ? 'assets/image/profile.png' : snapshot.val().profilePic;
             me.profilePhoto = profilePic;
             /*me.sqlDb.executeSql('select * from userProfile where user_id = ?', [userId]).then((data) => {
                 if (data.rows.length > 0) {
