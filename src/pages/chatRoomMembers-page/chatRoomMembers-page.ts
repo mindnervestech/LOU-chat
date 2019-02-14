@@ -23,10 +23,17 @@ declare var firebase;
     <ion-content>
         
         <div class="image">
-            <span *ngFor="let item of groupList">
-           <img class="imgstyle" src='{{item.profilePic}}' (click)="showProfile(item)">
-           <img class="imgstyle hideimage" src='{{item.profilePic}}' >
-            </span>
+            <div *ngFor="let item of groupList">
+                <div *ngIf="item.profilePic != 'assets/image/profile.png'" class="image-profile"> 
+                    <img class="imgstyle" src='{{item.profilePic}}' (click)="showProfile(item)">
+                </div>
+                <div *ngIf="item.profilePic == 'assets/image/profile.png'" class="text-ige"> 
+                    <span class="imgstyle1" (click)="showProfile(item)">{{item.slice}}</span>
+                </div>
+                <div class="image-profile">   
+                    <img class="imgstyle hideimage" src='{{item.profilePic}}' >
+                </div>
+            </div>
         </div>
         
     </ion-content>
@@ -76,6 +83,7 @@ export class ChatRoomMembers {
                         var value = snap.val();
                             var profilePic = value ? ((value.profilePic == "") ? 'assets/image/profile.png' : value.profilePic) : 'assets/image/profile.png';
                             var groupDetail = {
+                                slice: value.name.slice(0,2),
                                 name : value.name,
                                 access_code:value.access_code,
                                 profilePic : profilePic,

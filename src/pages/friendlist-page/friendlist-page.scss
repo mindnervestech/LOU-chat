@@ -1,10 +1,76 @@
 page-friendlist{
+    .option-scroll{
+        height: 81px;
+        overflow: auto;
+        width: 86%;
+        margin: auto;
+    }
+    .group-img{
+        width: 50px;
+        height: 46px;
+        border-radius: 50%;
+        position: relative;
+        display: table;
+        .group-text span {
+            display: table-cell;
+            vertical-align: middle;
+            height: 25px;
+            width: 25px;
+            background: #eeeeee;
+            border-radius: 50%;
+            color: #7bd7e0;
+            text-align: center;
+            /* text-rendering: optimizeLegibility; */
+            text-transform: uppercase;
+            font-size: 9px;
+            font-weight: 500;
+        }
+        .group-text span:nth-child(1) {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            line-height: 3;
+        }    
+        .group-text span:nth-child(2),.group-text span:nth-child(3){
+            position: relative;
+            top: 6px;
+        }
+        .group-text span:nth-child(2){
+            left: 4px;
+        }
+    }
+    .name-show{
+        width: 47px;
+        height: 46px;
+        border-radius: 50%;
+        background: #eee;
+        position: relative;
+        span{
+            display: block;
+            text-align: center;
+            font-size: 17px;
+            text-transform: uppercase;
+            color: #7bd7e0;
+            font-weight: 500;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            height: fit-content;
+        }
+    }
+    .back-button{
+        display: none !important;
+    }
     .user-profile{
         display: block;
         margin-left: auto;
         margin-right: auto;
         position: relative;
-        left: -20px;
         img{
             width: 37px;
             height: 37px;
@@ -14,6 +80,19 @@ page-friendlist{
             margin-right: auto;
             display: block;
         }
+        .text-img{
+            width: 37px;
+            height: 37px;
+            border-radius: 50%;
+            background: #eeeeee;
+            display: block;
+            text-align: center;
+            line-height: 2.4;
+            font-size: 17px;
+            text-transform: uppercase;
+            color: #7bd7e0;
+            font-weight: 500;
+        }
     }
     ion-img.img-loaded img,ion-avatar img, ion-thumbnail img{
         display: block !important;
@@ -22,7 +101,6 @@ page-friendlist{
         background: transparent;
       }
       .div_main{
-        padding: 20px 20px;
         background: #fff;
         position: fixed;
         top: calc(0%);
@@ -33,12 +111,22 @@ page-friendlist{
         margin: auto;
         bottom: 0;
         /* margin-top: 26%; */
-        height: fit-content;
+        height: 298px;
+        .ion-md-close{
+            padding: 3px 7px;
+            border-radius: 50%;
+            font-size: 19px;
+            z-index: 999;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
         ion-slides {
             width: 100%;
-            height: auto;
+            height: 298px;
             display: block;
             position: relative;
+            background: #fff;
         }
         ion-slide.swiper-slide.swiper-slide-active {
             width: 100% !important;
@@ -60,6 +148,7 @@ page-friendlist{
             text-align: center;
             width: 100%;
             margin-top: 12px;
+            margin-bottom: 0px;
           }
           p{
             font-size: 16px !important;
@@ -94,7 +183,7 @@ page-friendlist{
         .btnPrev {
             position: absolute;
             top: 0;
-            bottom: 0;
+            bottom: 30%;
             background: transparent;
             color: #000;
             -webkit-box-shadow: none;
@@ -119,7 +208,7 @@ page-friendlist{
             right: 25px;
             padding: 0 0;
             z-index: 999;
-            bottom: 0;
+            bottom: 30%;
             margin: auto;
             height: 100%;
             .button-inner{
@@ -178,7 +267,7 @@ page-friendlist{
         overflow: hidden;
     }
     .list-md {
-        margin: 5px 1px 0px 4px;
+        margin: 0px 1px 0px 4px;
     }
     .mytime{
         font-size: 16px;
@@ -201,6 +290,21 @@ page-friendlist{
         font-size: 16px !important;
         color: #666;
         margin-top: 7px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+    .text-profile {
+        height: 100px;
+        width: 100px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 50%;
+        background: #eeeeee;
+        color: #7bd7e0;
+        font-size: 23px;
+        text-transform: uppercase;
+        line-height: 4.4;
     }
     .msg-name{
         font-size: 16px;

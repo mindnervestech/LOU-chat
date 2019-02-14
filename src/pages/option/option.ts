@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 declare var firebase;
 import * as Message from '../../providers/message/message';
 import { global } from '../global/global';
+import { LoadingProvider } from '../../providers/loading/loading';
 
 @IonicPage()
 @Component({
@@ -28,19 +29,22 @@ export class OptionPage {
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController,
+    public LoadingProvider: LoadingProvider,) {
     global.backPage = "EXIT";
   }
 
   ionViewDidLoad() {
     var me = this;
     var language = localStorage.getItem("language");
+    me.LoadingProvider.startLoading();
     firebase.database().ref().child('option/').orderByChild("language").equalTo(language).on('value',function(optionData){
       var value = optionData.val();
       me.option = [];
       for(var data in value){
         me.option.push(value[data]);
       }
+      me.LoadingProvider.closeLoading();
     });
 
     firebase.database().ref().child('treapOtion/').orderByChild("language").equalTo(language).on('value',function(optionData){
@@ -49,6 +53,7 @@ export class OptionPage {
       for(var data in value){
         me.trepOption.push(value[data]);
       }
+      me.LoadingProvider.closeLoading();
     });
 
     firebase.database().ref().child('services/').orderByChild("language").equalTo(language).on('value',function(optionData){
@@ -57,6 +62,7 @@ export class OptionPage {
       for(var data in value){
         me.servicesOption.push(value[data]);
       }
+      me.LoadingProvider.closeLoading();
     });
   }
   optionClick(event,text){

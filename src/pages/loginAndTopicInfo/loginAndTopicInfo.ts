@@ -50,6 +50,7 @@ export class loginAndTopicInfo {
 	ionViewDidEnter() {
     var language = localStorage.getItem("language");
     var me = this;
+    me.LoadingProvider.startLoading();
     firebase.database().ref().child('information/').orderByChild("language").equalTo(language).on('value',function(optionData){
       var value = optionData.val();
       me.trepOption = [];
@@ -61,6 +62,7 @@ export class loginAndTopicInfo {
         }
         me.trepOption.push(info);
       }
+      me.LoadingProvider.closeLoading();
     });
     firebase.database().ref().child('services/').orderByChild("language").equalTo(language).on('value',function(optionData){
       var value = optionData.val();
@@ -73,7 +75,7 @@ export class loginAndTopicInfo {
         }
         me.servesOption.push(info);
       }
-      console.log(me.servesOption);
+      me.LoadingProvider.closeLoading();
     });
 
      var user = JSON.parse(localStorage.getItem("loginUser"));

@@ -10,8 +10,12 @@
  <ion-content padding>
         <ion-list no-lines id="ProfileDP">
             <ion-item class="upload-image">
-                <div id="profileimage"  [ngStyle]="{'background-image': 'url(' + profilePhoto + ')'}"                
+                <div *ngIf="profilePhoto != 'assets/image/profile.png'" id="profileimage"  [ngStyle]="{'background-image': 'url(' + profilePhoto + ')'}"                
                 (click)="presentActionSheet()" tappable>
+                </div>
+                <div *ngIf="profilePhoto == 'assets/image/profile.png'" id="profileimage"                
+                (click)="presentActionSheet()" tappable>
+                {{slice}}
                 </div>
             </ion-item>
         </ion-list>

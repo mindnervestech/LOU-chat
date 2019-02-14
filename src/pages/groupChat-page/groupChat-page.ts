@@ -51,7 +51,7 @@ declare var firebase;
               <p class="the-message right-msg" style="width:100%;"><span class="myright"><span  [innerHTML]="message.message" ></span></span></p>
             </ion-row>
             <ion-row *ngIf="message.sender_id != myuserid" id="quote-{{message.mkey}}">
-              <p class="left-mtime"><span> <img (click)="imageTap(message.profilePic)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.profilePic)"/><span class="sender-name">{{message.name}}, </span><span>{{message.time}}</span></span></p>
+              <p class="left-mtime"><span> <span *ngIf="message.profilePic != 'assets/image/profile.png'"><img (click)="imageTap(message.profilePic)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.profilePic)"/></span><span (click)="imageTap(message.profilePic)" class="group-text-image" *ngIf="message.profilePic == 'assets/image/profile.png'">{{message.slice}}</span><span class="sender-name">{{message.name}}, </span><span>{{message.time}}</span></span></p>
               <p class="the-message left-msg" style="width:100%;">
                 <span class="myleft"><span [innerHTML]="message.message"></span></span>
               </p>
@@ -64,7 +64,7 @@ declare var firebase;
           </p>
         </ion-row>
         <ion-row *ngIf="message.sender_id != myuserid" id="quote-{{message.mkey}}">
-          <p class="left-mtime"><span> <img (click)="imageTap(message.profilePic)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.profilePic)"/><span class="sender-name">{{message.time}}</span></span></p>  
+          <p class="left-mtime"><span> <span *ngIf="message.profilePic != 'assets/image/profile.png'"><img (click)="imageTap(message.profilePic)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.profilePic)"/></span><span (click)="imageTap(message.profilePic)" class="group-text-image" *ngIf="message.profilePic == 'assets/image/profile.png'">{{message.slice}}</span><span class="sender-name">{{message.time}}</span></span></p>  
           <p class="the-message" style="width:100%;"><span class="myleft-image"><span>  <img (click)="imageTap(message.message)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/></span></span>
           </p>
         </ion-row>
@@ -160,6 +160,7 @@ export class GroupChatPage {
           "type": messages.val().type,
           "profilePic": (messages.val().profilePic != "") ? messages.val().profilePic  : "assets/image/profile.png",
           "name": messages.val().name,
+          "slice": messages.val().name.slice(0,2)
         }));
           if (me.loadingmessageCounter > 5) {
             setTimeout(() => {

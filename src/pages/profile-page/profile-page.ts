@@ -80,6 +80,7 @@ export class ProfilePage {
     information: any = new Array();
     services: any = new Array();
     profilePage: boolean = false;
+    slice: string = "";
     constructor(public CommonProvider: CommonProvider, public _zone: NgZone, public events: Events, public navCtrl: NavController, public sqlite: SQLite, public navParams: NavParams, public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController, private camera: Camera, private clipboard: Clipboard,private network: Network) {
         //var user = firebase.auth().currentUser;
@@ -186,7 +187,8 @@ export class ProfilePage {
         var me = this;
         var user = JSON.parse(localStorage.getItem("loginUser"));
         var userId = user.uid;
-        this.name = user.name;
+        me.name = user.name;
+        me.slice = user.name.slice(0,2);
         var language = localStorage.getItem("language");
         firebase.database().ref('users/' + userId).on('value', function (snapshot) {
             me.trepOption = [];

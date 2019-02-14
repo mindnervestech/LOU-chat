@@ -7,7 +7,7 @@ import * as Message from '../../providers/message/message';
 import { global } from '../global/global';
 declare var firebase;
 
-@IonicPage()
+@IonicPage()    
 
 @Component({
    selector: 'page-friendlist',
@@ -15,32 +15,36 @@ declare var firebase;
     template: `
    <ion-header>
         <ion-navbar>
-            <button ion-button menuToggle>
+            <!--<button ion-button menuToggle>
                 <ion-icon name='menu'></ion-icon>
-            </button>
-            <span class="user-profile" (click)="imageTap(profilePic)"><img src="{{profilePic}}"></span>
+            </button>-->
+            <span class="user-profile" (click)="mePage()"><span *ngIf="profilePic != 'assets/image/profile.png'"><img src="{{profilePic}}"></span><span class="text-img" *ngIf="profilePic == 'assets/image/profile.png'">{{userName}}</span></span>
         </ion-navbar>
     </ion-header>
     <ion-content class="friendlist-page-content">
         <div class="modal_content" id="modal_content" *ngIf="hideMe">
             <div class="div_main">
+                <ion-icon name="close" (click)="dismiss_dialog()"></ion-icon>
                 <ion-slides #slides>
                     <ion-slide *ngFor="let data of tripeUsersList; let i = index">
-                        <img class="img_arrow_down_n" src="{{data.profilePic}}">
+                        <span *ngIf="data.profilePic != 'assets/image/profile.png'"><img class="img_arrow_down_n" src="{{data.profilePic}}"></span>
+                        <span class="text-profile" *ngIf="data.profilePic == 'assets/image/profile.png'">{{data.slice}}</span>
                         <h2 class="subheading_content">You have match with {{data.name}}</h2>
-                        <p *ngIf="data.trepOption.length > 0" class="common-topic">You are traveling for </p>
-                        <div class="option" *ngFor="let value of data.trepOption">
-                            <p class="common-topic"> {{value}}, </p>
-                        </div>
-                        <p *ngIf="data.informationOption.length > 0" class="common-topic">and You have the topics:</p>
-                        <div class="option" *ngFor="let value of data.informationOption">
-                            <p class="common-topic"> {{value}}, </p>
-                        </div>
-                        <p *ngIf="data.servesOption.length > 0" class="common-topic">and You have</p>
-                        <div class="option" *ngFor="let value of data.servesOption">
-                            <p class="common-topic"> {{value}}, </p>
-                        </div> 
-                        <p *ngIf="data.servesOption.length > 0">service in common</p>
+                        <div class="option-scroll">
+                            <p *ngIf="data.trepOption.length > 0" class="common-topic">You are traveling for </p>
+                            <div class="option" *ngFor="let value of data.trepOption">
+                                <p class="common-topic"> {{value}}, </p>
+                            </div>
+                            <p *ngIf="data.informationOption.length > 0" class="common-topic">and You have the topics:</p>
+                            <div class="option" *ngFor="let value of data.informationOption">
+                                <p class="common-topic"> {{value}}, </p>
+                            </div>
+                            <p *ngIf="data.servesOption.length > 0" class="common-topic">and You have</p>
+                            <div class="option" *ngFor="let value of data.servesOption">
+                                <p class="common-topic"> {{value}}, </p>
+                            </div> 
+                            <p *ngIf="data.servesOption.length > 0">service in common</p>
+                        </div>        
                         <div class="div_bottom">
                             <ion-row justify-content-center align-items-center class="ion_row_heiht_bottam">
                                 <button class="dismiss" (click)='dismiss(data,i)'>Dismiss</button>
@@ -61,8 +65,11 @@ declare var firebase;
         </div>
         <ion-list [virtualScroll]="groupData" [approxItemHeight]="'70px'" >
             <ion-item *virtualItem="let data" tappable>
-                <ion-avatar item-left class="ion-pro">
-                    <ion-img class="imgstyle" src='./assets/image/group.png' (click)="gotToChatRoomMembersPage(data.groupId)"></ion-img>
+                <ion-avatar item-left class="ion-pro group-img">
+                    <!--<ion-img class="imgstyle" src='./assets/image/group.png' (click)="gotToChatRoomMembersPage(data.groupId)"></ion-img>-->
+                    <div (click)="gotToChatRoomMembersPage(data.groupId)" class="group-text">
+                        <span *ngFor="let item of groupList">{{item.name}}</span>
+                    </div>    
                 </ion-avatar>
                 <div (click)='groupMessageBox(data)'>                
                     <h2>{{ data.groupName }} </h2> 
@@ -76,9 +83,12 @@ declare var firebase;
         </ion-list>
         <ion-list [virtualScroll]="usersList" [approxItemHeight]="'70px'" >
             <ion-item *virtualItem="let item" (click)='messageBox($event,item)' tappable>
-                <ion-avatar item-left>
+                <ion-avatar item-left *ngIf="item.profilePic != 'assets/image/profile.png'">
                     <ion-img class="imgstyle" src='{{item.profilePic}}'></ion-img>
-                </ion-avatar>                
+                </ion-avatar> 
+                <ion-avatar item-left class="name-show" *ngIf="item.profilePic == 'assets/image/profile.png'">
+                    <span>{{item.slice}}</span>
+                </ion-avatar>
                 <h2 *ngIf="item.name" >{{ item.name }} </h2>
                 <h2 *ngIf="!item.name">{{ item.email }} </h2>
                 
@@ -93,7 +103,7 @@ declare var firebase;
     <ion-footer>
         <ion-toolbar class="option">
             <div class="tab">
-                <div class="tab-content" (click)="chatPage()" [ngClass]="{'tab-active': friendList == true}">
+                <div class="tab-content" [ngClass]="{'tab-active': friendList == true}">
                     <ion-icon name="chatbubbles"></ion-icon>
                 </div>
                 <div class="tab-content" (click)="infoPage()">
@@ -130,6 +140,10 @@ export class FriendlistPage {
     sort: any;
     showPage: boolean = false;
     friendList: boolean = false;
+    groupList: any = new Array();
+    groupMemberKey: any = new Array();
+    userName: string = '';
+    count = 0;
     constructor(public modalCtrl: ModalController,public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
         var me = this;
         me.menu.swipeEnable(true);
@@ -140,11 +154,12 @@ export class FriendlistPage {
         }
         global.backPage = "EXIT";
         this.showPage = true;
+        this.userName = user.name.slice(0,2);
     }
 
     next() {
         this.slides.slideNext();
-      }
+    }
     
       prev() {
         this.slides.slidePrev();
@@ -169,7 +184,8 @@ export class FriendlistPage {
                 me.match();
              }
             me.LoadList();
-    }
+             me.getChatMemberData();
+        }
     
     chatPage(){
         this.navCtrl.push("FriendlistPage");   
@@ -203,6 +219,7 @@ export class FriendlistPage {
     dismiss_dialog(){
         this.hideMe = false;
         localStorage.setItem("popUp","true");
+        this.getUserData();
     }
 
     dismiss(data,index){
@@ -229,6 +246,34 @@ export class FriendlistPage {
         }
     }
 
+    getChatMemberData(){
+        var user = JSON.parse(localStorage.getItem("Group"));
+        var me = this;
+         firebase.database().ref('GroupMember/'+ user.groupId).on('value', function (snapshot) {
+              var groupData  = snapshot.val();
+              me.groupList = [];
+              var counter = 0;
+              for (var data in groupData ) {
+                counter++;  
+                if(counter <= 3){
+                    me.groupMemberKey.push(data);
+                        firebase.database().ref('users/'+ data).on('value', function (snap) {
+                            var value = snap.val();
+                                var profilePic = value ? ((value.profilePic == "") ? 'assets/image/profile.png' : value.profilePic) : 'assets/image/profile.png';
+                                var groupDetail = {
+                                    name : value.name.slice(0,2)
+                                };
+                                me.groupList.push(groupDetail);
+                                me.count++;
+                        }); 
+                    }  
+                }
+                // setTimeout(() => {
+                //     console.log("me.groupList",me.groupList);
+                // }, 3000);  
+         });
+        
+    }
     addToChat(data,index){
         var me = this;
         me.addToChatList.push(data);
@@ -276,7 +321,6 @@ export class FriendlistPage {
             }
             if(check == true){
                 check = false;
-                //me.next();
                 me.tripeUsersList.splice(index, 1);
                 if(me.tripeUsersList.length == 0){
                     me.dismiss_dialog();
@@ -346,6 +390,7 @@ export class FriendlistPage {
                      let time = new Date(friend.val()[data].lastDate);
                      var timestamp = time.getTime();
                      var userinfo = {
+                            slice: friend.val()[data].name.slice(0,2),
                             name: friend.val()[data].name,
                             profilePic: friend.val()[data].profilePic,
                             date: friend.val()[data].lastDate,
@@ -360,8 +405,8 @@ export class FriendlistPage {
                         };
                         me.usersList.push(userinfo);      
                  }
-                 me.usersList.sort(function(a,b){return b.checkDate - a.checkDate});
-                 me.checkForEntery = false;
+                  me.usersList.sort(function(a,b){return b.checkDate - a.checkDate});
+                 //me.checkForEntery = false;
              }
          });
     }
@@ -464,6 +509,7 @@ export class FriendlistPage {
                                      }
                                  }
                                   var userinfo = {
+                                    slice: userData.name.slice(0,2),  
                                     name: userData.name,
                                     profilePic: userData.profilePic ? userData.profilePic : "assets/image/profile.png",
                                     age: userData.age,

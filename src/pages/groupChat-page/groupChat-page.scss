@@ -188,6 +188,20 @@
          padding:0!important;
          margin:0!important;
      }
+     .group-text-image{
+        width: 35px;
+        border-radius: 50%;
+        vertical-align: top;
+        background: #e6e5eb;
+        height: 35px;
+        display: inline-block;
+        font-size: 17px;
+        text-transform: uppercase;
+        font-weight: 500;
+        color: #7bd7e0;
+        text-align: center;
+        line-height: 2;
+     }
      .the-message .myright {
         float: right;
         max-width: 85%;
