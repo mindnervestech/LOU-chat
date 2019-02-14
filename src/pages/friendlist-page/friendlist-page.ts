@@ -494,15 +494,16 @@ export class FriendlistPage {
                                              me.trepOption.push("Participate to an event");
                                          }
                                  }
-                                 for(var j= 0; j < myData.services; j++){
+                                 for(var j= 0; j < userData.services.length; j++){
                                      if(myData.services[j].value){
                                          if(myData.services[j].value == userData.services[j].value){
                                              me.servesOption.push(myData.services[j].option);
                                          }
                                      }
                                  }
-                                  for(var k= 0; k < myData.information; k++){
+                                  for(var k= 0; k < myData.information.length; k++){
                                      if(myData.information[k].value){
+                                        console.log(myData.information);
                                          if(myData.information[k].value == userData.information[k].value){
                                              me.informationOption.push(myData.information[k].option);
                                          }
@@ -523,6 +524,7 @@ export class FriendlistPage {
                                     informationOption : me.informationOption,
                                     servesOption : me.servesOption,
                                  };
+                                 console.log(userinfo);
                                  keyCount++;
 
                                  if(myData.tripe["Home work trip"]){
