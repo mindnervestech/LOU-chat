@@ -43,7 +43,7 @@ declare var firebase;
                         <p *ngIf="data.servesOption.length > 0">service in common</p>
                         <div class="div_bottom">
                             <ion-row justify-content-center align-items-center class="ion_row_heiht_bottam">
-                                <button class="dismiss" (click)='dismiss(i)'>Dismiss</button>
+                                <button class="dismiss" (click)='dismiss(data,i)'>Dismiss</button>
                                 <button class="dismiss" (click)='addToChat(data,i)'>Add to chat list</button>
                             </ion-row>
                         </div>
@@ -205,9 +205,21 @@ export class FriendlistPage {
         localStorage.setItem("popUp","true");
     }
 
-    dismiss(index){
+    dismiss(data,index){
         var me = this;
+        //me.next();
         me.tripeUsersList.splice(index, 1);
+        var user = JSON.parse(localStorage.getItem("loginUser"));
+        firebase.database().ref().child('Friends/' + user.uid).orderByChild("name").equalTo(data.name).on('value',function(friend){
+            if(friend.val() == null){
+
+            }else{
+                firebase.database().ref().child('Friends/' + user.uid + '/' + data.senderId).update({
+                    access : false
+                });
+            }
+        })
+        
         if(me.tripeUsersList.length == 0){
             me.dismiss_dialog();
             me.usersList = me.addToChatList;
@@ -264,6 +276,7 @@ export class FriendlistPage {
             }
             if(check == true){
                 check = false;
+                //me.next();
                 me.tripeUsersList.splice(index, 1);
                 if(me.tripeUsersList.length == 0){
                     me.dismiss_dialog();

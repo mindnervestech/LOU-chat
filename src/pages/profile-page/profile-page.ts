@@ -75,6 +75,7 @@ export class ProfilePage {
     gender: string = "";
     age : string = "";
     status : string = "";
+    name: string = "";
     trepOption: any = new Array();
     information: any = new Array();
     services: any = new Array();
@@ -147,6 +148,8 @@ export class ProfilePage {
     }  
     logOutUser() {
         var me = this;
+        localStorage.setItem("IsLogin", "false");
+        localStorage.setItem("popUp","false");
          if (this.network.type == "none") {
             //no internet connection
             localStorage.removeItem("option");
@@ -155,9 +158,6 @@ export class ProfilePage {
             localStorage.removeItem("Group");
             me.navCtrl.setRoot("OptionPage");
         }else{
-            var GroupId = localStorage.getItem("GroupId");
-            var userId = localStorage.getItem("userId");
-            firebase.database().ref('GroupMember/' + GroupId + '/' + userId).remove();
             localStorage.removeItem("option");
             localStorage.removeItem("GroupKey");
             localStorage.removeItem("GroupId");
@@ -186,8 +186,10 @@ export class ProfilePage {
         var me = this;
         var user = JSON.parse(localStorage.getItem("loginUser"));
         var userId = user.uid;
+        this.name = user.name;
         var language = localStorage.getItem("language");
         firebase.database().ref('users/' + userId).on('value', function (snapshot) {
+            me.trepOption = [];
             for(var i in snapshot.val().tripe){
                 if(snapshot.val().tripe[i]){
                     var value = i;
@@ -213,6 +215,8 @@ export class ProfilePage {
                 }
                 
             }
+            me.information = [];
+            me.services = [];
             for(var j = 0; j < snapshot.val().information.length; j++){
                 if(snapshot.val().information[j].value){
                     me.information.push(snapshot.val().information[j]);
