@@ -293,14 +293,15 @@ export class ProfilePage {
             }, function () {
                 var downloadFlyerURL = uploadTask.snapshot.downloadURL;
                 me.userInfo.user_profilePic = downloadFlyerURL;
+                me.profilePhoto = downloadFlyerURL;
                 var user = JSON.parse(localStorage.getItem("loginUser"));
                 var userId = user.uid;
                 //var name = user.name;
-                var usersRef = firebase.database().ref('users');
+                /*var usersRef = firebase.database().ref('users');
                 var hopperRef = usersRef.child(userId);
                 hopperRef.update({
                     "profilePic": downloadFlyerURL
-                });
+                });*/
                 global.USER_IMAGE = downloadFlyerURL;
                 me.PublishEventUserUpdate();
             //     var logInUser = {
@@ -376,12 +377,13 @@ export class ProfilePage {
             }, function () {
                 var downloadFlyerURL = uploadTask.snapshot.downloadURL;
                 me.userInfo.user_profilePic = downloadFlyerURL;
+                me.profilePhoto = downloadFlyerURL;
                 var userId = firebase.auth().currentUser.uid;
-                var usersRef = firebase.database().ref('users');
+                /*var usersRef = firebase.database().ref('users');
                 var hopperRef = usersRef.child(userId);
                 hopperRef.update({
                     "profilePic": downloadFlyerURL
-                });
+                });*/
                 global.USER_IMAGE = downloadFlyerURL;
                 me.PublishEventUserUpdate();
             });
