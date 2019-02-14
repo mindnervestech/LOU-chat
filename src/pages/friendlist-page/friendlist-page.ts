@@ -243,6 +243,9 @@ export class FriendlistPage {
             me.checkForEntery = true;
             me.getUserData();
         }
+        if(me.tripeUsersList.length == index){
+            me.prev();
+        }
     }
 
     getChatMemberData(){
@@ -327,6 +330,9 @@ export class FriendlistPage {
                     me.addToChatList= [];
                     me.checkForEntery = true;
                     me.getUserData();
+                }
+                if(me.tripeUsersList.length == index){
+                    me.prev();
                 }
             }
         });
