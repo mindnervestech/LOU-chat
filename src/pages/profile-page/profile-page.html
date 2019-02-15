@@ -51,7 +51,9 @@
                 <div class="row">
                     <div class="multiple-option">
                         <div>
-                            <button *ngFor="let data of trepOption" id="1" #first ion-button color="dark">{{data.option}}</button>
+                            <span *ngFor="let data of trepOption">
+                                <button [ngClass]="{'active': data.value == true}" id="1" #first ion-button color="dark" (click)="btnActivate(first,data.optionNumber)">{{data.option}}</button>
+                            </span>
                         </div>
                         <!-- <button id="1" #first ion-button color="dark" (click)="btnActivate(first)">Option_1</button>
                         <button id="1" #second ion-button color="dark" (click)="btnActivate(second)">Option_2</button>
@@ -66,8 +68,10 @@
             <div class="topic-info topic-info-2">
                 <div class="row">
                     <div class="multiple-option">
-                        <button *ngFor="let value of information" id="1" #f ion-button color="dark">{{value.option}}</button>
-                        <!-- <button id="1" #s ion-button color="dark" (click)="btnActivate(s)">Option_2</button>
+                        <span *ngFor="let value of information">
+                            <button id="1" #first ion-button color="dark" [ngClass]="{'active': value.value == true}" (click)="btnActivateInfo(first,value.option)">{{value.option}}</button>
+                        </span>
+                            <!-- <button id="1" #s ion-button color="dark" (click)="btnActivate(s)">Option_2</button>
                         <button id="1" #t ion-button color="dark" (click)="btnActivate(t)">Option_1</button>
                         <button id="1" #fo ion-button color="dark" (click)="btnActivate(fo)">Option_3</button>
                         <button id="1" #fi ion-button color="dark" (click)="btnActivate(fi)">Option_4</button>
@@ -79,7 +83,9 @@
             <div class="topic-info topic-info-2">
                 <div class="row">
                     <div class="multiple-option">
-                        <button *ngFor="let value of services" id="1" #f ion-button color="dark">{{value.option}}</button>
+                        <span *ngFor="let value of services">
+                            <button id="1" #first ion-button color="dark" [ngClass]="{'active': value.value == true}" (click)="servesBtnActivate(first,value.option)">{{value.option}}</button>
+                        </span>    
                     </div>
                 </div>
             </div>
@@ -95,7 +101,7 @@
                 <div class="tab-content" (click)="infoPage()">
                     <ion-icon name="bulb"></ion-icon>
                 </div>
-                <div class="tab-content" (click)="mePage()" [ngClass]="{'tab-active': profilePage == true}">
+                <div class="tab-content" [ngClass]="{'tab-active': profilePage == true}">
                     <ion-icon name="settings"></ion-icon>
                 </div>
             </div>

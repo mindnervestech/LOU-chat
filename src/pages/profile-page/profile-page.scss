@@ -5,6 +5,9 @@
       .loginbtn{
         margin-bottom: 60px;
       }
+      .active{
+        background: #c6ff0d !important;
+      }
       .tab{
         opacity: 1;
         background: #fff;
@@ -32,15 +35,16 @@
       }  
       .multiple-option{
         .button-md {
-            overflow: hidden;
-            margin: 0.6rem 0.2rem;
-            padding: 6px 20px;
-            height: 3.8rem;
-            width: auto;
-            border-radius: 30px !important;
-            font-size: 1.4rem;
-            font-weight: 400;
-            text-transform: capitalize;
+          overflow: hidden;
+          margin: 0.6rem 0.5rem;
+          padding: 8px 9px;
+          height: 3rem;
+          width: auto;
+          border-radius: 30px !important;
+          font-size: 16px;
+          font-weight: 400;
+          text-transform: capitalize;
+          box-shadow: none;
         }
         .button-md-dark {
             color: #000;
@@ -50,7 +54,8 @@
         .button-md-primary {
             color: #000000;
             //background-color: rgba(84, 66, 235, 0.76) !important;
-            background: #dddbdb;
+            background: #c6ff0d;
+            border: 1px solid #000;
         }    
         .button-inner {
           font-size: 10px !important;
@@ -201,8 +206,8 @@
               }
           }  
           .topic-info{
-            margin-top: 25px;
-            margin-bottom: 20px;
+            margin-top: 11px;
+            margin-bottom: 11px;
             ion-label {
               margin-left: 0;
               color: #808fa4;

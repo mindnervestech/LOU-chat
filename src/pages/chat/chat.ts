@@ -31,11 +31,12 @@ declare var firebase;
 
 		<ion-title>
 			<ion-item class="title-item" no-lines>
-				
-				<ion-avatar item-start (click)="showProfile(senderUser)" tappable class="prof-icon">
+				<ion-avatar *ngIf="senderUser.profilePic != 'assets/image/profile.png'" item-start (click)="showProfile(senderUser)" tappable class="prof-icon">
 					<img  [src]="_DomSanitizer.bypassSecurityTrustUrl(senderUser.profilePic)"/>
 				</ion-avatar>
-
+        <ion-avatar  *ngIf="senderUser.profilePic == 'assets/image/profile.png'" item-start (click)="showProfile(senderUser)" tappable class="prof-icon chat-pro">
+					{{textprofile}}
+				</ion-avatar>
         	<!--<ion-img  item-start  [src]="senderUser.profilePic" (click)="showProfile(senderUser)" tappable></ion-img>-->
 
 				<h2 *ngIf="senderUser.name" (click)="showProfile(senderUser)" tappable>{{ senderUser.name }}</h2>
@@ -170,6 +171,7 @@ export class ChatPage {
   sqlDb: SQLiteObject;
   loadingmessageCounter: any = 0;
   userImage: any;
+  textprofile: string = '';
 
   constructor(public modalCtrl: ModalController, private camera: Camera, public LoadingProvider: LoadingProvider, public platform: Platform, public CommonProvider: CommonProvider, public _DomSanitizer: DomSanitizer, public toastCtrl: ToastController, public sqlite: SQLite, private network: Network, public PushProvider: PushProvider, public element: ElementRef, public actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public _zone: NgZone, public navParams: NavParams, public alertCtrl: AlertController) {
     var user = JSON.parse(localStorage.getItem("loginUser"));
@@ -202,6 +204,8 @@ export class ChatPage {
     var userId = user.uid;
     me.myuserid = userId;
     me.senderUser = me.navParams.data;
+    me.textprofile = me.navParams.data.name.slice(0,2);
+    console.log("me.navParams.data",me.navParams.data);
     var block1;
     block1 = me.senderUser.block;
     me.block1 = block1;

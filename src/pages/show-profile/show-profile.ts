@@ -21,7 +21,8 @@ declare var firebase;
 
     <ion-content>
         <div class="profile-image-container">
-            <ion-img  id="profile-image" [src]="userInfo.user_profilePic" *ngIf="this.captureDataUrl" (click)="imageTap(userInfo.user_profilePic)"></ion-img>
+            <ion-img  *ngIf="userInfo.user_profilePic != 'assets/image/profile.png'" id="profile-image" [src]="userInfo.user_profilePic"  (click)="imageTap(userInfo.user_profilePic)"></ion-img>
+            <span class="user-i" *ngIf="userInfo.user_profilePic == 'assets/image/profile.png'">{{userInfo.user_slice}}</span>
             <div class="user-info">
                 <span class="info-label"><ion-icon name="person"></ion-icon> <span class="name">{{userInfo.user_name}}</span><span class="name" *ngIf="userInfo.user_name == ''">-</span></span>
                 <span class="info-label"><ion-icon name="woman"></ion-icon><ion-icon name="man"></ion-icon> <span class="name">{{userInfo.user_gender}}</span><span class="name" *ngIf="userInfo.user_gender == ''">-</span></span>
@@ -37,15 +38,18 @@ declare var firebase;
         </div>-->
         <ion-item class="data-option">
             <h2>Purpose of trip</h2>
-            <div class="info-b" *ngFor="let data of trepOption">{{data.option}}</div>
+            <!--<div class="info-b" *ngFor="let data of trepOption">{{data.option}}</div>-->
+            <button id="1" #f ion-button color="dark" *ngFor="let data of trepOption">{{data.option}}</button>
         </ion-item>
         <ion-item class="data-option">
             <h2>Topic information</h2>
-            <div class="info-b" *ngFor="let value of information">{{value.option}}</div>
+            <!--<div class="info-b" *ngFor="let value of information">{{value.option}}</div>-->
+            <button id="1" #f ion-button color="dark" *ngFor="let value of information">{{value.option}}</button>
         </ion-item>
         <ion-item class="data-option">
             <h2>Services</h2>
-            <div class="info-b" *ngFor="let value of services">{{value.option}}</div>
+            <!--<div class="info-b" *ngFor="let value of services">{{value.option}}</div>-->
+            <button id="1" #f ion-button color="dark" *ngFor="let value of services">{{value.option}}</button>
         </ion-item>
     </ion-content>
     <ion-footer>
@@ -60,6 +64,7 @@ export class ShowProfilePage {
     user_name: string;
     user_email: string;
     user_access_code: string;
+    user_slice: string;
     private userInfo: any;
     user_gender: string;
     user_status: string;
@@ -82,6 +87,7 @@ export class ShowProfilePage {
                 user_status: "",
                 user_profilePic: "",
                 user_age: "",
+                user_slice: "",
             }
             var userId = me.navParams.data.senderId;
             global.singleChatData = me.navParams.data;
@@ -99,6 +105,7 @@ export class ShowProfilePage {
                     user_status: me.navParams.data.status,
                     user_profilePic: me.navParams.data.profilePic,
                     user_age: me.navParams.data.age,
+                    user_slice: me.navParams.data.name.slice(0,2),
                     //user_accessCode: me.navParams.data.access_code
                 }
 
@@ -120,6 +127,7 @@ export class ShowProfilePage {
                         user_status: status,
                         user_profilePic: profilePic,
                         user_age: age,
+                        user_slice: me.navParams.data.name.slice(0,2),
                         //user_accessCode: access_code
                     }
 

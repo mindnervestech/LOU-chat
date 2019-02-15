@@ -106,6 +106,6 @@ export class ChatRoomMembers {
     }
     showProfile(item) {
         global.backPage = "ChatRoomMembers";
-        this.navCtrl.push("ShowProfilePage", item);
+        this.navCtrl.setRoot("ShowProfilePage", item);
     }
 }

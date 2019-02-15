@@ -81,6 +81,15 @@ export class ProfilePage {
     services: any = new Array();
     profilePage: boolean = false;
     slice: string = "";
+    public selectedOption1:boolean = false;
+   public selectedOption2:boolean = false;
+   public selectedOption3:boolean = false;
+   public selectedOption4:boolean = false;
+   public selectedOption5:boolean = false;
+   public servesOption1:boolean = false;
+   public servesOption2:boolean = false;
+   public servesOption3:boolean = false;
+   counter = 0;
     constructor(public CommonProvider: CommonProvider, public _zone: NgZone, public events: Events, public navCtrl: NavController, public sqlite: SQLite, public navParams: NavParams, public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController, private camera: Camera, private clipboard: Clipboard,private network: Network) {
         //var user = firebase.auth().currentUser;
@@ -135,13 +144,89 @@ export class ProfilePage {
     mePage(){
         this.navCtrl.push("ProfilePage");   
     }
-
-    btnActivate(ionicButton) {
-        if(ionicButton._color === 'dark')
+    btnActivate(ionicButton,text) {
+        if(ionicButton._color === 'dark'){
           ionicButton.color =  'primary';
-        else
+            if(text == 1){
+              this.selectedOption1 = true;
+            }
+            if(text == 2){
+              this.selectedOption2 = true;
+            }
+            if(text == 3){
+              this.selectedOption3 = true;
+            }
+            if(text == 4){
+              this.selectedOption4 = true;
+            }
+            if(text == 5){
+              this.selectedOption5 = true;
+            }
+        }
+        else{
           ionicButton.color = 'dark';
-    }
+          if(text == 1){
+              this.selectedOption1 = false;
+            }
+            if(text == 2){
+              this.selectedOption2 = false;
+            }
+            if(text == 3){
+              this.selectedOption3 = false;
+            }
+            if(text == 4){
+              this.selectedOption4 = false;
+            }
+            if(text == 5){
+              this.selectedOption5 = false;
+            }
+        }
+      }
+
+      servesBtnActivate(ionicButton,text){
+        if(ionicButton._color === 'dark'){
+         ionicButton.color =  'primary';
+           if(text == 1){
+             this.servesOption1 = true;
+           }
+           if(text == 2){
+             this.servesOption2 = true;
+           }
+           if(text == 3){
+             this.servesOption3 = true;
+           }
+       }
+       else{
+         ionicButton.color = 'dark';
+           if(text == 1){
+             this.servesOption1 = false;
+           }
+           if(text == 2){
+             this.servesOption2 = false;
+           }
+           if(text == 3){
+             this.servesOption3 = false;
+           }
+       }  
+     }
+     btnActivateInfo(ionicButton,text) {
+        if(ionicButton._color === 'dark'){
+          ionicButton.color =  'primary';
+          //this.trepOption[text - 1].value = true;
+          this.counter++;
+        }
+        else{
+          ionicButton.color = 'dark';
+          //this.trepOption[text - 1].value = false;
+          this.counter--;
+        }
+      }
+    // btnActivate(ionicButton) {
+    //     if(ionicButton._color === 'dark')
+    //       ionicButton.color =  'primary';
+    //     else
+    //       ionicButton.color = 'dark';
+    // }
     
     isSelected(event) {
         return 'primary';
@@ -197,7 +282,6 @@ export class ProfilePage {
         firebase.database().ref('users/' + userId).on('value', function (snapshot) {
             me.trepOption = [];
             for(var i in snapshot.val().tripe){
-                if(snapshot.val().tripe[i]){
                     var value = i;
                     if(i == "Home work trip" && language == "FN"){
                         value = "Trajet domicile-travail";
@@ -215,23 +299,19 @@ export class ProfilePage {
                         value = "Participer à un évènement";
                     }
                     var option ={
-                        option: value
+                        option: value,
+                        value: snapshot.val().tripe[i],
                     };
                     me.trepOption.push(option);
-                }
                 
             }
             me.information = [];
             me.services = [];
             for(var j = 0; j < snapshot.val().information.length; j++){
-                if(snapshot.val().information[j].value){
                     me.information.push(snapshot.val().information[j]);
-                }
             }
             for(var j = 0; j < snapshot.val().services.length; j++){
-                if(snapshot.val().services[j].value){
                     me.services.push(snapshot.val().services[j]);
-                }
             }
             me.age = snapshot.val() ? snapshot.val().age : "";
             me.status = snapshot.val() ? snapshot.val().status : "";
