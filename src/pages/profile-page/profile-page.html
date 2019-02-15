@@ -52,7 +52,7 @@
                     <div class="multiple-option">
                         <div>
                             <span *ngFor="let data of trepOption">
-                                <button [ngClass]="{'active': data.value == true}" id="1" #first ion-button color="dark" (click)="btnActivate(first,data.optionNumber)">{{data.option}}</button>
+                                <button [ngClass]="{'active': data.value == true}" id="1" #first ion-button color="dark" (click)="btnActivate(first,data.optionNumber,$event)">{{data.option}}</button>
                             </span>
                         </div>
                         <!-- <button id="1" #first ion-button color="dark" (click)="btnActivate(first)">Option_1</button>

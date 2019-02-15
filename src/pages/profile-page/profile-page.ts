@@ -141,8 +141,10 @@ export class ProfilePage {
     mePage(){
         this.navCtrl.push("ProfilePage");   
     }
-    btnActivate(ionicButton,text) {
+    btnActivate(ionicButton,text,event) {
         if(ionicButton._color === 'dark'){
+
+          this.trepOption[text - 1].value = true;
           ionicButton.color =  'primary';
             if(text == 1){
               this.selectedOption1 = true;
@@ -159,9 +161,11 @@ export class ProfilePage {
             if(text == 5){
               this.selectedOption5 = true;
             }
-            //this.trepOption[text - 1].value = true;
+            
         }
         else{
+           this.trepOption[text - 1].value = false;
+            event.target.classList.remove("active");
           ionicButton.color = 'dark';
           if(text == 1){
               this.selectedOption1 = false;
@@ -178,7 +182,6 @@ export class ProfilePage {
             if(text == 5){
               this.selectedOption5 = false;
             }
-            //this.trepOption[text - 1].value = false;
         }
       }
 
@@ -280,6 +283,22 @@ export class ProfilePage {
                     if(i == "Participate to an event" && language == "FN"){
                         value = "Participer à un évènement";
                     }
+
+                    if(i == "Home work trip"){
+                        me.selectedOption2 = snapshot.val().tripe[i];
+                    }
+                    if(i == "Tourism"){
+                        me.selectedOption5 = snapshot.val().tripe[i];
+                    }
+                    if(i == "Business trip"){
+                        me.selectedOption1 = snapshot.val().tripe[i];
+                    }
+                    if(i == "To visit people"){
+                        me.selectedOption4 = snapshot.val().tripe[i];
+                    }
+                    if(i == "Participate to an event"){
+                        me.selectedOption3 = snapshot.val().tripe[i];
+                    }
                     var option ={
                         option: value,
                         value: snapshot.val().tripe[i],
@@ -287,7 +306,6 @@ export class ProfilePage {
                     };
                     me.trepOption.push(option);
                     count++;
-                
             }
             me.information = [];
             me.services = [];
