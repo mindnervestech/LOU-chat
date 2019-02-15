@@ -213,7 +213,7 @@ export class loginAndTopicInfo {
             lastMessage: me.groupInfo.lastMessage
           });
 
-          var phofilePic = me.userProfilePic;
+          var phofilePic = user.profilePic;
           console.log(me.servesOption);
           me.servesOption[0].value = me.navParams.data.servesOption1;
           me.servesOption[1].value = me.navParams.data.servesOption2,
