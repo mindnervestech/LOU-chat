@@ -185,39 +185,25 @@ export class ProfilePage {
 
       servesBtnActivate(ionicButton,text){
         if(ionicButton._color === 'dark'){
-         ionicButton.color =  'primary';
-           if(text == 1){
-             this.servesOption1 = true;
-           }
-           if(text == 2){
-             this.servesOption2 = true;
-           }
-           if(text == 3){
-             this.servesOption3 = true;
-           }
-       }
-       else{
-         ionicButton.color = 'dark';
-           if(text == 1){
-             this.servesOption1 = false;
-           }
-           if(text == 2){
-             this.servesOption2 = false;
-           }
-           if(text == 3){
-             this.servesOption3 = false;
-           }
-       }  
-     }
-     btnActivateInfo(ionicButton,text) {
-        if(ionicButton._color === 'dark'){
           ionicButton.color =  'primary';
-          //this.trepOption[text - 1].value = true;
+          this.services[text - 1].value = true;
           this.counter++;
         }
         else{
           ionicButton.color = 'dark';
-          //this.trepOption[text - 1].value = false;
+          this.services[text - 1].value = false;
+          this.counter--;
+        } 
+     }
+     btnActivateInfo(ionicButton,text) {
+        if(ionicButton._color === 'dark'){
+          ionicButton.color =  'primary';
+          this.information[text - 1].value = true;
+          this.counter++;
+        }
+        else{
+          ionicButton.color = 'dark';
+          this.information[text - 1].value = false;
           this.counter--;
         }
       }
@@ -281,6 +267,7 @@ export class ProfilePage {
         var language = localStorage.getItem("language");
         firebase.database().ref('users/' + userId).on('value', function (snapshot) {
             me.trepOption = [];
+            var count = 1;
             for(var i in snapshot.val().tripe){
                     var value = i;
                     if(i == "Home work trip" && language == "FN"){
@@ -301,8 +288,10 @@ export class ProfilePage {
                     var option ={
                         option: value,
                         value: snapshot.val().tripe[i],
+                        optionNumber : count,
                     };
                     me.trepOption.push(option);
+                    count++;
                 
             }
             me.information = [];
@@ -490,7 +479,16 @@ export class ProfilePage {
                 "age":me.age,
                 "status": me.status,
                 "gender": me.gender,
-                "profilePic" : global.USER_IMAGE
+                "profilePic" : global.USER_IMAGE,
+                "tripe" : {
+                  "Home work trip" : me.selectedOption1,
+                  "Tourism" : me.selectedOption2,
+                  "Business tripe" : me.selectedOption3,
+                  "To visit people" :me.selectedOption4,
+                  "Participate to an event" : me.selectedOption5,
+                },
+                "information" : me.information,
+                "services" : me.services,
             });
             var logInUser = {
                 name :  user.name,

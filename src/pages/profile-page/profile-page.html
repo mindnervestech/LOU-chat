@@ -69,7 +69,7 @@
                 <div class="row">
                     <div class="multiple-option">
                         <span *ngFor="let value of information">
-                            <button id="1" #first ion-button color="dark" [ngClass]="{'active': value.value == true}" (click)="btnActivateInfo(first,value.option)">{{value.option}}</button>
+                            <button id="1" #first ion-button color="dark" [ngClass]="{'active': value.value == true}" (click)="btnActivateInfo(first,value.optionNumber)">{{value.option}}</button>
                         </span>
                             <!-- <button id="1" #s ion-button color="dark" (click)="btnActivate(s)">Option_2</button>
                         <button id="1" #t ion-button color="dark" (click)="btnActivate(t)">Option_1</button>
@@ -84,7 +84,7 @@
                 <div class="row">
                     <div class="multiple-option">
                         <span *ngFor="let value of services">
-                            <button id="1" #first ion-button color="dark" [ngClass]="{'active': value.value == true}" (click)="servesBtnActivate(first,value.option)">{{value.option}}</button>
+                            <button id="1" #first ion-button color="dark" [ngClass]="{'active': value.value == true}" (click)="servesBtnActivate(first,value.optionNumber)">{{value.option}}</button>
                         </span>    
                     </div>
                 </div>
