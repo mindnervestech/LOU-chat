@@ -83,7 +83,6 @@ export class loginAndTopicInfo {
             me.user_profilePic = "assets/image/profile.png";
         }else{
           me.nickName = user.name;
-          me.user_profilePic = user.profilePic;
           me.user_profilePic = (user.profilePic != '') ? user.profilePic : "assets/image/profile.png";
         }
       var trainData = me.navParams.data;

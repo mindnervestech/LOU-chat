@@ -157,8 +157,12 @@ export class ProfilePage {
             localStorage.removeItem("GroupKey");
             localStorage.removeItem("GroupId");
             localStorage.removeItem("Group");
-            me.navCtrl.setRoot("OptionPage");
+            //me.navCtrl.setRoot("OptionPage");
+            console.log("network error");
         }else{
+            var groupData = JSON.parse(localStorage.getItem("Group"));
+            var user = JSON.parse(localStorage.getItem("loginUser"));
+            firebase.database().ref('GroupMember/' + groupData.groupId + "/" + user.uid).remove();
             localStorage.removeItem("option");
             localStorage.removeItem("GroupKey");
             localStorage.removeItem("GroupId");
@@ -293,7 +297,7 @@ export class ProfilePage {
             }, function () {
                 var downloadFlyerURL = uploadTask.snapshot.downloadURL;
                 me.userInfo.user_profilePic = downloadFlyerURL;
-                me.profilePhoto = downloadFlyerURL;
+                //me.profilePhoto = downloadFlyerURL;
                 var user = JSON.parse(localStorage.getItem("loginUser"));
                 var userId = user.uid;
                 //var name = user.name;
@@ -377,7 +381,7 @@ export class ProfilePage {
             }, function () {
                 var downloadFlyerURL = uploadTask.snapshot.downloadURL;
                 me.userInfo.user_profilePic = downloadFlyerURL;
-                me.profilePhoto = downloadFlyerURL;
+                //me.profilePhoto = downloadFlyerURL;
                 var userId = firebase.auth().currentUser.uid;
                 /*var usersRef = firebase.database().ref('users');
                 var hopperRef = usersRef.child(userId);
@@ -406,12 +410,12 @@ export class ProfilePage {
                 "age":me.age,
                 "status": me.status,
                 "gender": me.gender,
-                "profilePic" :me.profilePhoto
+                "profilePic" : global.USER_IMAGE
             });
             var logInUser = {
                 name :  user.name,
                 access_code : user.access_code,
-                profilePic : me.profilePhoto,
+                profilePic : global.USER_IMAGE,
                 uid : user.uid
             }
             localStorage.setItem("loginUser", JSON.stringify(logInUser));
