@@ -270,25 +270,26 @@ export class FriendlistPage {
                   me.getChatMemberDataGroupCheck = false;
                   var groupData  = snapshot.val();
                   me.groupList = [];
-                  var counter = 0;
+                  var counterValue = 0;
                   for (var data in groupData ) {
-                    counter++;  
-                    if(counter <= 3){
+                    me.groupMemberKey.push(data);
                         me.getChatMemberDataChak = true;
-                        me.groupMemberKey.push(data);
-                            firebase.database().ref('users/'+ data).on('value', function (snap) {
+                            firebase.database().ref('users/'+  me.groupMemberKey[counterValue]).on('value', function (snap) {
+                                counterValue++;
                                 if(me.getChatMemberDataChak == true){
-                                    me.getChatMemberDataChak = false;
+                                    //me.getChatMemberDataChak = false;
                                     var value = snap.val();
                                     var profilePic = value ? ((value.profilePic == "") ? 'assets/image/profile.png' : value.profilePic) : 'assets/image/profile.png';
                                     var groupDetail = {
                                         name : value.name.slice(0,2)
                                     };
-                                    me.groupList.push(groupDetail);
+                                    if(counterValue <= 3){
+                                        me.groupList.push(groupDetail);
+                                        console.log(me.groupList);
+                                    }
                                     me.count++;
                                 }
                             }); 
-                        }
                     }  
               }
          });
