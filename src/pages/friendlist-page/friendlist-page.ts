@@ -281,6 +281,7 @@ export class FriendlistPage {
                             }
                         }); 
                     }  
+                    me.getChatMemberDataChak = true;
                 }
                 // setTimeout(() => {
                 //     console.log("me.groupList",me.groupList);
