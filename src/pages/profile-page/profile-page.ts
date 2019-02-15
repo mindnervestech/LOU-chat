@@ -159,7 +159,7 @@ export class ProfilePage {
             if(text == 5){
               this.selectedOption5 = true;
             }
-            this.trepOption[text - 1].value = true;
+            //this.trepOption[text - 1].value = true;
         }
         else{
           ionicButton.color = 'dark';
@@ -178,7 +178,7 @@ export class ProfilePage {
             if(text == 5){
               this.selectedOption5 = false;
             }
-            this.trepOption[text - 1].value = false;
+            //this.trepOption[text - 1].value = false;
         }
       }
 
@@ -476,11 +476,11 @@ export class ProfilePage {
                 "gender": me.gender,
                 "profilePic" : global.USER_IMAGE,
                 "tripe" : {
-                  "Home work trip" : me.selectedOption1,
-                  "Tourism" : me.selectedOption2,
-                  "Business tripe" : me.selectedOption3,
+                  "Business tripe" : me.selectedOption1,
+                  "Home work trip" : me.selectedOption2,
+                  "Participate to an event" : me.selectedOption3,
                   "To visit people" :me.selectedOption4,
-                  "Participate to an event" : me.selectedOption5,
+                  "Tourism" : me.selectedOption5,
                 },
                 "information" : me.information,
                 "services" : me.services,
