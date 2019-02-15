@@ -144,6 +144,10 @@ export class FriendlistPage {
     groupMemberKey: any = new Array();
     userName: string = '';
     count = 0;
+    getChatMemberDataChak = true;
+    chackFriend = true;
+    dismissChek = true;
+
     constructor(public modalCtrl: ModalController,public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
         var me = this;
         me.menu.swipeEnable(true);
@@ -225,13 +229,17 @@ export class FriendlistPage {
     dismiss(data,index){
         var me = this;
         var user = JSON.parse(localStorage.getItem("loginUser"));
+        me.dismissChek = true;
         firebase.database().ref().child('Friends/' + user.uid).orderByChild("name").equalTo(data.name).on('value',function(friend){
-            if(friend.val() == null){
+            if(me.dismissChek == true){
+                me.dismissChek = false;
+                if(friend.val() == null){
 
-            }else{
-                firebase.database().ref().child('Friends/' + user.uid + '/' + data.senderId).update({
-                    access : false
-                });
+                }else{
+                    firebase.database().ref().child('Friends/' + user.uid + '/' + data.senderId).update({
+                        access : false
+                    });
+                }
             }
         })
         
@@ -251,6 +259,7 @@ export class FriendlistPage {
     getChatMemberData(){
         var user = JSON.parse(localStorage.getItem("Group"));
         var me = this;
+        me.getChatMemberDataChak = true;
          firebase.database().ref('GroupMember/'+ user.groupId).on('value', function (snapshot) {
               var groupData  = snapshot.val();
               me.groupList = [];
@@ -260,13 +269,16 @@ export class FriendlistPage {
                 if(counter <= 3){
                     me.groupMemberKey.push(data);
                         firebase.database().ref('users/'+ data).on('value', function (snap) {
-                            var value = snap.val();
+                            if(me.getChatMemberDataChak == true){
+                                me.getChatMemberDataChak = false;
+                                var value = snap.val();
                                 var profilePic = value ? ((value.profilePic == "") ? 'assets/image/profile.png' : value.profilePic) : 'assets/image/profile.png';
                                 var groupDetail = {
                                     name : value.name.slice(0,2)
                                 };
                                 me.groupList.push(groupDetail);
                                 me.count++;
+                            }
                         }); 
                     }  
                 }
@@ -420,7 +432,7 @@ export class FriendlistPage {
         var userID = localStorage.getItem("userId");
         var language = localStorage.getItem("language");
         var me = this;
-        var chackFriend = true;
+        me.chackFriend = true;
         firebase.database().ref('users/'+ userID).on('value',function(user){
             var myData = user.val();
             var push = "true";
@@ -433,8 +445,8 @@ export class FriendlistPage {
                 if(friends == null){
 
                 }else{
-                    if(chackFriend){
-                        chackFriend = false;
+                    if(me.chackFriend){
+                        me.chackFriend = false;
                         for(var value in friends){
                             firebase.database().ref('Friends/'+ userID + '/' + value).update({
                                 access : false
