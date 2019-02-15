@@ -86,10 +86,7 @@ export class ProfilePage {
    public selectedOption3:boolean = false;
    public selectedOption4:boolean = false;
    public selectedOption5:boolean = false;
-   public servesOption1:boolean = false;
-   public servesOption2:boolean = false;
-   public servesOption3:boolean = false;
-   counter = 0;
+
     constructor(public CommonProvider: CommonProvider, public _zone: NgZone, public events: Events, public navCtrl: NavController, public sqlite: SQLite, public navParams: NavParams, public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController, private camera: Camera, private clipboard: Clipboard,private network: Network) {
         //var user = firebase.auth().currentUser;
@@ -162,6 +159,7 @@ export class ProfilePage {
             if(text == 5){
               this.selectedOption5 = true;
             }
+            this.trepOption[text - 1].value = true;
         }
         else{
           ionicButton.color = 'dark';
@@ -180,6 +178,7 @@ export class ProfilePage {
             if(text == 5){
               this.selectedOption5 = false;
             }
+            this.trepOption[text - 1].value = false;
         }
       }
 
@@ -187,24 +186,20 @@ export class ProfilePage {
         if(ionicButton._color === 'dark'){
           ionicButton.color =  'primary';
           this.services[text - 1].value = true;
-          this.counter++;
         }
         else{
           ionicButton.color = 'dark';
           this.services[text - 1].value = false;
-          this.counter--;
         } 
      }
      btnActivateInfo(ionicButton,text) {
         if(ionicButton._color === 'dark'){
           ionicButton.color =  'primary';
           this.information[text - 1].value = true;
-          this.counter++;
         }
         else{
           ionicButton.color = 'dark';
           this.information[text - 1].value = false;
-          this.counter--;
         }
       }
     // btnActivate(ionicButton) {
