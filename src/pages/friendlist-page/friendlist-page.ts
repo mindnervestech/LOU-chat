@@ -475,13 +475,13 @@ export class FriendlistPage {
                 }
             });
              firebase.database().ref('GroupMember/'+ groupInfo.groupId).on('value',function(Alluser){
-                 var GroupUserData = Alluser.val();
-                 me.tripeUsersList = [];
-                 me.usersKey = [];
-                 var groupMemberCount = Alluser.numChildren();
-                 var count = 1;
-                 var keyCount = 0;
                  if(me.checkGroupMemberForMatch == true){
+                     var GroupUserData = Alluser.val();
+                     me.tripeUsersList = [];
+                     me.usersKey = [];
+                     var groupMemberCount = Alluser.numChildren();
+                     var count = 1;
+                     var keyCount = 0;
                     me.checkGroupMemberForMatch = false;
                     for(var data in GroupUserData){
                         me.userMatchCheck = true;
