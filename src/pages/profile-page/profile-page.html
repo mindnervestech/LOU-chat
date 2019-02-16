@@ -1,10 +1,10 @@
 <ion-header>
-         <ion-navbar>
-                         <button ion-button menuToggle>
-             <ion-icon name='menu'></ion-icon>
-       </button>
-      <ion-title  class="title">Your Profile</ion-title>   
-    </ion-navbar>
+    <ion-toolbar color="light" class="profile-page">
+        <ion-row>
+            <ion-icon name="arrow-back" (click)="goTo()"></ion-icon>
+            <ion-title  class="title">Your Profile</ion-title>
+        </ion-row>       
+    </ion-toolbar>
  </ion-header>
     
  <ion-content padding>

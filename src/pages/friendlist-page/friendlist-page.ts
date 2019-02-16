@@ -433,7 +433,7 @@ export class FriendlistPage {
                         me.usersList.push(userinfo);      
                  }
                   me.usersList.sort(function(a,b){return b.checkDate - a.checkDate});
-                 me.checkForEntery = false;
+                // me.checkForEntery = false;
              }
          });
     }

@@ -11,12 +11,12 @@ declare var firebase;
     selector: 'page-show-profile',
     template: `
     <ion-header>
-        <ion-navbar>
-            <button ion-button menuToggle>
-                <ion-icon name='menu'></ion-icon>
-            </button>
-            <ion-title  class="title">Profile</ion-title>   
-        </ion-navbar>
+        <ion-toolbar color="light" class="chat-room">
+            <ion-row>
+                <ion-icon name="arrow-back" (click)="goTo()"></ion-icon>
+                <ion-title  class="title">Profile</ion-title>   
+            </ion-row>    
+        </ion-toolbar>
     </ion-header>
 
     <ion-content>
@@ -174,7 +174,9 @@ export class ShowProfilePage {
         });
         me.navCtrl.push("ChatPage",me.navParams.data);
     }
-
+    goTo(){
+        this.navCtrl.setRoot("ChatRoomMembers");
+    }
     imageTap(src) {
         let modal = this.modalCtrl.create("ImagePopupPage", { imageSrc: src });
         modal.present();

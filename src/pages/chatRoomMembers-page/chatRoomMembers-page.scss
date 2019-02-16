@@ -3,6 +3,22 @@
     display: inline-block;
     float: left;
 }
+.chat-room{
+     .toolbar-background-md {
+        background: #7bd7e0 !important;
+      }
+      .toolbar-content ion-icon {
+        display: inline-block;
+        font-size: 31px;
+        color: #fff;
+        margin-left: 13px;
+        margin-right: 15px;
+    }
+      .toolbar-title-md {
+        color: #ffffff !important;
+    }
+}
+
 .title-item{
         background:transparent;
         color:white;

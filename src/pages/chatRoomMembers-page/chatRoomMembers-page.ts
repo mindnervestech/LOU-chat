@@ -13,12 +13,12 @@ declare var firebase;
    selector: 'ChatRoomMembers',
     template: `
     <ion-header>
-        <ion-navbar>
-            <!--<button ion-button icon-only class="back-btn" (click)="goToFriendPage()">
-                <ion-icon name='arrow-back'></ion-icon>
-            </button>-->
-            <ion-title  class="title">Chat Room Members</ion-title>
-        </ion-navbar>
+        <ion-toolbar color="light" class="chat-room">
+            <ion-row>
+                <ion-icon name="arrow-back" (click)="goTo()"></ion-icon>
+                <ion-title  class="title">Chat Room Members</ion-title>
+            </ion-row>       
+        </ion-toolbar>
     </ion-header>
     <ion-content>
         
@@ -69,6 +69,9 @@ export class ChatRoomMembers {
     ionViewDidEnter() {
         
     }
+    goTo(){
+        this.navCtrl.setRoot("FriendlistPage");
+    }
     goToFriendPage(){
          this.navCtrl.push(global.backPage);
     }
@@ -106,6 +109,6 @@ export class ChatRoomMembers {
     }
     showProfile(item) {
         global.backPage = "ChatRoomMembers";
-        this.navCtrl.setRoot("ShowProfilePage", item);
+        this.navCtrl.push("ShowProfilePage", item);
     }
 }
