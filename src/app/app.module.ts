@@ -17,6 +17,8 @@ import { CommonProvider } from '../providers/common/common';
 import { LoadingProvider } from '../providers/loading/loading';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { Firebase } from '@ionic-native/firebase/ngx';
+//import { Firebase } from '@ionic-native/firebase/ngx';
 
 const cloudSettings: CloudSettings = {
  'core': {
@@ -51,7 +53,8 @@ const cloudSettings: CloudSettings = {
     CommonProvider,
     LoadingProvider,
     GooglePlus,
-    Facebook
+    Facebook,
+    Firebase,
   ]
 })
 export class AppModule { }

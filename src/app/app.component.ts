@@ -15,6 +15,7 @@ import { Network } from '@ionic-native/network';
 import { Facebook /*FacebookLoginResponse*/ } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
 import {OptionPage} from '../pages/option/option';
+import { Firebase } from '@ionic-native/firebase/ngx';
 
 declare var firebase;
 declare var senderId: any; // senderId
@@ -116,8 +117,13 @@ export class MyApp {
         accessCode: ""
     };
     base64Image: any;
-    constructor(private fb: Facebook,public googlePlus: GooglePlus, /*public _DomSanitizer: DomSanitizer,*/ private network: Network, public deploy: Deploy, private push: Push, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private _zone: NgZone, public events: Events, public platform: Platform, private storage: Storage, public statusBar: StatusBar, public actionSheetCtrl: ActionSheetController, public splashScreen: SplashScreen, private clipboard: Clipboard, private camera: Camera, private sqlite: SQLite) {
+    constructor(private fb: Facebook,public googlePlus: GooglePlus, /*public _DomSanitizer: DomSanitizer,*/ private network: Network, public deploy: Deploy, private push: Push, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private _zone: NgZone, public events: Events, public platform: Platform, private storage: Storage, public statusBar: StatusBar, public actionSheetCtrl: ActionSheetController, public splashScreen: SplashScreen, private clipboard: Clipboard, private camera: Camera, private sqlite: SQLite,private firebasepush: Firebase) {
+
         this.initializeApp();
+
+        this.pushSetup();
+       /// this.getFirebasetoken();
+       // this.getFirebaseNottification();
 
           /***********/
         // used for an example of ngFor and navigation
@@ -175,6 +181,19 @@ export class MyApp {
             });
         }
          
+    }
+
+
+    getFirebasetoken(){
+        this.firebasepush.getToken()
+        .then(token => console.log(`The token is ${token}`)) // save the token server-side and use it to push notifications to this device
+        .catch(error => console.error('Error getting token', error));
+    }
+
+
+    getFirebaseNottification(){
+        this.firebasepush.onNotificationOpen()
+         .subscribe(data => console.log(`User opened a notification ${data}`));
     }
 
     initializeApp() {
@@ -516,4 +535,57 @@ export class MyApp {
             console.log(err);
         });
     }
+
+
+
+
+    pushSetup(){
+        const options: PushOptions = {
+          android: {
+            senderID:'433761680362',
+           // senderID:'573991717698'
+           // icon: "resources/android/icon/drawable-xhdpi-icon.png"
+             // icon: 'assets/imgs/ic_logo.png' ,
+              sound: 'true',
+              icon: 'icon',
+              
+          },
+          ios: {
+              alert: 'true',
+              badge: true,
+              sound: 'false'
+          },
+          // windows: {},
+          // browser: {
+          //     pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+          // }
+       };
+       
+       const pushObject: PushObject = this.push.init(options);
+       
+       
+       pushObject.on('notification').subscribe((notification: any) =>  {
+       console.log('Received a notification', notification)
+       //this.getAllUnreadNotification();
+       //var count=LandingPage.notiCount;
+       //LandingPage.notiCount=count+1;
+       
+      //  if(LandingPage.notiCount==0){
+      //    LandingPage.notiCount==1;
+      //  }else{
+      //    var count=LandingPage.notiCount;
+      //    LandingPage.notiCount=count+1;
+      //  }
+      });
+       
+       pushObject.on('registration').subscribe((registration: any) => {
+         console.log('Device registered******', registration)
+        localStorage.setItem("AppId",registration.registrationId);
+        // this.fcmToken=registration;
+        // console.log("FCM**Token**",this.fcmToken.registrationId);
+        // localStorage.setItem('FcmToken',this.fcmToken.registrationId);
+      });
+       
+       pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+       }
 }

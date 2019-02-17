@@ -68,6 +68,7 @@ export class ProfilePage {
     private userInfo: any;
     user_gender: string;
     user_status: string;
+    tempProfile: string;
     captureDataUrl: string = "assets/image/sea.jpg";
     base64Image: any;
     profilePhoto: string = "assets/image/sea.jpg";
@@ -129,7 +130,9 @@ export class ProfilePage {
         this.loadUserProfileData();
         this.profilePage = true;
     }
-    
+    goTo(){
+        this.navCtrl.setRoot("FriendlistPage"); 
+    }
     chatPage(){
         this.navCtrl.push("FriendlistPage");   
     }
@@ -306,6 +309,7 @@ export class ProfilePage {
                     };
                     me.trepOption.push(option);
                     count++;
+                
             }
             me.information = [];
             me.services = [];
@@ -379,7 +383,7 @@ export class ProfilePage {
             }, function () {
                 var downloadFlyerURL = uploadTask.snapshot.downloadURL;
                 me.userInfo.user_profilePic = downloadFlyerURL;
-                //me.profilePhoto = downloadFlyerURL;
+                me.tempProfile = downloadFlyerURL;
                 var user = JSON.parse(localStorage.getItem("loginUser"));
                 var userId = user.uid;
                 //var name = user.name;
@@ -447,6 +451,7 @@ export class ProfilePage {
             // imageData is a base64 encoded string
             me.base64Image = "data:image/jpeg;base64," + imageData;
             me.profilePhoto = me.base64Image;
+          
             //this.captureDataUrl=this.base64Image;
             var user = JSON.parse(localStorage.getItem("loginUser"));
             /*var logInUser = {
@@ -463,6 +468,7 @@ export class ProfilePage {
             }, function () {
                 var downloadFlyerURL = uploadTask.snapshot.downloadURL;
                 me.userInfo.user_profilePic = downloadFlyerURL;
+                me.tempProfile = downloadFlyerURL;
                 //me.profilePhoto = downloadFlyerURL;
                 var userId = firebase.auth().currentUser.uid;
                 /*var usersRef = firebase.database().ref('users');
@@ -492,7 +498,7 @@ export class ProfilePage {
                 "age":me.age,
                 "status": me.status,
                 "gender": me.gender,
-                "profilePic" : global.USER_IMAGE,
+                "profilePic" : me.tempProfile,
                 "tripe" : {
                   "Business tripe" : me.selectedOption1,
                   "Home work trip" : me.selectedOption2,
@@ -502,23 +508,27 @@ export class ProfilePage {
                 },
                 "information" : me.information,
                 "services" : me.services,
+            }).then(()=>{
+                localStorage.removeItem("loginUser");
+                var logInUser = {
+                    name :  user.name,
+                    access_code : user.access_code,
+                    profilePic :me.tempProfile,
+                    uid : user.uid
+                }
+                global.USER_IMAGE = me.tempProfile
+                localStorage.setItem("loginUser", JSON.stringify(logInUser));
+                
+                let alert = me.alertCtrl.create({ subTitle: 'Profile updated successfully', buttons: ['OK'] });
+                alert.present();
             });
-            var logInUser = {
-                name :  user.name,
-                access_code : user.access_code,
-                profilePic : global.USER_IMAGE,
-                uid : user.uid
-            }
-            localStorage.setItem("loginUser", JSON.stringify(logInUser));
-            
-            let alert = me.alertCtrl.create({ subTitle: 'Profile updated successfully', buttons: ['OK'] });
-            alert.present();
-            me.PublishEventUserUpdate();
+           
+            //me.PublishEventUserUpdate();
         }
     }
     PublishEventUserUpdate() {
         var me = this;
-        me.events.publish("LOAD_USER_UPDATE", "");
+       // me.events.publish("LOAD_USER_UPDATE", "");
     }
     Copy() {
         var me = this;

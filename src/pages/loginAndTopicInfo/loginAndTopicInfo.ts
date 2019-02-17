@@ -264,7 +264,6 @@ export class loginAndTopicInfo {
   	newLoginUser(){
   		var me = this;
   		localStorage.setItem("value", "true");
-
   		if(me.nickName != ""){
   			me.LoadingProvider.startLoading();
 
@@ -276,6 +275,7 @@ export class loginAndTopicInfo {
             if(me.base64Image != undefined){
               phofilePic = me.base64Image;
             }
+            var app = localStorage.getItem("AppId");
             var profilePhoto = (me.base64Image == undefined) ? 'assets/image/profile.png' : me.base64Image;
             var access_code = me.CommonProvider.randomString();
             me.servesOption[0].value = me.navParams.data.servesOption1;
@@ -290,7 +290,7 @@ export class loginAndTopicInfo {
                gender:"",
                age: "",
                groupName : me.groupInfo.groupName,
-               pushToken: "123456",
+               pushToken: app,
               tripe : {
                 "Home work trip" : me.navParams.data.selectedOption1,
                 "Tourism" : me.navParams.data.selectedOption2,

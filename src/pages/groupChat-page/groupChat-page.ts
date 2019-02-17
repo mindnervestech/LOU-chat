@@ -1,6 +1,7 @@
 import { Component, NgZone, ViewChild,HostListener, ElementRef } from '@angular/core';
 import {  Content, IonicPage, NavController, NavParams, MenuController, ToastController, ActionSheetController, Platform, ModalController} from 'ionic-angular';
 import { CommonProvider } from '../../providers/common/common';
+import { PushProvider } from '../../providers/push/push';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Network } from '@ionic-native/network';
 import { Camera } from '@ionic-native/camera';
@@ -115,7 +116,9 @@ export class GroupChatPage {
     private limit = 10;
     loadingmessageCounter: any = 0;
     sqlDb: SQLiteObject;
-    constructor( public _DomSanitizer: DomSanitizer,public modalCtrl: ModalController,private camera: Camera, public LoadingProvider: LoadingProvider,public platform: Platform,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
+    pushTokenId: any = [];
+    capitalize: string;
+    constructor( public _DomSanitizer: DomSanitizer,public modalCtrl: ModalController,private camera: Camera, public LoadingProvider: LoadingProvider,public platform: Platform,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams, public PushProvider: PushProvider) {
         var me = this;
         me.menu.swipeEnable(true);
         var user = JSON.parse(localStorage.getItem("loginUser"));
@@ -280,6 +283,12 @@ export class GroupChatPage {
     }
     }
 
+    strip(html) {
+      var tmp = document.createElement("DIV");
+      tmp.innerHTML = html;
+      return tmp.textContent || tmp.innerText || "";
+    }
+
     sendMessage(type){
       var date = new Date();
       //in case of network type none means no internet connection then user can not send message to other.
@@ -325,9 +334,44 @@ export class GroupChatPage {
                   lastDate: dateCreated,
                   lastMessage: lastDisplaymessage
                 });
+                firebase.database().ref('users/'+ i).on('value',function(pushToken){
+                  //userToken.push(pushToken.val().pushToken);
+                  var group = JSON.parse(localStorage.getItem("Group"));
+                  var title = "You have new message from" + group.groupName;
+                  var login = JSON.parse(localStorage.getItem("loginUser"));
+                  var body = me.strip(lastDisplaymessage);
+                  me.PushProvider.PushNotification(pushToken.val().pushToken, title, body);
+                });
               }
+            })
+            .then(function () {
+              /* var group = JSON.parse(localStorage.getItem("option"));
+              var login = JSON.parse(localStorage.getItem("loginUser"));
+              console.log("Message send successfully",group.tripeValue);
+              var title = "You have new Msg from" + group.tripeValue;
+              var body = login.name + ' ' +  me.strip(lastDisplaymessage);
+              console.log("body",body);
+              var data = JSON.parse(localStorage.getItem("Group"));
+              firebase.database().ref('GroupMember/'+ data.groupId).on('value',function(userData){
+                // me.pushTokenId = userData.val().pushToken;
+                console.log("++++++++++",userData.val());
+                var userToken = [];
+                for(var i in userData.val()){
+                  console.log("i ", i, " --- ", user.uid);
+                  if(i != user.uid){
+                    console.log("1234");
+                    firebase.database().ref('users/'+ i).on('value',function(pushToken){
+                      //userToken.push(pushToken.val().pushToken);
+                      //me.PushProvider.PushNotification(pushToken.val().pushToken, title, body);
+                    });
+                  }
+                }     
+                console.log("pushToken",userToken);
+                me.PushProvider.PushNotification(userToken, title, body);
+              });
+              me.PushProvider.PushNotification(me.senderUser.RegId, title, body); */
+            
             });
-
             firebase.database().ref('GroupMember/' + me.groupData.groupId + '/' + userId).once('value').then(function (snapshot) {
               var friendRef = firebase.database().ref('GroupMember/' + me.groupData.groupId);
               friendRef.child(userId).update({

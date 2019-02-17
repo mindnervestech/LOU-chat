@@ -70,7 +70,7 @@ declare var firebase;
           </p>
         </ion-row>
         <ion-row *ngIf="message.sender_id == senderUser.senderId" id="quote-{{message.mkey}}">
-          <p class="left-mtime"><span (click)="showProfile(senderUser)"><img  [src]="_DomSanitizer.bypassSecurityTrustUrl(senderUser.profilePic)"/> <span class="sender-name">{{senderUser.name}}</span>, {{ message.time}}</span></p>
+          <p class="left-mtime"><span (click)="showProfile(senderUser)"><span *ngIf="senderUser.profilePic != 'assets/image/profile.png'"><img  [src]="_DomSanitizer.bypassSecurityTrustUrl(senderUser.profilePic)"/></span><span class="group-text-image" *ngIf="senderUser.profilePic == 'assets/image/profile.png'">{{textprofile}}</span> <span class="sender-name">{{senderUser.name}}</span>, {{ message.time}}</span></p>
           <p class="the-message left-msg" style="width:100%;"><span class="myleft"><span    [innerHTML]="message.message"></span></span>
           </p>
         </ion-row>
@@ -172,9 +172,11 @@ export class ChatPage {
   loadingmessageCounter: any = 0;
   userImage: any;
   textprofile: string = '';
-
+  pushName: string = '';
+  pushId: string = '';
   constructor(public modalCtrl: ModalController, private camera: Camera, public LoadingProvider: LoadingProvider, public platform: Platform, public CommonProvider: CommonProvider, public _DomSanitizer: DomSanitizer, public toastCtrl: ToastController, public sqlite: SQLite, private network: Network, public PushProvider: PushProvider, public element: ElementRef, public actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public _zone: NgZone, public navParams: NavParams, public alertCtrl: AlertController) {
     var user = JSON.parse(localStorage.getItem("loginUser"));
+    this.pushName = user.name;
     var me = this;
     if (!user) {
       me.navCtrl.setRoot("OptionPage");
@@ -205,6 +207,11 @@ export class ChatPage {
     me.myuserid = userId;
     me.senderUser = me.navParams.data;
     me.textprofile = me.navParams.data.name.slice(0,2);
+    firebase.database().ref('users/'+ me.navParams.data.key).on('value',function(userData){
+      var a = userData.val();
+      console.log("++++++++++",a);
+      me.pushId = a.pushToken;
+    });
     console.log("me.navParams.data",me.navParams.data);
     var block1;
     block1 = me.senderUser.block;
@@ -408,7 +415,7 @@ export class ChatPage {
     var date = new Date();
     //in case of network type none means no internet connection then user can not send message to other.
     if (me.network.type == "none") {
-      let toast = this.toastCtrl.create({
+      let toast = me.toastCtrl.create({
         message: 'No internet connection.',
         duration: 3000,
         position: 'top'
@@ -422,14 +429,13 @@ export class ChatPage {
     var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     //var mylastDate = me.getLastDate(dateCreated);
     var senderName = (global.USER_NAME == "") ? userEmail : global.USER_NAME;
-    if (this.message != "") {
-      var lastDisplaymessage = this.message.replace(/\r?\n/g, '<br />');;
-      this.message = "";
+    if (me.message != "") {
+      var lastDisplaymessage = me.message.replace(/\r?\n/g, '<br />');;
+      me.message = "";
       let ta = document.getElementById('contentMessage');
       ta.style.overflow = "hidden";
       ta.style.height = "auto";
       ta.style.height = "45px";
-
       firebase.database().ref().child('Chats/' + userId + "/" + me.senderUser.senderId).push({
         DateCreated: dateCreated,
         message: lastDisplaymessage,
@@ -453,10 +459,10 @@ export class ChatPage {
                 lastMessage: lastDisplaymessage
               }).then(function () {
                 console.log("Message send successfully");
-                var title = "You have new Msg from " + senderName;
+                var title = "You have new message from " + me.pushName;
+                console.log("title",title);
                 var body = me.strip(lastDisplaymessage);
-                 
-                me.PushProvider.PushNotification(me.senderUser.RegId, title, body);
+                me.PushProvider.PushNotification(me.pushId, title, body);
               });
 
             });
@@ -634,9 +640,6 @@ export class ChatPage {
       this.isBusy = false
     );
   }
-
-
-
 
   showFriendOptions(user) {
     //by this function the currentUser can view the profile of connected user. and user can block and unblock to the connected user.

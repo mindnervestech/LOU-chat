@@ -72,8 +72,8 @@ declare var firebase;
                     </div>    
                 </ion-avatar>
                 <div (click)='groupMessageBox(data)'>                
-                    <h2>{{ data.groupName }} </h2> 
-                    <p (click)='groupMessageBox(data)'>{{ data.lastMessage }} </p>
+                    <h2>{{ data.groupName }}</h2> 
+                    <p style="margin-top: 4px !important;">{{ data.lastMessage }}</p>
                 </div>               
                 <div item-right (click)='groupMessageBox(data)'>
                     <span class="mytime" >{{ data.lastDate }}</span>
