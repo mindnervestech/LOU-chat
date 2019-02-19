@@ -27,8 +27,10 @@ declare var firebase;
             </button>
             <ion-title  class="title">{{groupData.groupName}}</ion-title>
             <div>
-              <button ion-button icon-only class="btn" (click)="goToChatRoomMember()" tappable>
-                <ion-icon name="options"></ion-icon>
+              <button ion-button icon-only class="btn circle" (click)="goToChatRoomMember()" tappable>
+                <ion-icon name="radio-button-off"></ion-icon>
+                <ion-icon name="radio-button-off"></ion-icon>
+                <ion-icon name="radio-button-off"></ion-icon>
               </button>
             </div>
         </ion-navbar>
@@ -52,7 +54,7 @@ declare var firebase;
               <p class="the-message right-msg" style="width:100%;"><span class="myright"><span  [innerHTML]="message.message" ></span></span></p>
             </ion-row>
             <ion-row *ngIf="message.sender_id != myuserid" id="quote-{{message.mkey}}">
-              <p class="left-mtime"><span> <span *ngIf="message.profilePic != 'assets/image/profile.png'"><img (click)="imageTap(message.profilePic)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.profilePic)"/></span><span (click)="imageTap(message.profilePic)" class="group-text-image" *ngIf="message.profilePic == 'assets/image/profile.png'">{{message.slice}}</span><span class="sender-name">{{message.name}}, </span><span>{{message.time}}</span></span></p>
+              <p class="left-mtime"><span> <span *ngIf="message.profilePic != 'assets/image/profile.png'"><img (click)="imageTap(message.profilePic)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.profilePic)"/></span><span (click)="imageTap(message.profilePic)" class="group-text-image" *ngIf="message.profilePic == 'assets/image/profile.png'"><span>{{message.slice}}</span></span><span class="sender-name">{{message.name}}, </span><span>{{message.time}}</span></span></p>
               <p class="the-message left-msg" style="width:100%;">
                 <span class="myleft"><span [innerHTML]="message.message"></span></span>
               </p>
@@ -65,7 +67,7 @@ declare var firebase;
           </p>
         </ion-row>
         <ion-row *ngIf="message.sender_id != myuserid" id="quote-{{message.mkey}}">
-          <p class="left-mtime"><span> <span *ngIf="message.profilePic != 'assets/image/profile.png'"><img (click)="imageTap(message.profilePic)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.profilePic)"/></span><span (click)="imageTap(message.profilePic)" class="group-text-image" *ngIf="message.profilePic == 'assets/image/profile.png'">{{message.slice}}</span><span class="sender-name">{{message.time}}</span></span></p>  
+          <p class="left-mtime"><span> <span *ngIf="message.profilePic != 'assets/image/profile.png'"><img (click)="imageTap(message.profilePic)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.profilePic)"/></span><span (click)="imageTap(message.profilePic)" class="group-text-image" *ngIf="message.profilePic == 'assets/image/profile.png'"><span>{{message.slice}}</span></span><span class="sender-name">{{message.time}}</span></span></p>  
           <p class="the-message" style="width:100%;"><span class="myleft-image"><span>  <img (click)="imageTap(message.message)" [src]="_DomSanitizer.bypassSecurityTrustUrl(message.message)"/></span></span>
           </p>
         </ion-row>
@@ -75,24 +77,38 @@ declare var firebase;
   </ion-list>
     </div>
 </ion-content>
-
+<button ion-button class="emoji"
+(click)="toggled = !toggled"
+[(emojiPickerIf)]="toggled"
+[emojiPickerDirection]="'bottom' || 'top' || 'left' || 'right'"
+(emojiPickerSelect)="handleSelection($event)">
+  <ion-icon name="md-happy"></ion-icon>
+</button>
 <ion-footer>
 	<ion-toolbar *ngIf="blockUser" class="blocked-message group-chat">
 		<p text-center>{{ blockMsg }}</p>
 	</ion-toolbar>
-	<ion-toolbar *ngIf="!blockUser" class="group-chat">
-		<textarea contenteditable="true" placeholder='Type your message here' [(ngModel)]="message" (click)='inputClick()' class="editableContent"
-			placeholder='Type your message here' id="contentMessage"></textarea>
-
+  <ion-toolbar *ngIf="!blockUser" class="group-chat">
+    <ion-item class="chat-group">
+      <textarea rows="2" contenteditable="true" placeholder='Type your message here' [(ngModel)]="message" (click)='inputClick()' class="editableContent"
+        placeholder='Type your message here' id="contentMessage"></textarea>
+        <!--<button ion-button class="emoji"
+        (click)="toggled = !toggled"
+        [(emojiPickerIf)]="toggled"
+        [emojiPickerDirection]="'bottom' || 'top' || 'left' || 'right'"
+        (emojiPickerSelect)="handleSelection($event)">
+          <ion-icon name="md-happy"></ion-icon>
+        </button>-->
+        <button ion-button style="color:white;" class="attach-file" icon-right (click)='presentActionSheet()' tappable>
+          <ion-icon name='attach'></ion-icon>
+        </button>
+    </ion-item>    
 		<ion-buttons end>
-     <button ion-button style="color:white;" icon-right (click)='presentActionSheet()' tappable>
-                    <ion-icon name='attach'></ion-icon>
-                </button>
 			<button class="send-btn" ion-button icon-right color='primary' tappable (click)='sendMessage("text")' tappable>            
         <ion-icon name='send'></ion-icon>
       </button>
-		</ion-buttons>
-	</ion-toolbar>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-footer>
     `,
 })
@@ -118,7 +134,9 @@ export class GroupChatPage {
     sqlDb: SQLiteObject;
     pushTokenId: any = [];
     capitalize: string;
-    constructor( public _DomSanitizer: DomSanitizer,public modalCtrl: ModalController,private camera: Camera, public LoadingProvider: LoadingProvider,public platform: Platform,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams, public PushProvider: PushProvider) {
+    toggled: boolean = false;
+    chatMessage: string;
+    constructor( public element:ElementRef,public _DomSanitizer: DomSanitizer,public modalCtrl: ModalController,private camera: Camera, public LoadingProvider: LoadingProvider,public platform: Platform,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams, public PushProvider: PushProvider) {
         var me = this;
         me.menu.swipeEnable(true);
         var user = JSON.parse(localStorage.getItem("loginUser"));
@@ -141,6 +159,7 @@ export class GroupChatPage {
         me.setScroll();
         firebase.database().ref().child('users/'+userId).on('value',function(user){
           me.usersData = user.val();
+          console.log("me.usersData",me.usersData.created);
         });
         firebase.database().ref().child('GroupChats/' + me.groupData.groupId).limitToLast(me.limit).off("child_added");
       firebase.database().ref().child('GroupChats/' +  me.groupData.groupId).limitToLast(me.limit).on("child_added", function (messages) {
@@ -152,7 +171,8 @@ export class GroupChatPage {
         var date = new Date(dateValue[0], dateValue[1] - 1, dateValue[2], timeValue[0], timeValue[1], timeValue[2], 0);
         var time = me.CommonProvider.formatAMPM(date);
         //me.ChatKeys.push(messages.key);
-        
+        console.log("time",time);
+        console.log("date",date);
         me._zone.run(() => me.messagesList.push({
           'DateCreated': date.toLocaleDateString(),
           'time': time,
@@ -173,6 +193,10 @@ export class GroupChatPage {
       });
     }
 
+    handleSelection(event) {
+      this.message += event.char;
+    }
+
     adjust(): void {
       //  let ta = this.element.nativeElement.querySelector("textarea");
       let ta = document.getElementById('contentMessage');
@@ -185,6 +209,15 @@ export class GroupChatPage {
           ta.style.height = "120px";
           ta.style.overflow = "scroll";
         }
+      }
+      let textArea = this.element.nativeElement.getElementsByTagName('textarea')[0];
+      textArea.style.height = 'auto';
+      if (textArea.scrollHeight < 100) {
+        textArea.style.height = textArea.scrollHeight + "px";
+        textArea.style.overflowY = 'hidden';
+      } else {
+        textArea.style.height = "100px";
+        textArea.style.overflowY = 'auto';
       }
     }
 
@@ -336,11 +369,14 @@ export class GroupChatPage {
                 });
                 firebase.database().ref('users/'+ i).on('value',function(pushToken){
                   //userToken.push(pushToken.val().pushToken);
+                  console.log("pushToken",pushToken.val());
                   var group = JSON.parse(localStorage.getItem("Group"));
                   var title = "You have new message from" + group.groupName;
                   var login = JSON.parse(localStorage.getItem("loginUser"));
                   var body = me.strip(lastDisplaymessage);
-                  me.PushProvider.PushNotification(pushToken.val().pushToken, title, body);
+                  if(user.name != pushToken.val().name){
+                    me.PushProvider.PushNotification(pushToken.val().pushToken, title, body);
+                  }  
                 });
               }
             })
@@ -384,7 +420,7 @@ export class GroupChatPage {
         });
       }
     }
-
+    
     cameraUpload(){
         const filename = Math.floor(Date.now() / 1000);
     var me = this;

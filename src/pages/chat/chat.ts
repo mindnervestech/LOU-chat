@@ -35,7 +35,7 @@ declare var firebase;
 					<img  [src]="_DomSanitizer.bypassSecurityTrustUrl(senderUser.profilePic)"/>
 				</ion-avatar>
         <ion-avatar  *ngIf="senderUser.profilePic == 'assets/image/profile.png'" item-start (click)="showProfile(senderUser)" tappable class="prof-icon chat-pro">
-					{{textprofile}}
+					<span>{{textprofile}}</span>
 				</ion-avatar>
         	<!--<ion-img  item-start  [src]="senderUser.profilePic" (click)="showProfile(senderUser)" tappable></ion-img>-->
 
@@ -121,18 +121,31 @@ declare var firebase;
 	</ion-list> -->
 	</div>
 </ion-content>
+<button ion-button class="emoji"
+(click)="toggled = !toggled"
+[(emojiPickerIf)]="toggled"
+[emojiPickerDirection]="'bottom' || 'top' || 'left' || 'right'"
+(emojiPickerSelect)="handleSelection($event)">
+  <ion-icon name="md-happy"></ion-icon>
+</button>
 <ion-footer>
 	<ion-toolbar class="chat-footer" *ngIf="blockUser" class="blocked-message">
 		<p text-center>{{ blockMsg }}</p>
 	</ion-toolbar>
 	<ion-toolbar *ngIf="!blockUser" class="chat-footer">
-		<textarea contenteditable="true" placeholder='Type your message here' [(ngModel)]="message" (click)='inputClick()' class="editableContent"
-			placeholder='Type your message here' id="contentMessage"></textarea>
-
+		<!--<textarea contenteditable="true" placeholder='Type your message here' [(ngModel)]="message" (click)='inputClick()' class="editableContent"
+			placeholder='Type your message here' id="contentMessage"></textarea>-->
+      <ion-item class="chat-group">
+      <textarea contenteditable="true" placeholder='Type your message here' [(ngModel)]="message" (click)='inputClick()' class="editableContent"
+        placeholder='Type your message here' id="contentMessage"></textarea>
+        <button ion-button style="color:white;" class="attach-file" icon-right (click)='presentActionSheet()' tappable>
+          <ion-icon name='attach'></ion-icon>
+        </button>
+    </ion-item>
 		<ion-buttons end>
-     <button ion-button style="color:white;" icon-right (click)='presentActionSheet()' tappable>
+     <!--<button ion-button style="color:white;" icon-right (click)='presentActionSheet()' tappable>
                     <ion-icon name='attach'></ion-icon>
-                </button>
+                </button>-->
 			<button class="send-btn" ion-button icon-right color='primary' tappable (click)='sendMessage("text")' tappable>            
         <ion-icon name='send'></ion-icon>
       </button>

@@ -92,12 +92,9 @@ export class OptionPage {
       servesOption3 : this.servesOption3,
     };
     var me = this;
-    if(this.servesOption1 == false && this.servesOption2 == false && this.servesOption3 == false){
-      let alert = me.alertCtrl.create({ subTitle: "Please select at list one option", buttons: ['OK'] });
-      alert.present();
-    }else{
+    
       if(this.selectedOption1 == false && this.selectedOption2 == false && this.selectedOption3 == false && this.selectedOption4 == false){
-        let alert = me.alertCtrl.create({ subTitle: "Please select at list one option", buttons: ['OK'] });
+        let alert = me.alertCtrl.create({ subTitle: "Please select at list one trip purpose", buttons: ['OK'] });
         alert.present();
       }else{
         if(me.TrainOrFliteNumber != "" && me.optionValue != ""){
@@ -145,8 +142,6 @@ export class OptionPage {
           alert.present();
         }
       }
-    }
-    
   }
    btnActivate(ionicButton,text) {
     if(ionicButton._color === 'dark'){
@@ -241,7 +236,7 @@ export class OptionPage {
                           msg = "";
                           return msg;
                         }else{
-                          msg = "This caht room is not available";
+                          msg = "This chat room is not available";
                           return msg;
                         }
                       }else{
@@ -249,7 +244,7 @@ export class OptionPage {
                         return msg;
                       }
                     }else{
-                      msg = "This caht room is not available";
+                      msg = "This chat room is not available";
                       return msg;
                     }
                   }else{
@@ -257,7 +252,7 @@ export class OptionPage {
                     return msg;
                   }
                 }else{
-                  msg = "This caht room is not available";
+                  msg = "This chat room is not available";
                   return msg;
                 }
               }else{
@@ -265,7 +260,7 @@ export class OptionPage {
                 return msg;
               }
             }else{
-              msg = "This caht room is not available";
+              msg = "This chat room is not available";
               return msg;
             }
           }else{
@@ -273,7 +268,7 @@ export class OptionPage {
             return msg;
           }
         }else{
-          msg = "This caht room is not available";
+          msg = "This chat room is not available";
           return msg;
         }   
     }

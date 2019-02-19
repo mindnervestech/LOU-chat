@@ -18,7 +18,7 @@ declare var firebase;
             <!--<button ion-button menuToggle>
                 <ion-icon name='menu'></ion-icon>
             </button>-->
-            <span class="user-profile" (click)="mePage()"><span *ngIf="profilePic != 'assets/image/profile.png'"><img src="{{profilePic}}"></span><span class="text-img" *ngIf="profilePic == 'assets/image/profile.png'">{{userName}}</span></span>
+            <span class="user-profile" (click)="mePage()"><span *ngIf="profilePic != 'assets/image/profile.png'"><img src="{{profilePic}}"></span><span class="text-img" *ngIf="profilePic == 'assets/image/profile.png'"><span>{{userName}}</span></span></span>
         </ion-navbar>
     </ion-header>
     <ion-content class="friendlist-page-content">
@@ -28,7 +28,7 @@ declare var firebase;
                 <ion-slides #slides>
                     <ion-slide *ngFor="let data of tripeUsersList; let i = index">
                         <span *ngIf="data.profilePic != 'assets/image/profile.png'"><img class="img_arrow_down_n" src="{{data.profilePic}}"></span>
-                        <span class="text-profile" *ngIf="data.profilePic == 'assets/image/profile.png'">{{data.slice}}</span>
+                        <span class="text-profile" *ngIf="data.profilePic == 'assets/image/profile.png'"><span>{{data.slice}}</span></span>
                         <h2 class="subheading_content">You have match with {{data.name}}</h2>
                         <div class="option-scroll">
                             <p *ngIf="data.trepOption.length > 0" class="common-topic">You are traveling for </p>
@@ -215,6 +215,7 @@ export class FriendlistPage {
                 me.sqlDb = db;
                 me.loadListFromStorage();
             });*/
+            this.getChatMemberData();
     }
 
     goToAddMemberPage(){
@@ -271,25 +272,33 @@ export class FriendlistPage {
                   var groupData  = snapshot.val();
                   me.groupList = [];
                   var counterValue = 0;
+                  var conter1 = 0;
                   for (var data in groupData ) {
                     me.groupMemberKey.push(data);
                         me.getChatMemberDataChak = true;
-                            firebase.database().ref('users/'+  me.groupMemberKey[counterValue]).on('value', function (snap) {
-                                counterValue++;
-                                if(me.getChatMemberDataChak == true){
-                                    //me.getChatMemberDataChak = false;
-                                    var value = snap.val();
-                                    var profilePic = value ? ((value.profilePic == "") ? 'assets/image/profile.png' : value.profilePic) : 'assets/image/profile.png';
-                                    var groupDetail = {
-                                        name : value.name.slice(0,2)
-                                    };
-                                    if(counterValue <= 3){
-                                        me.groupList.push(groupDetail);
-                                        console.log(me.groupList);
+                        if(counterValue <= 3){
+                            counterValue++;
+                            firebase.database().ref('users/'+  me.groupMemberKey[counterValue - 1]).on('value', function (snap) {
+                                if(snap.val().name != null && snap.val().name != ''){
+                                    conter1++;
+                                    if(me.getChatMemberDataChak == true){
+                                        //me.getChatMemberDataChak = false;
+                                        var value = snap.val();
+                                        var profilePic = value ? ((value.profilePic == "") ? 'assets/image/profile.png' : value.profilePic) : 'assets/image/profile.png';
+                                    
+                                        var groupDetail = {
+                                            name : value.name.slice(0,2),
+                                        };
+                                        if(conter1 <= 3){
+                                            me.groupList.push(groupDetail);
+                                        }
+                                        me.count++;
                                     }
-                                    me.count++;
-                                }
-                            }); 
+                                }    
+                            });
+                        }
+                       
+                             
                     }  
               }
          });
@@ -489,147 +498,149 @@ export class FriendlistPage {
                      if(data != userID){
                          me.usersKey.push(data);
                          firebase.database().ref('users/' + data).on('value',function(alluser){
-                            if( me.userMatchCheck == true){
-                                me.userMatchCheck = false;
-                                count++;
-                                var userData = alluser.val();
-                                if(userData != null){
-                                      me.trepOption = [];
-                                      me.servesOption = [];
-                                      me.informationOption = [];
-                                      if(myData.tripe["Home work trip"]){
-                                         if(userData.tripe["Home work trip"] == myData.tripe["Home work trip"]){
-                                             if(language == "FN"){
-                                                 me.trepOption.push("Trajet domicile-travail");
-                                             }else{
-                                                 me.trepOption.push("Home work trip");
-                                             }
-                                         }
-                                     }
-                                     if(myData.tripe.Tourism){
-                                         if(userData.tripe.Tourism == myData.tripe.Tourism){
-                                            if(language == "FN"){
-                                                 me.trepOption.push("Tourisme");
-                                             }else{
-                                                 me.trepOption.push("Tourism");
-                                             }
-                                         }
-                                     }
-                                     if(myData.tripe["Business tripe"]){
-                                         if(language == "FN"){
-                                                 me.trepOption.push("Voyage d’affaire");
-                                             }else{
-                                                 me.trepOption.push("Business tripe");
-                                             }
-                                     }
-                                     if(myData.tripe["To visit people"]){
-                                         if(language == "FN"){
-                                                 me.trepOption.push("Rendre visite à des personnes");
-                                             }else{
-                                                 me.trepOption.push("To visit people");
-                                             }
-                                     }
-                                     if(myData.tripe["Participate to an event"]){
-                                         if(language == "FN"){
-                                                 me.trepOption.push("Participer à un évènement");
-                                             }else{
-                                                 me.trepOption.push("Participate to an event");
-                                             }
-                                     }
-                                     for(var j= 0; j < myData.services.length; j++){
-                                         if(myData.services[j].value){
-                                             if(myData.services[j].value == userData.services[j].value){
-                                                 me.servesOption.push(myData.services[j].option);
-                                             }
-                                         }
-                                     }
-                                      for(var k= 0; k < myData.information.length; k++){
-                                         if(myData.information[k].value){
-                                             if(myData.information[k].value == userData.information[k].value){
-                                                 me.informationOption.push(myData.information[k].option);
-                                             }
-                                         }
-                                     }
-                                      var userinfo = {
-                                        slice: userData.name.slice(0,2),  
-                                        name: userData.name,
-                                        profilePic: userData.profilePic ? userData.profilePic : "assets/image/profile.png",
-                                        age: userData.age,
-                                        lastDate: mylastDate,
-                                        unreadMessage: 0,
-                                        userId: me.usersKey[keyCount],
-                                        lastMessage: "",
-                                        date: mylastDate,
-                                        senderId : me.usersKey[keyCount],
-                                        trepOption : me.trepOption,
-                                        informationOption : me.informationOption,
-                                        servesOption : me.servesOption,
-                                     };
-                                     keyCount++;
-
-                                     if(myData.tripe["Home work trip"]){
-                                         if(userData.tripe["Home work trip"] == myData.tripe["Home work trip"]){
-                                             me.tripeUsersList.push(userinfo);
-                                             push = "false";
-                                         }
-                                     }
-                                     if(myData.tripe.Tourism){
-                                         if(userData.tripe.Tourism == myData.tripe.Tourism){
-                                            if(push == "true"){
-                                                me.tripeUsersList.push(userinfo);
-                                                push = "false";
-                                            }
-                                         }
-                                     }
-                                     if(myData.tripe["Business tripe"]){
-                                         if(userData.tripe["Business tripe"] == myData.tripe["Business tripe"]){
-                                             if(push == "true"){
-                                                me.tripeUsersList.push(userinfo);
-                                                push = "false";
-                                            }
-                                         }
-                                     }
-                                     if(myData.tripe["To visit people"]){
-                                         if(userData.tripe["To visit people"] == myData.tripe["To visit people"]){
-                                             if(push == "true"){
-                                                me.tripeUsersList.push(userinfo);
-                                                push = "false";
-                                            }
-                                         }
-                                     }
-                                     if(myData.tripe["Participate to an event"]){
-                                         if(userData.tripe["Participate to an event"] == myData.tripe["Participate to an event"]){
-                                             if(push == "true"){
-                                                me.tripeUsersList.push(userinfo);
-                                                push = "false";
-                                            }
-                                         }
-                                     }
-                                     if(push == "true"){
-                                         for(var i = 0; i < myData.services.length; i++){
-                                            if(myData.services[i].value){
-                                                 if(myData.services[i].value == userData.services[i].value){
-                                                      me.tripeUsersList.push(userinfo);
-                                                      push = "false";
-                                                 }
-                                            }
-                                         }
-                                         if(push == "true"){
-                                             for(var i = 0; i < myData.information.length; i++){
-                                                if(myData.information[i].value){
-                                                     if(myData.information[i].value == userData.information[i].value){
-                                                          me.tripeUsersList.push(userinfo);
-                                                          push = "false";
-                                                     }
+                            if(alluser.val().name != null && alluser.val().name != ''){
+                                if( me.userMatchCheck == true){
+                                    me.userMatchCheck = false;
+                                    count++;
+                                    var userData = alluser.val();
+                                    if(userData != null){
+                                        me.trepOption = [];
+                                        me.servesOption = [];
+                                        me.informationOption = [];
+                                        if(myData.tripe["Home work trip"]){
+                                            if(userData.tripe["Home work trip"] == myData.tripe["Home work trip"]){
+                                                if(language == "FN"){
+                                                    me.trepOption.push("Trajet domicile-travail");
+                                                }else{
+                                                    me.trepOption.push("Home work trip");
                                                 }
-                                             }   
-                                         }
-                                     }
-                                     if(count == groupMemberCount){
-                                         me.hideMe = true;
-                                     }
+                                            }
+                                        }
+                                        if(myData.tripe.Tourism){
+                                            if(userData.tripe.Tourism == myData.tripe.Tourism){
+                                                if(language == "FN"){
+                                                    me.trepOption.push("Tourisme");
+                                                }else{
+                                                    me.trepOption.push("Tourism");
+                                                }
+                                            }
+                                        }
+                                        if(myData.tripe["Business tripe"]){
+                                            if(language == "FN"){
+                                                    me.trepOption.push("Voyage d’affaire");
+                                                }else{
+                                                    me.trepOption.push("Business tripe");
+                                                }
+                                        }
+                                        if(myData.tripe["To visit people"]){
+                                            if(language == "FN"){
+                                                    me.trepOption.push("Rendre visite à des personnes");
+                                                }else{
+                                                    me.trepOption.push("To visit people");
+                                                }
+                                        }
+                                        if(myData.tripe["Participate to an event"]){
+                                            if(language == "FN"){
+                                                    me.trepOption.push("Participer à un évènement");
+                                                }else{
+                                                    me.trepOption.push("Participate to an event");
+                                                }
+                                        }
+                                        for(var j= 0; j < myData.services.length; j++){
+                                            if(myData.services[j].value){
+                                                if(myData.services[j].value == userData.services[j].value){
+                                                    me.servesOption.push(myData.services[j].option);
+                                                }
+                                            }
+                                        }
+                                        for(var k= 0; k < myData.information.length; k++){
+                                            if(myData.information[k].value){
+                                                if(myData.information[k].value == userData.information[k].value){
+                                                    me.informationOption.push(myData.information[k].option);
+                                                }
+                                            }
+                                        }
+                                        var userinfo = {
+                                            slice: userData.name.slice(0,2),  
+                                            name: userData.name,
+                                            profilePic: userData.profilePic ? userData.profilePic : "assets/image/profile.png",
+                                            age: userData.age,
+                                            lastDate: mylastDate,
+                                            unreadMessage: 0,
+                                            userId: me.usersKey[keyCount],
+                                            lastMessage: "",
+                                            date: mylastDate,
+                                            senderId : me.usersKey[keyCount],
+                                            trepOption : me.trepOption,
+                                            informationOption : me.informationOption,
+                                            servesOption : me.servesOption,
+                                        };
+                                        keyCount++;
+
+                                        if(myData.tripe["Home work trip"]){
+                                            if(userData.tripe["Home work trip"] == myData.tripe["Home work trip"]){
+                                                me.tripeUsersList.push(userinfo);
+                                                push = "false";
+                                            }
+                                        }
+                                        if(myData.tripe.Tourism){
+                                            if(userData.tripe.Tourism == myData.tripe.Tourism){
+                                                if(push == "true"){
+                                                    me.tripeUsersList.push(userinfo);
+                                                    push = "false";
+                                                }
+                                            }
+                                        }
+                                        if(myData.tripe["Business tripe"]){
+                                            if(userData.tripe["Business tripe"] == myData.tripe["Business tripe"]){
+                                                if(push == "true"){
+                                                    me.tripeUsersList.push(userinfo);
+                                                    push = "false";
+                                                }
+                                            }
+                                        }
+                                        if(myData.tripe["To visit people"]){
+                                            if(userData.tripe["To visit people"] == myData.tripe["To visit people"]){
+                                                if(push == "true"){
+                                                    me.tripeUsersList.push(userinfo);
+                                                    push = "false";
+                                                }
+                                            }
+                                        }
+                                        if(myData.tripe["Participate to an event"]){
+                                            if(userData.tripe["Participate to an event"] == myData.tripe["Participate to an event"]){
+                                                if(push == "true"){
+                                                    me.tripeUsersList.push(userinfo);
+                                                    push = "false";
+                                                }
+                                            }
+                                        }
+                                        if(push == "true"){
+                                            for(var i = 0; i < myData.services.length; i++){
+                                                if(myData.services[i].value){
+                                                    if(myData.services[i].value == userData.services[i].value){
+                                                        me.tripeUsersList.push(userinfo);
+                                                        push = "false";
+                                                    }
+                                                }
+                                            }
+                                            if(push == "true"){
+                                                for(var i = 0; i < myData.information.length; i++){
+                                                    if(myData.information[i].value){
+                                                        if(myData.information[i].value == userData.information[i].value){
+                                                            me.tripeUsersList.push(userinfo);
+                                                            push = "false";
+                                                        }
+                                                    }
+                                                }   
+                                            }
+                                        }
+                                        if(count == groupMemberCount){
+                                            me.hideMe = true;
+                                        }
+                                    }
                                 }
-                            }  
+                            }      
                          });
                  
                    }

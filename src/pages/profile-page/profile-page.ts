@@ -83,16 +83,21 @@ export class ProfilePage {
     profilePage: boolean = false;
     slice: string = "";
     public selectedOption1:boolean = false;
-   public selectedOption2:boolean = false;
-   public selectedOption3:boolean = false;
-   public selectedOption4:boolean = false;
-   public selectedOption5:boolean = false;
-
+    public selectedOption2:boolean = false;
+    public selectedOption3:boolean = false;
+    public selectedOption4:boolean = false;
+    public selectedOption5:boolean = false;
+    groupName: string = '';
+    optionVal: string = ''; 
     constructor(public CommonProvider: CommonProvider, public _zone: NgZone, public events: Events, public navCtrl: NavController, public sqlite: SQLite, public navParams: NavParams, public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController, private camera: Camera, private clipboard: Clipboard,private network: Network) {
         //var user = firebase.auth().currentUser;
         var me = this;
         var user = JSON.parse(localStorage.getItem("loginUser"));
+        var group = JSON.parse(localStorage.getItem("Group"));
+        var value = JSON.parse(localStorage.getItem("option"));
+        me.groupName = group.groupName;
+        me.optionVal = value.optionValue;
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
         }
@@ -484,17 +489,26 @@ export class ProfilePage {
         });
     }
 
+    genderValue(value){
+        this.gender = value;
+    }
+
     updateProfile() {
         var me = this;
-        if(me.age == "" && me.status == "" && me.gender == ""){
+       /*  if(me.age == "" && me.status == "" && me.gender == ""){
             let alert = me.alertCtrl.create({ subTitle: 'Please add value in filed', buttons: ['OK'] });
             alert.present();
-        }else{
+        }else{ */
             var user = JSON.parse(localStorage.getItem("loginUser"));
             var userId = user.uid;
             var usersRef = firebase.database().ref('users');
             var hopperRef = usersRef.child(userId);
-            hopperRef.update({
+            // if(me.tempProfile == undefined && me.tempProfile == null){
+            //     me.tempProfile ="assets/image/profile.png";
+            // }
+            console.log("proffile image",me.profilePhoto);
+            me.tempProfile = me.profilePhoto == '' ? 'assets/image/profile.png' : me.profilePhoto;
+            var obj = {
                 "age":me.age,
                 "status": me.status,
                 "gender": me.gender,
@@ -508,7 +522,9 @@ export class ProfilePage {
                 },
                 "information" : me.information,
                 "services" : me.services,
-            }).then(()=>{
+            };
+            console.log("Onj --->",obj)
+            hopperRef.update(obj).then(()=>{
                 localStorage.removeItem("loginUser");
                 var logInUser = {
                     name :  user.name,
@@ -524,7 +540,7 @@ export class ProfilePage {
             });
            
             //me.PublishEventUserUpdate();
-        }
+        /* } */
     }
     PublishEventUserUpdate() {
         var me = this;

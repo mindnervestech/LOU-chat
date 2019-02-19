@@ -8,6 +8,49 @@ page-chat {
         line-height: 1.1;
         border: 0px;
         padding-top: 6px;
+        position: relative;
+        span{
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            height: fit-content;
+            width: fit-content;
+        }
+    }
+    /* .emoji{
+        padding: 0 !important;
+        margin: 0;
+        background: transparent;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        font-size: 22px !important;
+        position: absolute;
+        color: #7bd7e0;
+        left: 11px;
+        top: 10px;
+    } */
+    .attach-file{
+        position: fixed;
+        right: 10px;
+        background: transparent;
+        box-shadow: none;
+        color: #7bd7e0 !important;
+        font-size: 19px !important;
+        top: 10px;
+        padding: 0 !important;
+        margin: 0;
+    }
+    .chat-group{
+        .label-md{
+            margin: 0 !important;
+            height: 4.2rem !important;
+            position: relative;
+            background: #f4f4f4 !important;
+            border-radius: 50px;
+        }
     }
     .back-btn{
         margin-top: 10px;
@@ -251,16 +294,16 @@ page-chat {
         border-bottom:0px;
     }
     .send-btn{
-        border: 1px solid #d6eff1;
+        border: 1px solid #00826d;
         padding: 21px 9px;
-        background: #d6eff1;
+        background: #00826d;
         border-radius: 50% !important;
         ion-icon {
             font-size: 1.7em !important;
             line-height: .67;
             pointer-events: none;
             padding-left: .4em;
-            color: #000 !important;
+            color: #fff !important;
         }
     }
     .container { 
@@ -299,13 +342,13 @@ page-chat {
     padding-top:10px;
 }
 .editableContent {
-background:rgba(255, 255, 255, 0.83); height: 45px;padding-left:16px;padding-top:12px; user-select: text;width: 100%;border-radius: 50px;
+background:#f4f4f4;height: 37px !important;padding-left:40px;padding-right:37px;padding-top:12px; user-select: text;width: 100%;border-radius: 50px;
     }.editableContent:hover {
 cursor:text;
 }
 }
 .chat-footer .toolbar-background-md {
     border-color: #b2b2b2;
-    background: #7bd7e0 !important;
+    background: #ffffff !important;
     color: white;
 }

@@ -236,7 +236,7 @@ export class loginAndTopicInfo {
             if(msg == ""){
               if(me.counter == 0){
                 me.LoadingProvider.closeLoading();
-                let alert = me.alertCtrl.create({ subTitle: "Please select at list one option", buttons: ['OK'] });
+                let alert = me.alertCtrl.create({ subTitle: "Please select at list one trip purpose", buttons: ['OK'] });
                 alert.present();
               }else{
                 me.LoadingProvider.closeLoading();
@@ -332,7 +332,7 @@ export class loginAndTopicInfo {
                         if(msg == ""){
                           if(me.counter == 0){
                             me.LoadingProvider.closeLoading();
-                            let alert = me.alertCtrl.create({ subTitle: "Please select at list one option", buttons: ['OK'] });
+                            let alert = me.alertCtrl.create({ subTitle: "Please select at list one trip purpose", buttons: ['OK'] });
                             alert.present();
                           }else{
                             me.LoadingProvider.closeLoading();

@@ -36,17 +36,17 @@ declare var firebase;
             <ion-item><p><span class="label">Age:</span> <span class="info-label">{{userInfo.user_age}}</span></p></ion-item>
             <ion-item><p><span class="label">Status:</span> <span class="info-label">{{userInfo.user_status}}</span></p></ion-item>  
         </div>-->
-        <ion-item class="data-option">
+        <ion-item class="data-option" *ngIf="trepOption.length != 0">
             <h2>Purpose of trip</h2>
             <!--<div class="info-b" *ngFor="let data of trepOption">{{data.option}}</div>-->
             <button id="1" #f ion-button color="dark" *ngFor="let data of trepOption">{{data.option}}</button>
         </ion-item>
-        <ion-item class="data-option">
-            <h2>Topic information</h2>
+        <ion-item class="data-option" *ngIf="information.length != 0">
+            <h2>Topics that interest you</h2>
             <!--<div class="info-b" *ngFor="let value of information">{{value.option}}</div>-->
             <button id="1" #f ion-button color="dark" *ngFor="let value of information">{{value.option}}</button>
         </ion-item>
-        <ion-item class="data-option">
+        <ion-item class="data-option" *ngIf="services.length != 0">
             <h2>Services</h2>
             <!--<div class="info-b" *ngFor="let value of services">{{value.option}}</div>-->
             <button id="1" #f ion-button color="dark" *ngFor="let value of services">{{value.option}}</button>
@@ -54,7 +54,7 @@ declare var firebase;
     </ion-content>
     <ion-footer>
         <div *ngIf="block == 1" class="chat-icon-div">
-            <span class="chat-icon" (click)="goToChatPage()">Chat</span>
+            <span class="chat-icon" (click)="goToChatPage()"><ion-icon name="chatboxes"></ion-icon></span>
         </div>
     </ion-footer>
     `,

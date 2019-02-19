@@ -1,9 +1,26 @@
 ion-menu.show-menu,.md .menu-inner {
     display: none;
 } 
-
+.emoji {
+    padding: 0 !important;
+    margin: 0;
+    background: transparent;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-size: 22px !important;
+    position: fixed;
+    color: #7bd7e0;
+    left: 13px;
+    bottom: 3px;
+    z-index: 999;
+}
 .popover-content .label-md{
     padding-left: 10px;
+}
+emoji-picker{
+    position: fixed !important;
+    z-index: 9999;
+    top: 42% !important;
 }
 .swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets{
     bottom: 34%;

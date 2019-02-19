@@ -15,24 +15,40 @@
                 </div>
                 <div *ngIf="profilePhoto == 'assets/image/profile.png'" id="profileimage"                
                 (click)="presentActionSheet()" tappable>
-                {{slice}}
+                    <span>{{slice}}</span>
                 </div>
+                <p>{{name}}</p>
             </ion-item>
         </ion-list>
         <div class="exit">
             <div class="chat-text">
-                <p>Your currently in chat room</p>
-                <p>{{name}}</p>
+                <p>Your are currently connected to the {{groupName}}{{optionVal}}</p>
             </div>
             <div class="quit-btn"><button ion-button full color="primary"  class="btndesign" tappable (click)='logOutUser()'>Quit</button></div>
         </div>
         <ion-label class="color-label">Gender</ion-label>
-        <ion-item class="txtdesign1">
+        <!-- <ion-item class="txtdesign1">
           <ion-select placeholder="Select option" interface="popover" [(ngModel)]="gender">
             <ion-option value="Male">Male</ion-option>
             <ion-option value="Female">Female</ion-option>
           </ion-select>
-        </ion-item>
+         
+        </ion-item> -->
+        <!-- (ionChange)="genderValue($event)" -->
+        <ion-list radio-group [(ngModel)]="gender" (ionChange)="genderValue($event)">
+            <ion-item>
+                <ion-radio value="Male"></ion-radio>
+                <ion-label>
+                    <img src='assets/image/male.png' style="margin-top:-1px;"/> 
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-radio value="Female"></ion-radio>
+                <ion-label>
+                    <img src='assets/image/female.png'/> 
+                </ion-label>
+            </ion-item>
+          </ion-list>
         <div class="input-label">
             <ion-label>Age</ion-label>
             <ion-item>
@@ -40,14 +56,14 @@
             </ion-item>
         </div>
         <div class="input-label">
-            <ion-label>Status</ion-label>
+            <ion-label>Profession</ion-label>
             <ion-item>
                 <ion-input type="text" placeholder="Your Entry" [(ngModel)]="status"></ion-input>
             </ion-item>
         </div>
         <div class="profile-scroll">
             <div class="topic-info topic-info-1">
-                <h2>Information</h2>
+                <h2>Purpose of the trip</h2>
                 <div class="row">
                     <div class="multiple-option">
                         <div>
@@ -64,7 +80,7 @@
                     </div>    
                 </div>   
             </div>     
-            <h2>Topic information</h2>
+            <h2>Topic that interest me</h2>
             <div class="topic-info topic-info-2">
                 <div class="row">
                     <div class="multiple-option">

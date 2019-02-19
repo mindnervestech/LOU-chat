@@ -87,11 +87,21 @@ page-friendlist{
             background: #eeeeee;
             display: block;
             text-align: center;
-            line-height: 1.9;
             font-size: 17px;
             text-transform: uppercase;
             color: #7bd7e0;
             font-weight: 500;
+            position: relative;
+            span{
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                height: fit-content;
+                width: fit-content;
+            }
         }
     }
     ion-img.img-loaded img,ion-avatar img, ion-thumbnail img{
@@ -304,7 +314,17 @@ page-friendlist{
         color: #7bd7e0;
         font-size: 23px;
         text-transform: uppercase;
-        line-height: 3.9;
+        position: relative;
+        span{
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            width: fit-content;
+            height: fit-content; 
+        }
     }
     .msg-name{
         font-size: 16px;
