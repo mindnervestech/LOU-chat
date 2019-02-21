@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "433761680362",
+    "firebase_url": "https://louchat-583ca.firebaseio.com",
+    "project_id": "louchat-583ca",
+    "storage_bucket": "louchat-583ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433761680362:android:0d1f2d8acd1d7139",
+        "android_client_info": {
+          "package_name": "com.mnt.escaleconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433761680362-q3pgbo2thm0f5e6ttl0grvg317o81i89.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuakdLyg13KlFuizgmKICNj0CaaZmL87k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
