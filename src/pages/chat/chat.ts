@@ -247,8 +247,17 @@ export class ChatPage {
     me.block1 = block1;
     global.singleChatUserKey = me.navParams.data.key;
     me.friendkey = me.senderUser.key;
-    firebase.database().ref().child('Friends/' + user.uid + '/' + me.navParams.data.key).update({
-      unreadCount: 0
+    // checking record for new friend  
+    firebase.database().ref().child('Friends/' + user.uid + '/' + me.navParams.data.key).on('value', function(_data){
+      console.log('_data.val()', _data.val())
+      if(_data.val() == null) {
+        console.log("in if");
+      }else{
+        console.log("in else");
+        firebase.database().ref().child('Friends/' + user.uid + '/' + me.navParams.data.key).update({
+          unreadCount: 0
+        });
+      }
     });
     firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).off();
     //it will call if you blocked someone or blocked by someone.
@@ -420,10 +429,10 @@ export class ChatPage {
       }
     });
     //it is for unreadCount Message update in firebase if user comes to this page then the current user message will be update in firebase as unReadCount as 0;
-    var friendRef = firebase.database().ref('Friends/' + me.myuserid);
+    /*var friendRef = firebase.database().ref('Friends/' + me.myuserid);
     friendRef.child(me.friendkey).update({
       unreadCount: 0
-    });
+    });*/
   }
 
   ionViewWillLeave() {
@@ -481,34 +490,62 @@ export class ChatPage {
           type: type
         }).then(function () {
           if (type == "text") {
-            firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).once('value').then(function (snapshot) {
-              var friendRef = firebase.database().ref('Friends/' + me.senderUser.senderId);
-              friendRef.child(userId).update({
-                lastDate: dateCreated,
-                unreadCount: parseInt(snapshot.val().unreadCount) + 1,
-                lastMessage: lastDisplaymessage
-              }).then(function () {
-                console.log("Message send successfully");
-                var title = "You have new message from " + me.pushName;
-                console.log("title",title);
-                var body = me.strip(lastDisplaymessage);
-                me.PushProvider.PushNotification(me.pushId, title, body);
-              });
+            console.log("creat");
+            firebase.database().ref().child('Friends/' + userId + '/' + me.senderUser.senderId).on('value', function(userData){
+              if(userData.val() == null){
+                console.log('userData.val()', userData.val());
+                firebase.database().ref().child('Friends/' + userId + '/' + me.senderUser.senderId).set({
+                    DateCreated : dateCreated,
+                    lastDate :dateCreated,
+                    lastMessage :"",
+                    SenderId :me.senderUser.senderId,
+                    block: 0,
+                    access : true,
+                    unreadCount : 0,
+                    name :  me.senderUser.name,
+                    profilePic : "assets/image/profile.png",
+                });
+                firebase.database().ref().child('Friends/' + me.senderUser.senderId + '/' + userId).set({
+                    DateCreated : dateCreated,
+                    lastDate :dateCreated,
+                    lastMessage :"",
+                    SenderId :user.uid,
+                    block: 0,
+                    access : true,
+                    unreadCount : 1,
+                    name : user.name,
+                    profilePic : user.profilePic,
+                });
+              }else{
+                firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).once('value').then(function (snapshot) {
+                  var friendRef = firebase.database().ref('Friends/' + me.senderUser.senderId);
+                  friendRef.child(userId).update({
+                    lastDate: dateCreated,
+                    unreadCount: parseInt(snapshot.val().unreadCount) + 1,
+                    lastMessage: lastDisplaymessage
+                  }).then(function () {
+                    console.log("Message send successfully");
+                    var title = "You have new message from " + me.pushName;
+                    console.log("title",title);
+                    var body = me.strip(lastDisplaymessage);
+                    me.PushProvider.PushNotification(me.pushId, title, body);
+                  });
+                });
+                firebase.database().ref('Friends/' + userId + '/' + me.senderUser.senderId).once('value').then(function (snapshot) {
+                  var friendRef = firebase.database().ref('Friends/' + userId);
+                  friendRef.child(me.senderUser.senderId).update({
+                    lastDate: dateCreated,
+                    lastMessage: lastDisplaymessage
+                  }).then(function () {
 
-            });
-            firebase.database().ref('Friends/' + userId + '/' + me.senderUser.senderId).once('value').then(function (snapshot) {
-              var friendRef = firebase.database().ref('Friends/' + userId);
-              friendRef.child(me.senderUser.senderId).update({
-                lastDate: dateCreated,
-                lastMessage: lastDisplaymessage
-              }).then(function () {
-                console.log("Message send successfully");
-              });
-            });
+                    console.log("Message send successfully");
+                  });
+                });
+              }
+            });    
           }
         });
       });
-
     }
   }
 
