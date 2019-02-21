@@ -20,7 +20,33 @@ ion-menu.show-menu,.md .menu-inner {
 emoji-picker{
     position: fixed !important;
     z-index: 9999;
-    top: 42% !important;
+    top: 54% !important;
+    height: 262px;
+    overflow-y: auto;
+    width: 100%;
+    width: fit-content;
+    top: 0;
+}
+.f-class{
+    background-color: #ffffff;
+    margin-bottom: 2px;
+}
+.emoji-show{
+    position: fixed;
+    left: -2px;
+    background: transparent;
+    box-shadow: none;
+    font-size: 22px !important;
+    color: #7bd7e0;
+    top: 7px;
+}
+[_nghost-c2] {
+    height: 262px !important; 
+}    
+@media (min-width: 258px){
+[_nghost-c2] {
+    width: 100% !important;
+}
 }
 .swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets{
     bottom: 34%;

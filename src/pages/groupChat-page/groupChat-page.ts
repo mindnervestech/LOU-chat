@@ -20,7 +20,7 @@ declare var firebase;
 @Component({
    selector: 'AddMembersPage',
     template: `
-    <ion-header>
+    <ion-header (click)="picker()">
         <ion-navbar class="grop-exit">
             <button ion-button icon-only class="back-btn" (click)="goToFriendPage()">
                 <ion-icon name='arrow-back'></ion-icon>
@@ -36,7 +36,7 @@ declare var firebase;
         </ion-navbar>
     </ion-header>
 
-    <ion-content>
+    <ion-content (click)="picker()">
     <div *ngIf="isBusy" class="container" [ngClass]="{'busy': isBusy}">
         <div class="backdrop"></div>
         <ion-spinner></ion-spinner>
@@ -77,30 +77,20 @@ declare var firebase;
   </ion-list>
     </div>
 </ion-content>
-<button ion-button class="emoji"
-(click)="toggled = !toggled"
-[(emojiPickerIf)]="toggled"
-[emojiPickerDirection]="'bottom' || 'top' || 'left' || 'right'"
-(emojiPickerSelect)="handleSelection($event)">
-  <ion-icon name="md-happy"></ion-icon>
-</button>
-<ion-footer>
+<ion-footer [style.height]="showEmojiPicker ? '311px' : 'auto'" class="f-class">
 	<ion-toolbar *ngIf="blockUser" class="blocked-message group-chat">
 		<p text-center>{{ blockMsg }}</p>
 	</ion-toolbar>
   <ion-toolbar *ngIf="!blockUser" class="group-chat">
     <ion-item class="chat-group">
-      <textarea rows="2" contenteditable="true" placeholder='Type your message here' [(ngModel)]="message" (click)='inputClick()' class="editableContent"
+      <textarea rows="2" contenteditable="true" (focusin)="onFocus()" placeholder='Type your message here' [(ngModel)]="message" (click)='inputClick()' class="editableContent"
         placeholder='Type your message here' id="contentMessage"></textarea>
-        <!--<button ion-button class="emoji"
-        (click)="toggled = !toggled"
-        [(emojiPickerIf)]="toggled"
-        [emojiPickerDirection]="'bottom' || 'top' || 'left' || 'right'"
-        (emojiPickerSelect)="handleSelection($event)">
-          <ion-icon name="md-happy"></ion-icon>
-        </button>-->
         <button ion-button style="color:white;" class="attach-file" icon-right (click)='presentActionSheet()' tappable>
           <ion-icon name='attach'></ion-icon>
+        </button>
+        <button *ngIf="showEmojiPicker == true" ion-button class="emoji-show"
+        (click)="picker()">
+          <ion-icon name="md-happy"></ion-icon>
         </button>
     </ion-item>    
 		<ion-buttons end>
@@ -109,6 +99,13 @@ declare var firebase;
       </button>
     </ion-buttons>
   </ion-toolbar>
+  <button ion-button class="emoji"
+    (click)="toggled = !toggled && showEmojiPicker = !showEmojiPicker"
+    [(emojiPickerIf)]="toggled"
+    [emojiPickerDirection]="'bottom'"
+    (emojiPickerSelect)="handleSelection($event)">
+      <ion-icon name="md-happy"></ion-icon>
+  </button>
 </ion-footer>
     `,
 })
@@ -136,6 +133,7 @@ export class GroupChatPage {
     capitalize: string;
     toggled: boolean = false;
     chatMessage: string;
+    showEmojiPicker: boolean = false;
     constructor( public element:ElementRef,public _DomSanitizer: DomSanitizer,public modalCtrl: ModalController,private camera: Camera, public LoadingProvider: LoadingProvider,public platform: Platform,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams, public PushProvider: PushProvider) {
         var me = this;
         me.menu.swipeEnable(true);
@@ -196,7 +194,12 @@ export class GroupChatPage {
     handleSelection(event) {
       this.message += event.char;
     }
-
+    onFocus(){
+      this.showEmojiPicker = false;
+    }
+    picker(){
+      this.showEmojiPicker = false;
+    }
     adjust(): void {
       //  let ta = this.element.nativeElement.querySelector("textarea");
       let ta = document.getElementById('contentMessage');
@@ -323,6 +326,7 @@ export class GroupChatPage {
     }
 
     sendMessage(type){
+      this.showEmojiPicker = false;
       var date = new Date();
       //in case of network type none means no internet connection then user can not send message to other.
       if (this.network.type == "none") {

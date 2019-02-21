@@ -20,7 +20,7 @@
     box-shadow: none;
     color: #7bd7e0 !important;
     font-size: 19px !important;
-    top: 10px;
+    top: 14px;
     padding: 0 !important;
     margin: 0;
 }
@@ -116,7 +116,8 @@
 }
 .send-btn{
     border: 1px solid #00826d;
-    padding: 21px 9px;
+    height: 4.2rem;
+    width: 4.2rem;
     background: #00826d;
     border-radius: 50% !important;
     ion-icon {
@@ -397,8 +398,8 @@
 }
 .editableContent {
     margin-bottom: 3px;
-    background: #f4f4f4; height: 37px !important;padding-left: 40px;
-    padding-right: 37px;padding-top:12px; user-select: text;width: 100%;border-radius: 50px;
+    background: #f4f4f4; height: 37px !important;padding-left: 50px;
+    padding-right: 37px;padding-top:12px;font-size:13px;user-select: text;width: 100%;border-radius: 50px;
     border: 0px solid;
     }.editableContent:hover {
 cursor:text;
@@ -413,4 +414,5 @@ cursor:text;
     }    
     .item-md{
         background-color: #ffffff !important;
+    }
 }

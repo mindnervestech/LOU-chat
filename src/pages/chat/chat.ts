@@ -23,7 +23,7 @@ declare var firebase;
 @Component({
   selector: 'page-chat',
   template: `
-<ion-header scroll='false'>
+<ion-header scroll='false' (click)="picker()">
 	<ion-navbar>
 		<button ion-button menuToggle icon-only>
                 <ion-icon name='menu'></ion-icon>
@@ -50,7 +50,7 @@ declare var firebase;
 	</ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content (click)="picker()">
 
 	<div *ngIf="isBusy" class="container" [ngClass]="{'busy': isBusy}">
 		<div class="backdrop"></div>
@@ -121,14 +121,7 @@ declare var firebase;
 	</ion-list> -->
 	</div>
 </ion-content>
-<button ion-button class="emoji"
-(click)="toggled = !toggled"
-[(emojiPickerIf)]="toggled"
-[emojiPickerDirection]="'bottom' || 'top' || 'left' || 'right'"
-(emojiPickerSelect)="handleSelection($event)">
-  <ion-icon name="md-happy"></ion-icon>
-</button>
-<ion-footer>
+<ion-footer [style.height]="showEmojiPicker ? '311px' : 'auto'" class="f-class">
 	<ion-toolbar class="chat-footer" *ngIf="blockUser" class="blocked-message">
 		<p text-center>{{ blockMsg }}</p>
 	</ion-toolbar>
@@ -136,10 +129,15 @@ declare var firebase;
 		<!--<textarea contenteditable="true" placeholder='Type your message here' [(ngModel)]="message" (click)='inputClick()' class="editableContent"
 			placeholder='Type your message here' id="contentMessage"></textarea>-->
       <ion-item class="chat-group">
-      <textarea contenteditable="true" placeholder='Type your message here' [(ngModel)]="message" (click)='inputClick()' class="editableContent"
+      <textarea contenteditable="true" (focusin)="onFocus()" placeholder='Type your message here' [(ngModel)]="message" (click)='inputClick()' class="editableContent"
         placeholder='Type your message here' id="contentMessage"></textarea>
         <button ion-button style="color:white;" class="attach-file" icon-right (click)='presentActionSheet()' tappable>
           <ion-icon name='attach'></ion-icon>
+        </button>
+        <button *ngIf="showEmojiPicker == true" ion-button class="emoji-show"
+        (click)="picker()"
+          >
+            <ion-icon name="md-happy"></ion-icon>
         </button>
     </ion-item>
 		<ion-buttons end>
@@ -150,7 +148,14 @@ declare var firebase;
         <ion-icon name='send'></ion-icon>
       </button>
 		</ion-buttons>
-	</ion-toolbar>
+  </ion-toolbar>
+  <button ion-button class="emoji"
+    (click)="toggled = !toggled && showEmojiPicker = !showEmojiPicker"
+    [(emojiPickerIf)]="toggled"
+    [emojiPickerDirection]="'bottom'"
+    (emojiPickerSelect)="handleSelection($event)">
+      <ion-icon name="md-happy"></ion-icon>
+  </button>
 </ion-footer>
     `,
 })
@@ -187,6 +192,8 @@ export class ChatPage {
   textprofile: string = '';
   pushName: string = '';
   pushId: string = '';
+  editorMsg: '';
+  showEmojiPicker: boolean = false;;
   constructor(public modalCtrl: ModalController, private camera: Camera, public LoadingProvider: LoadingProvider, public platform: Platform, public CommonProvider: CommonProvider, public _DomSanitizer: DomSanitizer, public toastCtrl: ToastController, public sqlite: SQLite, private network: Network, public PushProvider: PushProvider, public element: ElementRef, public actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public _zone: NgZone, public navParams: NavParams, public alertCtrl: AlertController) {
     var user = JSON.parse(localStorage.getItem("loginUser"));
     this.pushName = user.name;
@@ -211,7 +218,16 @@ export class ChatPage {
 
     }
   }
-
+  handleSelection(event) {
+    console.log("Selected","Selected");
+    this.message += event.char;
+  }
+  onFocus(){
+    this.showEmojiPicker = false;
+  }
+  picker(){
+    this.showEmojiPicker = false;
+  }
   ionViewDidLoad() {
     //when user comes to this page this function will call.
     var me = this;
@@ -426,6 +442,7 @@ export class ChatPage {
     //it is for send Message, the current user can send message to connected user;
     var me = this;
     var date = new Date();
+    me.showEmojiPicker = false;
     //in case of network type none means no internet connection then user can not send message to other.
     if (me.network.type == "none") {
       let toast = me.toastCtrl.create({

@@ -4,17 +4,49 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<!-- <ion-header>
 
   <ion-navbar>
     <ion-title>info</ion-title>
   </ion-navbar>
 
+</ion-header> -->
+<ion-header>
+    <ion-toolbar color="light" class="chat-room">
+        <ion-row>
+            <ion-icon name="arrow-back" (click)="goTo()"></ion-icon>
+            <ion-title  class="title">Info</ion-title>
+        </ion-row>       
+    </ion-toolbar>
 </ion-header>
-
-
 <ion-content padding>
-
+    <ion-item class="title-btn">
+        <button ion-button>Bussiness</button>
+        <button ion-button>Homework</button>
+        <button ion-button>Visit people</button>
+        <button ion-button>Tourism</button>
+    </ion-item>
+    <ion-item class="ads bussiness">
+        <h2>Travelling for bussiness</h2>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industr.
+        Lorem Ipsum is simply dummy text of the printing and typesetting industr
+        </p>
+        <div>20/02/2019</div>
+    </ion-item>
+    <ion-item class="ads homework">
+        <h2>Travelling for homework</h2>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industr.
+        Lorem Ipsum is simply dummy text of the printing and typesetting industr
+        </p>
+        <div>20/02/2019</div>
+    </ion-item>
+    <ion-item class="ads people">
+        <h2>Travelling for to visit people</h2>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industr.
+        Lorem Ipsum is simply dummy text of the printing and typesetting industr
+        </p>
+        <div>20/02/2019</div>
+    </ion-item>
 </ion-content>
 <ion-footer>
     <ion-toolbar class="option">
@@ -22,7 +54,7 @@
             <div class="tab-content" (click)="chatPage()">
                 <ion-icon name="chatbubbles"></ion-icon>
             </div>
-            <div class="tab-content" (click)="infoPage()" [ngClass]="{'tab-active': adPage == true}">
+            <div class="tab-content" [ngClass]="{'tab-active': adPage == true}">
                 <ion-icon name="bulb"></ion-icon>
             </div>
             <div class="tab-content" (click)="mePage()">

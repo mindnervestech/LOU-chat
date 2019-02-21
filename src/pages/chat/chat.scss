@@ -1,4 +1,37 @@
 page-chat {
+    // [_nghost-c0] {
+    //     width: -webkit-fill-available;
+    //     position: absolute;
+    //     z-index: 9999;
+    //     margin-top: 10px;
+    // }
+    // [_nghost-c0] {
+    //     width: -webkit-fill-available;
+    //     position: absolute;
+    //     z-index: 9999;
+    //     margin-top: 10px;
+    //     bottom: 0;
+    //     position: relative;
+    //   }
+    // [_nghost-c1] {
+    //     width: -webkit-fill-available;
+    // }  
+    // [_nghost-c1] {
+    //     display: -webkit-box;
+    //     display: -ms-flexbox;
+    //     display: flex;
+    //     -webkit-box-orient: vertical;
+    //     -webkit-box-direction: normal;
+    //     -ms-flex-direction: column;
+    //     flex-direction: column;
+    //     width: 100vw;
+    //     height: 214px;
+    //     border-radius: 3px;
+    //     background: #fff;
+    //     text-align: left;
+    //     -webkit-box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
+    //     box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
+    // }
     .chat-pro{
         background: #eeeeee;
         color: #7bd7e0;
@@ -39,7 +72,7 @@ page-chat {
         box-shadow: none;
         color: #7bd7e0 !important;
         font-size: 19px !important;
-        top: 10px;
+        top: 14px;
         padding: 0 !important;
         margin: 0;
     }
@@ -295,7 +328,8 @@ page-chat {
     }
     .send-btn{
         border: 1px solid #00826d;
-        padding: 21px 9px;
+        height: 4.2rem;
+        width: 4.2rem;
         background: #00826d;
         border-radius: 50% !important;
         ion-icon {
@@ -342,7 +376,7 @@ page-chat {
     padding-top:10px;
 }
 .editableContent {
-background:#f4f4f4;height: 37px !important;padding-left:40px;padding-right:37px;padding-top:12px; user-select: text;width: 100%;border-radius: 50px;
+background:#f4f4f4;height: 37px !important;font-size: 13px;padding-left:50px;padding-right:37px;padding-top:12px; user-select: text;width: 100%;border-radius: 50px;
     }.editableContent:hover {
 cursor:text;
 }
@@ -351,4 +385,7 @@ cursor:text;
     border-color: #b2b2b2;
     background: #ffffff !important;
     color: white;
+}
+.chat-footer .item-md {
+    bottom: -2px;
 }
