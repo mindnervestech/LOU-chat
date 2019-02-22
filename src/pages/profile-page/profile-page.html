@@ -22,7 +22,7 @@
         </ion-list>
         <div class="exit">
             <div class="chat-text">
-                <p>Your are currently connected to the {{groupName}}{{optionVal}}</p>
+                <p>Your are currently connected to the {{groupName}} {{optionVal}}</p>
             </div>
             <div class="quit-btn"><button ion-button full color="primary"  class="btndesign" tappable (click)='logOutUser()'>Quit</button></div>
         </div>
@@ -52,7 +52,7 @@
         <div class="input-label">
             <ion-label>Age</ion-label>
             <ion-item>
-                <ion-input type="text" placeholder="Your Age" [(ngModel)]="age"></ion-input>
+                <ion-input type="text" placeholder="Your Age" [(ngModel)]="age" ></ion-input>
             </ion-item>
         </div>
         <div class="input-label">

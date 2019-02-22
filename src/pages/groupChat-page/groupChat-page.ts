@@ -25,7 +25,7 @@ declare var firebase;
             <button ion-button icon-only class="back-btn" (click)="goToFriendPage()">
                 <ion-icon name='arrow-back'></ion-icon>
             </button>
-            <ion-title  class="title">{{groupData.groupName}}</ion-title>
+            <ion-title  class="title">{{groupData.groupName}} {{trainNo}}</ion-title>
             <div>
               <button ion-button icon-only class="btn circle" (click)="goToChatRoomMember()" tappable>
                 <ion-icon name="radio-button-off"></ion-icon>
@@ -134,10 +134,13 @@ export class GroupChatPage {
     toggled: boolean = false;
     chatMessage: string;
     showEmojiPicker: boolean = false;
+    trainNo: string = '';
     constructor( public element:ElementRef,public _DomSanitizer: DomSanitizer,public modalCtrl: ModalController,private camera: Camera, public LoadingProvider: LoadingProvider,public platform: Platform,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams, public PushProvider: PushProvider) {
         var me = this;
         me.menu.swipeEnable(true);
         var user = JSON.parse(localStorage.getItem("loginUser"));
+        var option = JSON.parse(localStorage.getItem("option"));
+        me.trainNo = option.optionValue;
         global.Is_CHAT_PAGE = true;
         if (!user) {
             me.navCtrl.setRoot("OptionPage");

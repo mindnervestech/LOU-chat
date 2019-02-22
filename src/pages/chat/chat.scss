@@ -32,10 +32,30 @@ page-chat {
     //     -webkit-box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
     //     box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
     // }
+    .circle{
+        ion-icon {
+            padding: 0 0.08em;
+            font-size: 1em;
+            line-height: 0;
+            pointer-events: none;
+            background: #fff;
+            border-radius: 50%;
+            overflow: hidden;
+            height: 8px;
+            width: 8px;
+            margin: 2px;
+        }
+    }
+    .btn{
+        float:right;
+        color: #fff;
+        background: #7bd7e0;
+        box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.14), 0 0px 0px 0px rgba(0, 0, 0, 0.2), 0 0px 0px 0 rgba(0, 0, 0, 0.12);
+    }
     .chat-pro{
         background: #eeeeee;
         color: #7bd7e0;
-        font-size: 17px;
+        font-size: 15px;
         text-transform: uppercase;
         text-align: center;
         line-height: 1.1;
@@ -191,7 +211,7 @@ page-chat {
         display: block;
         text-align: right;
         margin-top: 12px !important;
-        font-size: 16px !important;
+        font-size: 14px !important;
         width: 100%;
     }
     .left-mtime{
@@ -269,8 +289,8 @@ page-chat {
         border-top-right-radius: 10px;
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 0;
-        font-size: 19px;
-        font-weight: 500;
+        font-size: 16px;
+        font-weight: normal;
     }
      .the-message .myright-image {
         width: 50%;
@@ -301,12 +321,12 @@ page-chat {
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
         font-size: 16px;
-        font-weight: 500;
+        font-weight: normal;
         left: 13%;
         top: -13px;
     }
    .the-message  .myleft-image{
-        float:left !important;
+        float: left !important;
         background: #e6e5eb;
         border-radius: 18px;
         padding: 6px 4px 1px 3px;
@@ -376,8 +396,8 @@ page-chat {
     padding-top:10px;
 }
 .editableContent {
-background:#f4f4f4;height: 37px !important;font-size: 13px;padding-left:50px;padding-right:37px;padding-top:12px; user-select: text;width: 100%;border-radius: 50px;
-    }.editableContent:hover {
+background:#f4f4f4;height: 37px !important;font-size: 15px;padding-left:50px;padding-right:37px;padding-top:17px; user-select: text;width: 100%;border-radius: 50px;
+    overflow: auto !important}.editableContent:hover {
 cursor:text;
 }
 }

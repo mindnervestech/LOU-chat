@@ -22,7 +22,7 @@ declare var firebase;
     <ion-content>
         <div class="profile-image-container">
             <ion-img  *ngIf="userInfo.user_profilePic != 'assets/image/profile.png'" id="profile-image" [src]="userInfo.user_profilePic"  (click)="imageTap(userInfo.user_profilePic)"></ion-img>
-            <span class="user-i" *ngIf="userInfo.user_profilePic == 'assets/image/profile.png'">{{userInfo.user_slice}}</span>
+            <span class="user-i" *ngIf="userInfo.user_profilePic == 'assets/image/profile.png'"><span>{{userInfo.user_slice}}</span></span>
             <div class="user-info">
                 <span class="info-label"><ion-icon name="person"></ion-icon> <span class="name">{{userInfo.user_name}}</span><span class="name" *ngIf="userInfo.user_name == ''">-</span></span>
                 <span class="info-label"><ion-icon name="woman"></ion-icon><ion-icon name="man"></ion-icon> <span class="name">{{userInfo.user_gender}}</span><span class="name" *ngIf="userInfo.user_gender == ''">-</span></span>

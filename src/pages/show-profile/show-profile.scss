@@ -27,7 +27,17 @@ page-show-profile {
         color: #7bd7e0;
         text-transform: uppercase;
         text-align: center;
-        line-height: 4.6;
+        position: relative;
+        span{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: fit-content;
+            height: fit-content;
+            margin: auto;
+        }
     }
     .scroll-content {
         margin: 0 15px;

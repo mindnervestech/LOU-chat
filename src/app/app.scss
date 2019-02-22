@@ -11,7 +11,7 @@ ion-menu.show-menu,.md .menu-inner {
     position: fixed;
     color: #7bd7e0;
     left: 13px;
-    bottom: 3px;
+    bottom: 4px;
     z-index: 999;
 }
 .popover-content .label-md{
@@ -55,6 +55,7 @@ emoji-picker{
 }
 .toolbar-title-md {
     text-transform: capitalize;
+    padding: 0 6px;
 }
 .input-has-focus .item-inner {
     border-bottom-color: #f2f2f2 !important;

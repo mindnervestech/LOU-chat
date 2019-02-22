@@ -41,9 +41,16 @@ declare var firebase;
 
 				<h2 *ngIf="senderUser.name" (click)="showProfile(senderUser)" tappable>{{ senderUser.name }}</h2>
 				<h2 *ngIf="!senderUser.name" (click)="showProfile(senderUser)" tappable>{{ senderUser.email }}</h2>
-				<button ion-button color="light" clear icon-only item-end (click)="showFriendOptions(senderUser)" tappable>
+				<!--<button ion-button color="light" clear icon-only item-end (click)="showFriendOptions(senderUser)" tappable>
                         <ion-icon name="options"></ion-icon>
-                    </button>
+                    </button>-->
+        <div style="position:absolute;right:0;top:12px;">
+              <button ion-button icon-only class="btn circle" (click)="showFriendOptions(senderUser)" tappable>
+                <ion-icon name="radio-button-off"></ion-icon>
+                <ion-icon name="radio-button-off"></ion-icon>
+                <ion-icon name="radio-button-off"></ion-icon>
+              </button>
+            </div>            
 			</ion-item>
 		</ion-title>
 
@@ -711,101 +718,102 @@ export class ChatPage {
   showFriendOptions(user) {
     //by this function the currentUser can view the profile of connected user. and user can block and unblock to the connected user.
     var me = this;
-    if (me.network.type == "none") {
-      let toast = this.toastCtrl.create({
-        message: 'No internet connection.',
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
-      return true;
-    }
-    if (me.block1 == 0) {
-      let actionSheet = this.actionSheetCtrl.create({
-        buttons: [
-          {
-            text: 'View Profile',
-            handler: () => {
-              this.navCtrl.push("ShowProfilePage", user);
-            }
-          }, {
-            text: 'Block User',
-            handler: () => {
-              console.log('Block User');
-              var friendRef = firebase.database().ref('Friends/' + me.myuserid);
-              friendRef.child(me.friendkey).update({
-                block: 1
-              }).then(function () {
-                me.blockUser = 1;
-                me.block1 = 1;
-                me.blockMsg = Message.SHOW_BLOCK_MSG;
-                let alert = me.alertCtrl.create({
-                  title: 'User Blocked',
-                  subTitle: Message.USER_BLOCK_SUCCESS,
-                  buttons: ['OK']
-                });
-                alert.present();
-              });
-            }
-          }, {
-            text: 'Cancel',
-            role: 'cancel',
-            handler: () => {
-              console.log('Cancel clicked');
-            }
-          }
-        ]
-      });
-      actionSheet.present();
-    } else if (me.block1 == 1) {
-      let actionSheet = this.actionSheetCtrl.create({
-        buttons: [
-          {
-            text: 'View Profile',
-            handler: () => {
-              this.navCtrl.push("ShowProfilePage", user);
-            }
-          }, {
-            text: 'Unblock User',
-            handler: () => {
-              console.log('Unblock User');
-              var friendRef = firebase.database().ref('Friends/' + me.myuserid);
-              friendRef.child(me.friendkey).update({
-                block: 0
-              }).then(function () {
-                if (me.block2 == 0) {
-                  me.blockUser = 0;
-                  me.block1 = 0;
-                  let alert = me.alertCtrl.create({
-                    title: 'User Unblocked',
-                    subTitle: Message.USER_UNBLOCK_SUCCESS,
-                    buttons: ['OK']
-                  });
-                  alert.present();
-                } else if (me.block2 == 1) {
-                  me.blockUser = 1;
-                  me.block1 = 0;
-                  me.blockMsg = Message.SHOW_OTHER_USER_BLOCK_MSG;
-                  let alert = me.alertCtrl.create({
-                    title: 'User Unblocked',
-                    subTitle: Message.USER_BLOCK_BY_OTHERUSER,
-                    buttons: ['OK']
-                  });
-                  alert.present();
-                }
-              });
-            }
-          }, {
-            text: 'Cancel',
-            role: 'cancel',
-            handler: () => {
-              console.log('Cancel clicked');
-            }
-          }
-        ]
-      });
-      actionSheet.present();
-    }
+    me.navCtrl.push("ShowProfilePage", user);
+    // if (me.network.type == "none") {
+    //   let toast = this.toastCtrl.create({
+    //     message: 'No internet connection.',
+    //     duration: 3000,
+    //     position: 'top'
+    //   });
+    //   toast.present();
+    //   return true;
+    // }
+    // if (me.block1 == 0) {
+    //   let actionSheet = this.actionSheetCtrl.create({
+    //     buttons: [
+    //       {
+    //         text: 'View Profile',
+    //         handler: () => {
+    //           this.navCtrl.push("ShowProfilePage", user);
+    //         }
+    //       }, {
+    //         text: 'Block User',
+    //         handler: () => {
+    //           console.log('Block User');
+    //           var friendRef = firebase.database().ref('Friends/' + me.myuserid);
+    //           friendRef.child(me.friendkey).update({
+    //             block: 1
+    //           }).then(function () {
+    //             me.blockUser = 1;
+    //             me.block1 = 1;
+    //             me.blockMsg = Message.SHOW_BLOCK_MSG;
+    //             let alert = me.alertCtrl.create({
+    //               title: 'User Blocked',
+    //               subTitle: Message.USER_BLOCK_SUCCESS,
+    //               buttons: ['OK']
+    //             });
+    //             alert.present();
+    //           });
+    //         }
+    //       }, {
+    //         text: 'Cancel',
+    //         role: 'cancel',
+    //         handler: () => {
+    //           console.log('Cancel clicked');
+    //         }
+    //       }
+    //     ]
+    //   });
+    //   actionSheet.present();
+    // } else if (me.block1 == 1) {
+    //   let actionSheet = this.actionSheetCtrl.create({
+    //     buttons: [
+    //       {
+    //         text: 'View Profile',
+    //         handler: () => {
+    //           this.navCtrl.push("ShowProfilePage", user);
+    //         }
+    //       }, {
+    //         text: 'Unblock User',
+    //         handler: () => {
+    //           console.log('Unblock User');
+    //           var friendRef = firebase.database().ref('Friends/' + me.myuserid);
+    //           friendRef.child(me.friendkey).update({
+    //             block: 0
+    //           }).then(function () {
+    //             if (me.block2 == 0) {
+    //               me.blockUser = 0;
+    //               me.block1 = 0;
+    //               let alert = me.alertCtrl.create({
+    //                 title: 'User Unblocked',
+    //                 subTitle: Message.USER_UNBLOCK_SUCCESS,
+    //                 buttons: ['OK']
+    //               });
+    //               alert.present();
+    //             } else if (me.block2 == 1) {
+    //               me.blockUser = 1;
+    //               me.block1 = 0;
+    //               me.blockMsg = Message.SHOW_OTHER_USER_BLOCK_MSG;
+    //               let alert = me.alertCtrl.create({
+    //                 title: 'User Unblocked',
+    //                 subTitle: Message.USER_BLOCK_BY_OTHERUSER,
+    //                 buttons: ['OK']
+    //               });
+    //               alert.present();
+    //             }
+    //           });
+    //         }
+    //       }, {
+    //         text: 'Cancel',
+    //         role: 'cancel',
+    //         handler: () => {
+    //           console.log('Cancel clicked');
+    //         }
+    //       }
+    //     ]
+    //   });
+    //   actionSheet.present();
+    // }
   }
 
   presentActionSheet() {

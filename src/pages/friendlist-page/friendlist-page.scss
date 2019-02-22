@@ -5,6 +5,9 @@ page-friendlist{
         width: 86%;
         margin: auto;
     }
+    .list-md .item-block .item-inner {
+        border-bottom: 1px solid #dedede !important;
+    }
     .group-img{
         width: 50px;
         height: 46px;
@@ -28,7 +31,7 @@ page-friendlist{
         .group-text span:nth-child(1) {
             position: absolute;
             left: 0;
-            right: 0;
+            right: 1px;
             bottom: 0;
             margin: auto;
             line-height: 3;
@@ -38,7 +41,10 @@ page-friendlist{
             top: 6px;
         }
         .group-text span:nth-child(2){
-            left: 4px;
+            left: 0px;
+        }
+        .group-text span:nth-child(3){
+            right: 1px;
         }
     }
     .name-show{
@@ -50,7 +56,7 @@ page-friendlist{
         span{
             display: block;
             text-align: center;
-            font-size: 17px;
+            font-size: 15px;
             text-transform: uppercase;
             color: #7bd7e0;
             font-weight: 500;
@@ -87,7 +93,7 @@ page-friendlist{
             background: #eeeeee;
             display: block;
             text-align: center;
-            font-size: 17px;
+            font-size: 15px;
             text-transform: uppercase;
             color: #7bd7e0;
             font-weight: 500;
@@ -277,31 +283,37 @@ page-friendlist{
         overflow: hidden;
     }
     .list-md {
-        margin: 0px 1px 0px 4px;
+        margin: 0px 10px 0px 4px;
+    }
+    .item-md{
+        display: contents;
     }
     .mytime{
-        font-size: 16px;
+        font-size: 13px;
         display: inline;
         float: right;
         margin-top: 3px;
-        color: #999;
-        font-weight: 500;
+        color: #666;
+        font-weight: normal;
     }
     .item-md [item-right]{
-        margin: 0px 8px 9px 0;
+        margin: 0px 1px 9px 0;
+        position: relative;
+        top: -9px;
     }
     h2{
-        font-size: 17px !important;
+        font-size: 16px !important;
         font-weight: 500 !important;
         color: #000;
         display: inline;
     }  
     p{
-        font-size: 16px !important;
-        color: #666;
-        margin-top: 7px !important;
+        font-size: 13px !important;
+        color: #666 !important;
+        margin-top: 3px !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+        height: 16px;
     }
     .text-profile {
         height: 100px;
@@ -333,7 +345,7 @@ page-friendlist{
         font-weight: 500;
     }
     .label-md {
-        margin: 13px 8px 12px 0;
+        margin: 8px 8px 8px 0;
     }
     .badge-md {
         border-radius: 4px;

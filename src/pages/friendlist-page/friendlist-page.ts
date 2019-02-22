@@ -63,7 +63,7 @@ declare var firebase;
                 </div> -->
             </div>
         </div>
-        <ion-list [virtualScroll]="groupData" [approxItemHeight]="'70px'" >
+        <ion-list [virtualScroll]="groupData" [approxItemHeight]="'70px'" style="margin-top:8px;">
             <ion-item *virtualItem="let data" tappable>
                 <ion-avatar item-left class="ion-pro group-img">
                     <!--<ion-img class="imgstyle" src='./assets/image/group.png' (click)="gotToChatRoomMembersPage(data.groupId)"></ion-img>-->
@@ -72,7 +72,7 @@ declare var firebase;
                     </div>    
                 </ion-avatar>
                 <div (click)='groupMessageBox(data)'>                
-                    <h2>{{ data.groupName }}</h2> 
+                    <h2>{{ data.groupName }} {{trainNo}}</h2> 
                     <p style="margin-top: 4px !important;">{{ data.lastMessage }}</p>
                 </div>               
                 <div item-right (click)='groupMessageBox(data)'>
@@ -81,7 +81,7 @@ declare var firebase;
                 </div>
             </ion-item>          
         </ion-list>
-        <ion-list [virtualScroll]="usersList" [approxItemHeight]="'70px'" >
+        <ion-list [virtualScroll]="usersList" [approxItemHeight]="'70px'">
             <ion-item *virtualItem="let item" (click)='messageBox($event,item)' tappable>
                 <ion-avatar item-left *ngIf="item.profilePic != 'assets/image/profile.png'">
                     <ion-img class="imgstyle" src='{{item.profilePic}}'></ion-img>
@@ -152,11 +152,13 @@ export class FriendlistPage {
     checkGroupMemberForMatch = false;
     userMatchCheck = false;
     checkForEnteryStatus = false;
-
+    trainNo: string = '';
     constructor(public modalCtrl: ModalController,public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
         var me = this;
         me.menu.swipeEnable(true);
         var user = JSON.parse(localStorage.getItem("loginUser"));
+        var option = JSON.parse(localStorage.getItem("option"));
+        me.trainNo = option.optionValue;
         me.profilePic = (user.profilePic == "") ? 'assets/image/profile.png' : user.profilePic; 
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
@@ -441,7 +443,8 @@ export class FriendlistPage {
                         };
                         me.usersList.push(userinfo);      
                  }
-                  me.usersList.sort(function(a,b){return b.checkDate - a.checkDate});
+                 
+                  me.usersList = me.usersList.sort(function(a,b){return a.checkDate - b.checkDate});
                 // me.checkForEntery = false;
              }
          });
