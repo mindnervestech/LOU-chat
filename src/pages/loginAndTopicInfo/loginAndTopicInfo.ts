@@ -198,8 +198,8 @@ export class loginAndTopicInfo {
             me.newLoginUser();
         }else{
           //user data update and add member to group
-          var user = JSON.parse(localStorage.getItem("loginUser"));
-          if(user.name == me.nickName){
+          var _user = JSON.parse(localStorage.getItem("loginUser"));
+          if(_user.name == me.nickName){
             me.LoadingProvider.startLoading();
             var group_id = me.groupInfo.groupId;
             var date = new Date();
