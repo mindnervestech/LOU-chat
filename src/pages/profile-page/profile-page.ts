@@ -524,16 +524,19 @@ export class ProfilePage {
             };
             hopperRef.update(obj).then(()=>{
                 localStorage.removeItem("loginUser");
-                var logInUser = {
-                    name :  user.name,
-                    access_code : user.access_code,
-                    profilePic :me.tempProfile,
-                    uid : user.uid
-                }
-                global.USER_IMAGE = me.tempProfile
-                localStorage.setItem("loginUser", JSON.stringify(logInUser));
-                let alert = me.alertCtrl.create({ subTitle: 'Profile updated successfully', buttons: ['OK'] });
-                alert.present();
+                 setTimeout(function() {
+                    var logInUser = {
+                        name :  user.name,
+                        access_code : user.access_code,
+                        profilePic :me.tempProfile,
+                        uid : user.uid
+                    }
+                    global.USER_IMAGE = me.tempProfile
+                    localStorage.setItem("loginUser", JSON.stringify(logInUser));
+                    let alert = me.alertCtrl.create({ subTitle: 'Profile updated successfully', buttons: ['OK'] });
+                    alert.present();
+                }, 500);
+                
             });
            
             //me.PublishEventUserUpdate();
