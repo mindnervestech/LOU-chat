@@ -172,7 +172,7 @@ export class ShowProfilePage {
                         });
             }
         });
-        me.navCtrl.push("ChatPage",me.navParams.data);
+        me.navCtrl.setRoot("ChatPage",me.navParams.data);
     }
     goTo(){
         this.navCtrl.setRoot("ChatRoomMembers");

@@ -18,22 +18,45 @@
             <ion-title  class="title">Ads</ion-title>
         </ion-row>       
     </ion-toolbar>
+    <ion-item class="title-btn">
+        <button ion-button (click)="busssiness('business');" [ngClass]="{'active': active == 'business'}">Bussiness</button>
+        <button ion-button (click)="busssiness('homework');" [ngClass]="{'active': active == 'homework'}">Homework</button>
+        <button ion-button (click)="busssiness('visit');" [ngClass]="{'active': active == 'visit'}">Visit people</button>
+        <button ion-button (click)="busssiness('tourism');" [ngClass]="{'active': active == 'tourism'}">Tourism</button>
+    </ion-item>
 </ion-header>
 <ion-content padding>
-    <ion-item class="title-btn">
-        <button ion-button>Bussiness</button>
-        <button ion-button>Homework</button>
-        <button ion-button>Visit people</button>
-        <button ion-button>Tourism</button>
+    <span *ngFor="let item of business">
+        <ion-item class="ads bussiness">
+            <h2>{{item.title}}</h2>
+            <p>{{item.description}}</p>
+            <div>{{item.date * 1000| date }}</div>    
+        </ion-item>
+    </span>    
+    <!-- <span>
+        <ion-item class="ads bussiness" *ngFor="let item of business">
+            <span>
+                <h2>{{item.title}}</h2>
+                <p>{{item.description}}</p>
+                <div>{{item.date}}</div>
+            </span>    
+        </ion-item>
+    </span> -->
+    <!-- <ion-item class="ads bussiness" *ngFor="let item of tour">
+        <span *ngIf="to == true">
+            <h2>{{item.title}}</h2>
+            <p>{{item.description}}</p>
+            <div>{{item.date}}</div>
+        </span>    
     </ion-item>
-    <ion-item class="ads bussiness">
-        <h2>Travelling for bussiness</h2>
-        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industr.
-        Lorem Ipsum is simply dummy text of the printing and typesetting industr
-        </p>
-        <div>20/02/2019</div>
-    </ion-item>
-    <ion-item class="ads homework">
+    <ion-item class="ads bussiness" *ngFor="let item of people">
+        <span *ngIf="vi == true">
+            <h2>{{item.title}}</h2>
+            <p>{{item.description}}</p>
+            <div>{{item.date}}</div>
+        </span>    
+    </ion-item> -->
+    <!-- <ion-item class="ads homework">
         <h2>Travelling for homework</h2>
         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industr.
         Lorem Ipsum is simply dummy text of the printing and typesetting industr
@@ -46,7 +69,7 @@
         Lorem Ipsum is simply dummy text of the printing and typesetting industr
         </p>
         <div>20/02/2019</div>
-    </ion-item>
+    </ion-item> -->
 </ion-content>
 <ion-footer>
     <ion-toolbar class="option">

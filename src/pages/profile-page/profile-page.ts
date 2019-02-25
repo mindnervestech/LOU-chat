@@ -506,7 +506,6 @@ export class ProfilePage {
             // if(me.tempProfile == undefined && me.tempProfile == null){
             //     me.tempProfile ="assets/image/profile.png";
             // }
-            console.log("proffile image",me.profilePhoto);
             me.tempProfile = me.profilePhoto == '' ? 'assets/image/profile.png' : me.profilePhoto;
             var obj = {
                 "age":me.age,
@@ -523,7 +522,6 @@ export class ProfilePage {
                 "information" : me.information,
                 "services" : me.services,
             };
-            console.log("Onj --->",obj)
             hopperRef.update(obj).then(()=>{
                 localStorage.removeItem("loginUser");
                 var logInUser = {
@@ -534,7 +532,6 @@ export class ProfilePage {
                 }
                 global.USER_IMAGE = me.tempProfile
                 localStorage.setItem("loginUser", JSON.stringify(logInUser));
-                
                 let alert = me.alertCtrl.create({ subTitle: 'Profile updated successfully', buttons: ['OK'] });
                 alert.present();
             });

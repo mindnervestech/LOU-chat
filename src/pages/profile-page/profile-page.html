@@ -22,7 +22,7 @@
         </ion-list>
         <div class="exit">
             <div class="chat-text">
-                <p>Your are currently connected to the {{groupName}} {{optionVal}}</p>
+                <p>Your are connected to the {{groupName}} {{optionVal}} of today</p>
             </div>
             <div class="quit-btn"><button ion-button full color="primary"  class="btndesign" tappable (click)='logOutUser()'>Quit</button></div>
         </div>
@@ -35,21 +35,33 @@
          
         </ion-item> -->
         <!-- (ionChange)="genderValue($event)" -->
-        <ion-list radio-group [(ngModel)]="gender" (ionChange)="genderValue($event)">
+        <!-- <ion-list>
             <ion-item>
-                <ion-radio value="Male"></ion-radio>
+                <input type="radio" value="Male" [(ngModel)]="gender">
                 <ion-label>
                     <img src='assets/image/male.png' style="margin-top:-1px;"/> 
                 </ion-label>
             </ion-item>
             <ion-item>
-                <ion-radio value="Female"></ion-radio>
+                <input type="radio" value="Female" [(ngModel)]="gender">
                 <ion-label>
                     <img src='assets/image/female.png'/> 
                 </ion-label>
             </ion-item>
-          </ion-list>
-        <div class="input-label">
+        </ion-list> -->
+        <div class="gender">
+            <ion-label>
+                <img src='assets/image/male.png' style="margin-top:-1px;"/> 
+            </ion-label>
+            <input type="radio" value="Male" [(ngModel)]="gender">
+        </div>    
+        <div class="gender">
+            <ion-label>
+                <img src='assets/image/female.png' style="margin-top:-1px;"/> 
+            </ion-label>
+            <input type="radio" value="Female" [(ngModel)]="gender">
+        </div>
+        <div class="input-label" style="margin-top: -10px">
             <ion-label>Age</ion-label>
             <ion-item>
                 <ion-input type="text" placeholder="Your Age" [(ngModel)]="age" ></ion-input>
@@ -106,7 +118,7 @@
                 </div>
             </div>
         </div>    
-        <button ion-button full color="primary" (click)="updateProfile()" class="btndesign loginbtn" tappable>Save</button>  
+        <button ion-button full (click)="updateProfile()" class="btndesign loginbtn" tappable>Save</button>  
     </ion-content>    
     <ion-footer>
         <ion-toolbar class="option">
