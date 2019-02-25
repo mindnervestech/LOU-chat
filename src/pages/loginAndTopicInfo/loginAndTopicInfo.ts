@@ -198,67 +198,75 @@ export class loginAndTopicInfo {
             me.newLoginUser();
         }else{
           //user data update and add member to group
-          me.LoadingProvider.startLoading();
-          var group_id = me.groupInfo.groupId;
-          var date = new Date();
-          var key = user.uid;
-          localStorage.setItem("IsLogin", 'true');
-          var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-          firebase.database().ref().child('GroupMember/'+ group_id + '/' + key).set({
-            groupId : group_id,
-            DateCreated: dateCreated,
-            userId : user.access_code,
-            lastDate : dateCreated,
-            unreadCount : me.groupInfo.unreadCount,
-            lastMessage: me.groupInfo.lastMessage
-          });
+          var user = JSON.parse(localStorage.getItem("loginUser"));
+          if(user.name == me.nickName){
+            me.LoadingProvider.startLoading();
+            var group_id = me.groupInfo.groupId;
+            var date = new Date();
+            var key = user.uid;
+            localStorage.setItem("IsLogin", 'true');
+            var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+            firebase.database().ref().child('GroupMember/'+ group_id + '/' + key).set({
+              groupId : group_id,
+              DateCreated: dateCreated,
+              userId : user.access_code,
+              lastDate : dateCreated,
+              unreadCount : me.groupInfo.unreadCount,
+              lastMessage: me.groupInfo.lastMessage
+            });
 
-          var phofilePic = user.profilePic;
-          console.log(me.servesOption);
-          me.servesOption[0].value = me.navParams.data.servesOption1;
-          me.servesOption[1].value = me.navParams.data.servesOption2,
-          me.servesOption[2].value = me.navParams.data.servesOption3,
-          firebase.database().ref().child('users/'+ key).update({
-            "profilePic" : phofilePic,
-            "groupName" : me.groupInfo.groupName,
-            "tripe" : {
-              "Home work trip" : me.navParams.data.selectedOption1,
-              "Tourism" : me.navParams.data.selectedOption2,
-              "Business tripe" : me.navParams.data.selectedOption3,
-              "To visit people" :me.navParams.data.selectedOption4,
-              "Participate to an event" : me.navParams.data.selectedOption5,
-            },
-            "information" : me.trepOption,
-            "services" : me.servesOption,
-          }).then(()=>{
-            var groupData = JSON.parse(localStorage.getItem("Group"));
-            var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
-            if(msg == ""){
-              if(me.counter == 0){
-                me.LoadingProvider.closeLoading();
-                let alert = me.alertCtrl.create({ subTitle: "Please select at list one trip purpose", buttons: ['OK'] });
-                alert.present();
+            var phofilePic = user.profilePic;
+            console.log(me.servesOption);
+            me.servesOption[0].value = me.navParams.data.servesOption1;
+            me.servesOption[1].value = me.navParams.data.servesOption2,
+            me.servesOption[2].value = me.navParams.data.servesOption3,
+            firebase.database().ref().child('users/'+ key).update({
+              "profilePic" : phofilePic,
+              "groupName" : me.groupInfo.groupName,
+              "tripe" : {
+                "Home work trip" : me.navParams.data.selectedOption1,
+                "Tourism" : me.navParams.data.selectedOption2,
+                "Business tripe" : me.navParams.data.selectedOption3,
+                "To visit people" :me.navParams.data.selectedOption4,
+                "Participate to an event" : me.navParams.data.selectedOption5,
+              },
+              "information" : me.trepOption,
+              "services" : me.servesOption,
+            }).then(()=>{
+              var groupData = JSON.parse(localStorage.getItem("Group"));
+              var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
+              if(msg == ""){
+                if(me.counter == 0){
+                  me.LoadingProvider.closeLoading();
+                  let alert = me.alertCtrl.create({ subTitle: "Please select at list one trip purpose", buttons: ['OK'] });
+                  alert.present();
+                }else{
+                  me.LoadingProvider.closeLoading();
+                  me.navCtrl.setRoot("FriendlistPage");
+                }
               }else{
                 me.LoadingProvider.closeLoading();
-                me.navCtrl.setRoot("FriendlistPage");
-              }
-            }else{
-              me.LoadingProvider.closeLoading();
-                let actionSheet = me.alertCtrl.create({
-                title: 'The chat room is not yet opened, but you can already see some tips for your trip',
-                buttons: [
-                    {
-                        text: 'Go',
-                        handler: () => {
-                            me.GoToFriendListPage();
-                        }
-                    }
-                ]
+                  let actionSheet = me.alertCtrl.create({
+                  title: 'The chat room is not yet opened, but you can already see some tips for your trip',
+                  buttons: [
+                      {
+                          text: 'Go',
+                          handler: () => {
+                              me.GoToFriendListPage();
+                          }
+                      }
+                  ]
+              });
+              actionSheet.present();
+             }
+         
             });
-            actionSheet.present();
-           }
-       
-          });
+          }else{
+            //if user login as a new user
+            localStorage.removeItem("loginUser");
+            me.newLoginUser();
+          }
+          
         }
     }
   	newLoginUser(){
