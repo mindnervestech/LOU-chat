@@ -172,9 +172,9 @@ export class FriendlistPage {
         this.slides.slideNext();
     }
     
-      prev() {
+    prev() {
         this.slides.slidePrev();
-      }
+    }
 
     ionViewDidLoad() {
         var me = this;
@@ -196,7 +196,7 @@ export class FriendlistPage {
              }
             me.LoadList();
              me.getChatMemberData();
-        }
+    }
     
     chatPage(){
         this.navCtrl.push("FriendlistPage");   

@@ -160,7 +160,6 @@ export class GroupChatPage {
         me.setScroll();
         firebase.database().ref().child('users/'+userId).on('value',function(user){
           me.usersData = user.val();
-          console.log("me.usersData",me.usersData.created);
         });
         firebase.database().ref().child('GroupChats/' + me.groupData.groupId).limitToLast(me.limit).off("child_added");
       firebase.database().ref().child('GroupChats/' +  me.groupData.groupId).limitToLast(me.limit).on("child_added", function (messages) {
@@ -172,25 +171,26 @@ export class GroupChatPage {
         var date = new Date(dateValue[0], dateValue[1] - 1, dateValue[2], timeValue[0], timeValue[1], timeValue[2], 0);
         var time = me.CommonProvider.formatAMPM(date);
         //me.ChatKeys.push(messages.key);
-        console.log("time",time);
-        console.log("date",date);
-        me._zone.run(() => me.messagesList.push({
-          'DateCreated': date.toLocaleDateString(),
-          'time': time,
-          'message': messages.val().message,
-          'sender_id': messages.val().sender_id,
-          'mkey': messages.key,
-          "userId": me.myuserid,
-          "type": messages.val().type,
-          "profilePic": (messages.val().profilePic != "") ? messages.val().profilePic  : "assets/image/profile.png",
-          "name": messages.val().name,
-          "slice": messages.val().name.slice(0,2)
-        }));
+        var userRegisterdData = new Date(me.usersData.created);
+        if (date >= userRegisterdData) {
+          me._zone.run(() => me.messagesList.push({
+            'DateCreated': date.toLocaleDateString(),
+            'time': time,
+            'message': messages.val().message,
+            'sender_id': messages.val().sender_id,
+            'mkey': messages.key,
+            "userId": me.myuserid,
+            "type": messages.val().type,
+            "profilePic": (messages.val().profilePic != "") ? messages.val().profilePic  : "assets/image/profile.png",
+            "name": messages.val().name,
+            "slice": messages.val().name.slice(0,2)
+          }));
           if (me.loadingmessageCounter > 5) {
             setTimeout(() => {
               me.setScroll();
             }, 500);
-          } 
+          }
+        }
       });
     }
 

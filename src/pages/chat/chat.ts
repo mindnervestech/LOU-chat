@@ -200,7 +200,9 @@ export class ChatPage {
   pushName: string = '';
   pushId: string = '';
   editorMsg: '';
-  showEmojiPicker: boolean = false;;
+  showEmojiPicker: boolean = false;
+  checkUserPresent = false;
+  check = false;
   constructor(public modalCtrl: ModalController, private camera: Camera, public LoadingProvider: LoadingProvider, public platform: Platform, public CommonProvider: CommonProvider, public _DomSanitizer: DomSanitizer, public toastCtrl: ToastController, public sqlite: SQLite, private network: Network, public PushProvider: PushProvider, public element: ElementRef, public actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public _zone: NgZone, public navParams: NavParams, public alertCtrl: AlertController) {
     var user = JSON.parse(localStorage.getItem("loginUser"));
     this.pushName = user.name;
@@ -259,11 +261,13 @@ export class ChatPage {
       console.log('_data.val()', _data.val())
       if(_data.val() == null) {
         console.log("in if");
+        me.checkUserPresent = false;
       }else{
         console.log("in else");
-        firebase.database().ref().child('Friends/' + user.uid + '/' + me.navParams.data.key).update({
+        me.checkUserPresent = true;
+        /*firebase.database().ref().child('Friends/' + user.uid + '/' + me.navParams.data.key).update({
           unreadCount: 0
-        });
+        });*/
       }
     });
     firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).off();
@@ -449,9 +453,11 @@ export class ChatPage {
 
     global.Is_CHAT_PAGE = false;
     //it is for unreadCount Message update in firebase if user leaves the chat page then the current user message will be update in firebase as unReadCount as 0;
-    firebase.database().ref().child('Friends/' + user.uid + '/' + me.navParams.data.key).update({
-      unreadCount: 0
-    });
+    if(me.checkUserPresent == true){
+      firebase.database().ref().child('Friends/' + user.uid + '/' + me.navParams.data.key).update({
+        unreadCount: 0
+      });
+    }
   }
 
   sendMessage(type) {
@@ -459,6 +465,7 @@ export class ChatPage {
     var me = this;
     var date = new Date();
     me.showEmojiPicker = false;
+    me.check = true;
     //in case of network type none means no internet connection then user can not send message to other.
     if (me.network.type == "none") {
       let toast = me.toastCtrl.create({
@@ -501,22 +508,23 @@ export class ChatPage {
             firebase.database().ref().child('Friends/' + userId + '/' + me.senderUser.senderId).on('value', function(userData){
               if(userData.val() == null){
                 console.log('userData.val()', userData.val());
+                
                 firebase.database().ref().child('Friends/' + userId + '/' + me.senderUser.senderId).set({
                     DateCreated : dateCreated,
-                    lastDate :dateCreated,
-                    lastMessage :"",
-                    SenderId :me.senderUser.senderId,
+                    lastDate : dateCreated,
+                    lastMessage : "",
+                    SenderId : me.senderUser.senderId,
                     block: 0,
                     access : true,
                     unreadCount : 0,
-                    name :  me.senderUser.name,
+                    name : me.senderUser.name,
                     profilePic : "assets/image/profile.png",
                 });
                 firebase.database().ref().child('Friends/' + me.senderUser.senderId + '/' + userId).set({
                     DateCreated : dateCreated,
-                    lastDate :dateCreated,
-                    lastMessage :"",
-                    SenderId :user.uid,
+                    lastDate : dateCreated,
+                    lastMessage : "",
+                    SenderId : userId,
                     block: 0,
                     access : true,
                     unreadCount : 1,
@@ -524,30 +532,34 @@ export class ChatPage {
                     profilePic : user.profilePic,
                 });
               }else{
-                firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).once('value').then(function (snapshot) {
-                  var friendRef = firebase.database().ref('Friends/' + me.senderUser.senderId);
-                  friendRef.child(userId).update({
-                    lastDate: dateCreated,
-                    unreadCount: parseInt(snapshot.val().unreadCount) + 1,
-                    lastMessage: lastDisplaymessage
-                  }).then(function () {
-                    console.log("Message send successfully");
-                    var title = "You have new message from " + me.pushName;
-                    console.log("title",title);
-                    var body = me.strip(lastDisplaymessage);
-                    me.PushProvider.PushNotification(me.pushId, title, body);
+                console.log("if user present");
+                if(me.check == true){
+                  me.check = false;
+                  firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).once('value').then(function (snapshot) {
+                    var friendRef = firebase.database().ref('Friends/' + me.senderUser.senderId);
+                    friendRef.child(userId).update({
+                      lastDate: dateCreated,
+                      unreadCount: parseInt(snapshot.val().unreadCount) + 1,
+                      lastMessage: lastDisplaymessage
+                    }).then(function () {
+                      console.log("Message send successfully");
+                      var title = "You have new message from " + me.pushName;
+                      console.log("title",title);
+                      var body = me.strip(lastDisplaymessage);
+                      me.PushProvider.PushNotification(me.pushId, title, body);
+                    });
                   });
-                });
-                firebase.database().ref('Friends/' + userId + '/' + me.senderUser.senderId).once('value').then(function (snapshot) {
-                  var friendRef = firebase.database().ref('Friends/' + userId);
-                  friendRef.child(me.senderUser.senderId).update({
-                    lastDate: dateCreated,
-                    lastMessage: lastDisplaymessage
-                  }).then(function () {
+                  firebase.database().ref('Friends/' + userId + '/' + me.senderUser.senderId).once('value').then(function (snapshot) {
+                    var friendRef = firebase.database().ref('Friends/' + userId);
+                    friendRef.child(me.senderUser.senderId).update({
+                      lastDate: dateCreated,
+                      lastMessage: lastDisplaymessage
+                    }).then(function () {
 
-                    console.log("Message send successfully");
+                      console.log("Message send successfully");
+                    });
                   });
-                });
+                }
               }
             });    
           }

@@ -137,41 +137,41 @@ export class ShowProfilePage {
     }
     goToChatPage(){
         var me = this;
-        var user = JSON.parse(localStorage.getItem("loginUser"));
-        firebase.database().ref('Friends/'+ user.uid).on('value',function(user){
-            var check = "true";
-            for(var data in user.val()){
-                if(me.navParams.data.senderId == data){
-                    check = "false";
-                }
-            }
-            if(check == "true"){
-                var date = new Date();
-                var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-                firebase.database().ref().child('Friends/' + user.uid + '/' + me.navParams.data.senderId).set({
-                            DateCreated : dateCreated,
-                            lastDate :dateCreated,
-                            lastMessage :"",
-                            SenderId :me.navParams.data.senderId,
-                            block: 0,
-                            access : true,
-                            unreadCount : 0,
-                            name : me.navParams.data.name,
-                            profilePic : me.navParams.data.profilePic,
-                        });
-                        firebase.database().ref().child('Friends/' + me.navParams.data.senderId + '/' + user.uid).set({
-                            DateCreated : dateCreated,
-                            lastDate :dateCreated,
-                            lastMessage :"",
-                            SenderId :user.uid,
-                            block: 0,
-                            access : true,
-                            unreadCount : 0,
-                            name : user.name,
-                            profilePic : user.profilePic,
-                        });
-            }
-        });
+        // var user = JSON.parse(localStorage.getItem("loginUser"));
+        // firebase.database().ref('Friends/'+ user.uid).on('value',function(user){
+        //     var check = "true";
+        //     for(var data in user.val()){
+        //         if(me.navParams.data.senderId == data){
+        //             check = "false";
+        //         }
+        //     }
+        //     if(check == "true"){
+        //         var date = new Date();
+        //         var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        //         firebase.database().ref().child('Friends/' + user.uid + '/' + me.navParams.data.senderId).set({
+        //                     DateCreated : dateCreated,
+        //                     lastDate :dateCreated,
+        //                     lastMessage :"",
+        //                     SenderId :me.navParams.data.senderId,
+        //                     block: 0,
+        //                     access : true,
+        //                     unreadCount : 0,
+        //                     name : me.navParams.data.name,
+        //                     profilePic : me.navParams.data.profilePic,
+        //                 });
+        //                 firebase.database().ref().child('Friends/' + me.navParams.data.senderId + '/' + user.uid).set({
+        //                     DateCreated : dateCreated,
+        //                     lastDate :dateCreated,
+        //                     lastMessage :"",
+        //                     SenderId :user.uid,
+        //                     block: 0,
+        //                     access : true,
+        //                     unreadCount : 0,
+        //                     name : user.name,
+        //                     profilePic : user.profilePic,
+        //                 });
+        //     }
+        // });
         me.navCtrl.setRoot("ChatPage",me.navParams.data);
     }
     goTo(){

@@ -246,20 +246,17 @@ export class loginAndTopicInfo {
                 }
               }else{
                 me.LoadingProvider.closeLoading();
-                  let actionSheet = me.alertCtrl.create({
+                let actionSheet = me.alertCtrl.create({
                   title: 'The chat room is not yet opened, but you can already see some tips for your trip',
-                  buttons: [
-                      {
-                          text: 'Go',
-                          handler: () => {
+                  buttons: [{
+                            text: 'Go',
+                            handler: () => {
                               me.GoToFriendListPage();
-                          }
-                      }
-                  ]
-              });
-              actionSheet.present();
-             }
-         
+                            }
+                          }]
+                });
+                actionSheet.present();
+             }         
             });
           }else{
             //if user login as a new user
@@ -269,6 +266,7 @@ export class loginAndTopicInfo {
           
         }
     }
+
   	newLoginUser(){
   		var me = this;
   		localStorage.setItem("value", "true");
