@@ -116,15 +116,26 @@
 }
 .send-btn{
     border: 1px solid #00826d;
-    height: 4.2rem;
-    width: 4.2rem;
+    height: 44px;
+    width: 44px;
     background: #00826d;
     border-radius: 50% !important;
+    position: relative;
+    .button-inner{
+        position: absolute;
+        top: 0;
+        height: fit-content;
+        width: fit-content;
+        left: 2px;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
     ion-icon {
         font-size: 1.7em !important;
-        line-height: .67;
+        line-height: normal;
         pointer-events: none;
-        padding-left: .4em;
+        padding-left: 0px;
         color: #fff !important;
     }
 }
@@ -414,5 +425,6 @@ cursor:text;
     }    
     .item-md{
         background-color: #ffffff !important;
+        bottom: 2px;
     }
 }

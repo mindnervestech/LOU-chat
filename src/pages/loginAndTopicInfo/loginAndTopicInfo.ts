@@ -10,6 +10,7 @@ import { Camera } from '@ionic-native/camera';
 //import { GooglePlus } from '@ionic-native/google-plus';
 //import * as Message from '../../providers/message/message';
 //import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { TranslateService } from '@ngx-translate/core';
 declare var firebase;
 
 @IonicPage()
@@ -30,7 +31,7 @@ export class loginAndTopicInfo {
     groupInfo: any;
     userProfilePic : string = ""; 
     user_profilePic: string = "assets/image/profile.png";
-
+    tripPurpose: string = '';
 	constructor(public LoadingProvider: LoadingProvider,
 	public CommonProvider: CommonProvider,
 	private network: Network,
@@ -42,12 +43,14 @@ export class loginAndTopicInfo {
 	public navCtrl: NavController,
 	public navParams: NavParams,
 	public actionSheetCtrl: ActionSheetController,
-	private camera: Camera) {
+  private camera: Camera,
+  public translate: TranslateService) {
 	    localStorage.setItem("isFirstTimeLoginTrue", "true");
 	    this.menu.swipeEnable(false);
 	}
 
 	ionViewDidEnter() {
+    this.getLang();
     var language = localStorage.getItem("language");
     var me = this;
     me.LoadingProvider.startLoading();
@@ -109,8 +112,11 @@ export class loginAndTopicInfo {
   	GoToFriendListPage() {
     	this.navCtrl.push("FriendlistPage");
     }
-      
-    
+    getLang(){
+      var lang = localStorage.getItem('lan');
+        this.translate.use(lang);           
+        console.log("lang",lang);
+    }
    btnActivate(ionicButton,text) {
     if(ionicButton._color === 'dark'){
       ionicButton.color =  'primary';
@@ -194,6 +200,12 @@ export class loginAndTopicInfo {
     LoginUser(){
       var user = JSON.parse(localStorage.getItem("loginUser"));
       var me = this;
+      var lang = localStorage.getItem('lan');
+      if(lang == 'fn'){
+        me.tripPurpose = "Sélectionner au moins un objet du voyage";
+      }else{
+        me.tripPurpose = 'Please select at least one trip purpose';
+      }
       if (!user) {
             me.newLoginUser();
         }else{
@@ -220,6 +232,7 @@ export class loginAndTopicInfo {
             me.servesOption[0].value = me.navParams.data.servesOption1;
             me.servesOption[1].value = me.navParams.data.servesOption2,
             me.servesOption[2].value = me.navParams.data.servesOption3,
+            me.servesOption[3].value = me.navParams.data.servesOption4,
             firebase.database().ref().child('users/'+ key).update({
               "profilePic" : phofilePic,
               "groupName" : me.groupInfo.groupName,
@@ -238,7 +251,7 @@ export class loginAndTopicInfo {
               if(msg == ""){
                 if(me.counter == 0){
                   me.LoadingProvider.closeLoading();
-                  let alert = me.alertCtrl.create({ subTitle: "Please select at list one trip purpose", buttons: ['OK'] });
+                  let alert = me.alertCtrl.create({ subTitle: me.tripPurpose, buttons: ['OK'] });
                   alert.present();
                 }else{
                   me.LoadingProvider.closeLoading();
@@ -266,10 +279,18 @@ export class loginAndTopicInfo {
           
         }
     }
-
+    enterNickname: string = '';
   	newLoginUser(){
   		var me = this;
-  		localStorage.setItem("value", "true");
+      localStorage.setItem("value", "true");
+      var lang = localStorage.getItem('lan');
+      if(lang == 'fn'){
+        me.tripPurpose = "Sélectionner au moins un objet du voyage";
+        me.enterNickname = "S'il vous plaît entrer pseudo";
+      }else{
+        me.tripPurpose = 'Please select at least one trip purpose';
+        me.enterNickname = "Please enter nick name";
+      }
   		if(me.nickName != ""){
   			me.LoadingProvider.startLoading();
 
@@ -287,6 +308,7 @@ export class loginAndTopicInfo {
             me.servesOption[0].value = me.navParams.data.servesOption1;
             me.servesOption[1].value = me.navParams.data.servesOption2,
             me.servesOption[2].value = me.navParams.data.servesOption3,
+            me.servesOption[3].value = me.navParams.data.servesOption4,
             firebase.database().ref().child('users').push({
                   created : new Date().getTime(),
                name : me.nickName,
@@ -338,7 +360,7 @@ export class loginAndTopicInfo {
                         if(msg == ""){
                           if(me.counter == 0){
                             me.LoadingProvider.closeLoading();
-                            let alert = me.alertCtrl.create({ subTitle: "Please select at list one trip purpose", buttons: ['OK'] });
+                            let alert = me.alertCtrl.create({ subTitle: me.tripPurpose , buttons: ['OK'] });
                             alert.present();
                           }else{
                             me.LoadingProvider.closeLoading();
@@ -376,7 +398,7 @@ export class loginAndTopicInfo {
   			});
 
   		}else{
-  			let alert = me.alertCtrl.create({ subTitle: "Please enter nick name", buttons: ['OK'] });
+  			let alert = me.alertCtrl.create({ subTitle: me.enterNickname, buttons: ['OK'] });
       		alert.present();
   		}
   	}

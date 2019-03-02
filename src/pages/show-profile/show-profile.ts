@@ -4,6 +4,7 @@ import { Camera } from '@ionic-native/camera';
 import { Events } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { global } from '../global/global';
+import { TranslateService } from '@ngx-translate/core';
 declare var firebase;
 
 @IonicPage()
@@ -37,24 +38,24 @@ declare var firebase;
             <ion-item><p><span class="label">Status:</span> <span class="info-label">{{userInfo.user_status}}</span></p></ion-item>  
         </div>-->
         <ion-item class="data-option" *ngIf="trepOption.length != 0">
-            <h2>Purpose of trip</h2>
+            <h2>{{ 'Purpose of trip' | translate }}</h2>
             <!--<div class="info-b" *ngFor="let data of trepOption">{{data.option}}</div>-->
             <button id="1" #f ion-button color="dark" *ngFor="let data of trepOption">{{data.option}}</button>
         </ion-item>
         <ion-item class="data-option" *ngIf="information.length != 0">
-            <h2>Topics that interest you</h2>
+            <h2>{{ 'Topics that interest you' | translate }}</h2>
             <!--<div class="info-b" *ngFor="let value of information">{{value.option}}</div>-->
             <button id="1" #f ion-button color="dark" *ngFor="let value of information">{{value.option}}</button>
         </ion-item>
         <ion-item class="data-option" *ngIf="services.length != 0">
-            <h2>Services</h2>
+            <h2>{{ 'Services' | translate }}</h2>
             <!--<div class="info-b" *ngFor="let value of services">{{value.option}}</div>-->
             <button id="1" #f ion-button color="dark" *ngFor="let value of services">{{value.option}}</button>
         </ion-item>
     </ion-content>
     <ion-footer>
         <div *ngIf="block == 1" class="chat-icon-div">
-            <span class="chat-icon" (click)="goToChatPage()"><ion-icon name="chatboxes"></ion-icon></span>
+            <span class="chat-icon" (click)="goToChatPage()"><img src="assets/image/chat.png"></span>
         </div>
     </ion-footer>
     `,
@@ -74,7 +75,7 @@ export class ShowProfilePage {
     trepOption: any = new Array();
     information: any = new Array();
     services: any = new Array();
-    constructor(public modalCtrl: ModalController,private network: Network, public events: Events, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController,
+    constructor(public translate: TranslateService,public modalCtrl: ModalController,private network: Network, public events: Events, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController, private camera: Camera) {
         var user = JSON.parse(localStorage.getItem("loginUser"));
         var me = this;
@@ -172,7 +173,7 @@ export class ShowProfilePage {
         //                 });
         //     }
         // });
-        me.navCtrl.setRoot("ChatPage",me.navParams.data);
+        me.navCtrl.push("ChatPage",me.navParams.data);
     }
     goTo(){
         this.navCtrl.setRoot("ChatRoomMembers");
@@ -181,6 +182,15 @@ export class ShowProfilePage {
         let modal = this.modalCtrl.create("ImagePopupPage", { imageSrc: src });
         modal.present();
     
+    }
+    ionViewDidEnter(){
+        console.log("ionViewDidEnter")
+        this.getLang();
+    }
+    getLang(){
+        var lang = localStorage.getItem('lan');
+        this.translate.use(lang);           
+        console.log("lang",lang);
     }
     ionViewDidLoad(){
         this.loadUserProfileData();

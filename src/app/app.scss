@@ -1,3 +1,30 @@
+@font-face {
+    font-family: 'GothamRounded';
+    src: url(../assets/Font/GothamRounded-Book.otf);
+}
+@font-face {
+    font-family: 'GothamRounded-italic';
+    src: url(../assets/Font/GothamRounded-BookItalic.otf);
+}
+@font-face {
+    font-family: 'GothamRounded';
+    src: url(../assets/Font/GothamRounded-Bold.otf);
+    font-weight: bold;
+}
+// @font-face {
+//     font-family: 'GothamRounded';
+//     src: url(../assets/Font/GothamRounded-Medium.otf);
+//     font-weight: 700;
+// }
+// @font-face {
+//     font-family: 'GothamRounded';
+//     src: url(../assets/Font/GothamRounded-Light.otf);
+//     font-weight: 500;
+// }
+
+body,h1,h2,h3,p,button,span,.label-md{
+    font-family: 'GothamRounded' !important;
+}
 ion-menu.show-menu,.md .menu-inner {
     display: none;
 } 
@@ -11,7 +38,7 @@ ion-menu.show-menu,.md .menu-inner {
     position: fixed;
     color: #7bd7e0;
     left: 13px;
-    bottom: 4px;
+    bottom: 6px;
     z-index: 999;
 }
 .popover-content .label-md{
@@ -29,7 +56,7 @@ emoji-picker{
 }
 .f-class{
     background-color: #ffffff;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
 }
 .emoji-show{
     position: fixed;
@@ -49,7 +76,7 @@ emoji-picker{
 }
 }
 .swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets{
-    bottom: 34%;
+    bottom: 25%;
     left: 0;
     width: 100%;
 }
@@ -83,6 +110,20 @@ emoji-picker{
             font-size: 16px;
         }
     }
+}
+.swiper-pagination-clickable .swiper-pagination-bullet{
+    height: 15px;
+    text-align: center;
+    transform: rotate(45deg);
+    width: 15px;
+    border: 2px solid #330c69;
+    z-index: 9999;
+    opacity: 1;
+    background: transparent;
+}
+.swiper-pagination-bullet-active {
+    opacity: 1;
+    background: #330c69 !important;
 }
 .popover-md .popover-content {
     width: 93%;

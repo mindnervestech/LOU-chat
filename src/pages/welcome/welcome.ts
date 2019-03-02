@@ -25,6 +25,8 @@ export class WelcomePage {
 
   redirect(text) {
     localStorage.setItem("language",text);
+    var lan = text.toLowerCase(); 
+    localStorage.setItem("lan",lan);
 		// this will redirect to login page when tap to continue button of slider.
 		this.navCtrl.push("StartPage");
 	}

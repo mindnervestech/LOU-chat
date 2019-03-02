@@ -5,6 +5,7 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Network } from '@ionic-native/network';
 import * as Message from '../../providers/message/message';
 import { global } from '../global/global';
+import { TranslateService } from '@ngx-translate/core';
 declare var firebase;
 
 @IonicPage()    
@@ -29,26 +30,25 @@ declare var firebase;
                     <ion-slide *ngFor="let data of tripeUsersList; let i = index">
                         <span *ngIf="data.profilePic != 'assets/image/profile.png'"><img class="img_arrow_down_n" src="{{data.profilePic}}"></span>
                         <span class="text-profile" *ngIf="data.profilePic == 'assets/image/profile.png'"><span>{{data.slice}}</span></span>
-                        <h2 class="subheading_content">You have match with {{data.name}}</h2>
+                        <h2 class="subheading_content">{{ 'You have match with' | translate }} {{data.name}}</h2>
                         <div class="option-scroll">
-                            <p *ngIf="data.trepOption.length > 0" class="common-topic">You are traveling for </p>
+                            <p *ngIf="data.trepOption.length > 0" class="common-topic">{{ 'Both, your are traveling for' | translate }} </p>
                             <div class="option" *ngFor="let value of data.trepOption">
                                 <p class="common-topic"> {{value}}, </p>
                             </div>
-                            <p *ngIf="data.informationOption.length > 0" class="common-topic">and You have the topics:</p>
+                            <p *ngIf="data.informationOption.length > 0" class="common-topic">{{ 'And you have topics in common' | translate }}:</p>
                             <div class="option" *ngFor="let value of data.informationOption">
                                 <p class="common-topic"> {{value}}, </p>
                             </div>
-                            <p *ngIf="data.servesOption.length > 0" class="common-topic">and You have</p>
+                            <p *ngIf="data.servesOption.length > 0" class="common-topic">{{ 'And you have services in common' | translate }}</p>
                             <div class="option" *ngFor="let value of data.servesOption">
                                 <p class="common-topic"> {{value}}, </p>
                             </div> 
-                            <p *ngIf="data.servesOption.length > 0">service in common</p>
                         </div>        
                         <div class="div_bottom">
                             <ion-row justify-content-center align-items-center class="ion_row_heiht_bottam">
-                                <button class="dismiss" (click)='dismiss(data,i)'>Dismiss</button>
-                                <button class="dismiss" (click)='addToChat(data,i)'>Add to chat list</button>
+                                <button class="dismiss" (click)='dismiss(data,i)'>{{ 'Dismiss' | translate }} </button>
+                                <button class="dismiss" (click)='addToChat(data,i)'>{{ 'Add to chat list' | translate }}</button>
                             </ion-row>
                         </div>
                     </ion-slide>    
@@ -153,7 +153,7 @@ export class FriendlistPage {
     userMatchCheck = false;
     checkForEnteryStatus = false;
     trainNo: string = '';
-    constructor(public modalCtrl: ModalController,public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
+    constructor(public translate: TranslateService,public modalCtrl: ModalController,public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
         var me = this;
         me.menu.swipeEnable(true);
         var user = JSON.parse(localStorage.getItem("loginUser"));
@@ -218,8 +218,13 @@ export class FriendlistPage {
                 me.loadListFromStorage();
             });*/
             this.getChatMemberData();
+            this.getLang();
     }
-
+    getLang(){
+        var lang = localStorage.getItem('lan');
+        this.translate.use(lang);           
+        console.log("lang",lang);
+    }
     goToAddMemberPage(){
          this.navCtrl.setRoot("AddMembersPage");   
     }
@@ -704,6 +709,7 @@ export class FriendlistPage {
                     lastDate : GrouplastDate
                 };
                 me.groupData.push(groupDetail);
+                console.log("me.groupData",me.groupData);
             });
         });
          /*firebase.database().ref('GroupMember').on('value', function (snapshot) {

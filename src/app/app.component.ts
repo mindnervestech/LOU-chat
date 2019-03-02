@@ -16,7 +16,7 @@ import { Facebook /*FacebookLoginResponse*/ } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
 import {OptionPage} from '../pages/option/option';
 import { Firebase } from '@ionic-native/firebase/ngx';
-
+import { TranslateService } from '@ngx-translate/core';
 declare var firebase;
 declare var senderId: any; // senderId
 
@@ -117,10 +117,8 @@ export class MyApp {
         accessCode: ""
     };
     base64Image: any;
-    constructor(private fb: Facebook,public googlePlus: GooglePlus, /*public _DomSanitizer: DomSanitizer,*/ private network: Network, public deploy: Deploy, private push: Push, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private _zone: NgZone, public events: Events, public platform: Platform, private storage: Storage, public statusBar: StatusBar, public actionSheetCtrl: ActionSheetController, public splashScreen: SplashScreen, private clipboard: Clipboard, private camera: Camera, private sqlite: SQLite,private firebasepush: Firebase) {
-
+    constructor(translate: TranslateService,private fb: Facebook,public googlePlus: GooglePlus, /*public _DomSanitizer: DomSanitizer,*/ private network: Network, public deploy: Deploy, private push: Push, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private _zone: NgZone, public events: Events, public platform: Platform, private storage: Storage, public statusBar: StatusBar, public actionSheetCtrl: ActionSheetController, public splashScreen: SplashScreen, private clipboard: Clipboard, private camera: Camera, private sqlite: SQLite,private firebasepush: Firebase) {
         this.initializeApp();
-
         this.pushSetup();
        /// this.getFirebasetoken();
        // this.getFirebaseNottification();
@@ -210,7 +208,8 @@ export class MyApp {
            var senderId : any;
             const options: PushOptions = {
                 android: {
-                    senderID: senderId
+                    senderID: senderId,
+                    sound: 'true',
                 },
                 ios: {
                     alert: 'true',
@@ -227,7 +226,6 @@ export class MyApp {
             });
 
             pushObject.on('error').subscribe(error => { });
-
             // ionic Deploy, it is used to deploy project on ionic view no need to install apk again and again it will update directly.
             /*  this.deploy.check().then((snapshotAvailable: boolean) => {
   

@@ -2,14 +2,15 @@
     <ion-toolbar color="light" class="profile-page">
         <ion-row>
             <ion-icon name="arrow-back" (click)="goTo()"></ion-icon>
-            <ion-title  class="title">Your Profile</ion-title>
+            <ion-title  class="title">{{ 'Your Profile' | translate }}</ion-title>
         </ion-row>       
     </ion-toolbar>
  </ion-header>
     
- <ion-content padding>
+ <ion-content>
+    <div padding>
         <ion-list no-lines id="ProfileDP">
-            <ion-item class="upload-image">
+            <ion-item class="upload-image" style="margin-right: 0 !important;">
                 <div *ngIf="profilePhoto != 'assets/image/profile.png'" id="profileimage"  [ngStyle]="{'background-image': 'url(' + profilePhoto + ')'}"                
                 (click)="presentActionSheet()" tappable>
                 </div>
@@ -22,11 +23,11 @@
         </ion-list>
         <div class="exit">
             <div class="chat-text">
-                <p>Your are connected to the {{groupName}} {{optionVal}} of today</p>
+                <p>{{ 'Your are connected to the' | translate }} {{groupName}} {{optionVal}} {{ 'of today' | translate }}</p>
             </div>
-            <div class="quit-btn"><button ion-button full color="primary"  class="btndesign" tappable (click)='logOutUser()'>Quit</button></div>
+            <div class="quit-btn"><button ion-button full color="primary"  class="btndesign" tappable (click)='logOutUser()'>{{ 'Quit' | translate }}</button></div>
         </div>
-        <ion-label class="color-label">Gender</ion-label>
+        <ion-label class="color-label">{{ 'Gender' | translate }}</ion-label>
         <!-- <ion-item class="txtdesign1">
           <ion-select placeholder="Select option" interface="popover" [(ngModel)]="gender">
             <ion-option value="Male">Male</ion-option>
@@ -62,20 +63,20 @@
             <input type="radio" value="Female" [(ngModel)]="gender">
         </div>
         <div class="input-label" style="margin-top: -10px">
-            <ion-label>Age</ion-label>
+            <ion-label>{{ 'Age' | translate }}</ion-label>
             <ion-item>
-                <ion-input type="text" placeholder="Your Age" [(ngModel)]="age" ></ion-input>
+                <ion-input type="text" placeholder="{{ 'Your age' | translate }}" [(ngModel)]="age" ></ion-input>
             </ion-item>
         </div>
         <div class="input-label">
-            <ion-label>Profession</ion-label>
+            <ion-label>{{ 'Profession' | translate }}</ion-label>
             <ion-item>
-                <ion-input type="text" placeholder="Your Entry" [(ngModel)]="status"></ion-input>
+                <ion-input type="text" placeholder="{{ 'Your entry' | translate }}" [(ngModel)]="status"></ion-input>
             </ion-item>
         </div>
         <div class="profile-scroll">
             <div class="topic-info topic-info-1">
-                <h2>Purpose of the trip</h2>
+                <h2>{{ 'Purpose of the trip' | translate }}</h2>
                 <div class="row">
                     <div class="multiple-option">
                         <div>
@@ -92,7 +93,7 @@
                     </div>    
                 </div>   
             </div>     
-            <h2>Topic that interest me</h2>
+            <h2>{{ 'Topic that interest me' | translate }}</h2>
             <div class="topic-info topic-info-2">
                 <div class="row">
                     <div class="multiple-option">
@@ -107,7 +108,7 @@
                     </div>
                 </div>
             </div>
-            <h2>Services</h2>
+            <h2>{{ 'Services' | translate }}</h2>
             <div class="topic-info topic-info-2">
                 <div class="row">
                     <div class="multiple-option">
@@ -117,8 +118,9 @@
                     </div>
                 </div>
             </div>
-        </div>    
-        <button ion-button full (click)="updateProfile()" class="btndesign loginbtn" tappable>Save</button>  
+        </div>   
+    </div>     
+        <button ion-button full (click)="updateProfile()" class="btndesign loginbtn" tappable>{{ 'Save' | translate }}</button>  
     </ion-content>    
     <ion-footer>
         <ion-toolbar class="option">

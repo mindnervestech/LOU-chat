@@ -24,11 +24,8 @@ declare var firebase;
   selector: 'page-chat',
   template: `
 <ion-header scroll='false' (click)="picker()">
-	<ion-navbar>
-		<button ion-button menuToggle icon-only>
-                <ion-icon name='menu'></ion-icon>
-            </button>
-
+  <ion-toolbar>
+    <ion-icon name="arrow-back" class="arrow-back" (click)="goTo()"></ion-icon>
 		<ion-title>
 			<ion-item class="title-item" no-lines>
 				<ion-avatar *ngIf="senderUser.profilePic != 'assets/image/profile.png'" item-start (click)="showProfile(senderUser)" tappable class="prof-icon">
@@ -54,7 +51,7 @@ declare var firebase;
 			</ion-item>
 		</ion-title>
 
-	</ion-navbar>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content (click)="picker()">
@@ -147,7 +144,7 @@ declare var firebase;
             <ion-icon name="md-happy"></ion-icon>
         </button>
     </ion-item>
-		<ion-buttons end>
+		<ion-buttons end style="margin-bottom: -3px;">
      <!--<button ion-button style="color:white;" icon-right (click)='presentActionSheet()' tappable>
                     <ion-icon name='attach'></ion-icon>
                 </button>-->
@@ -237,6 +234,9 @@ export class ChatPage {
   picker(){
     this.showEmojiPicker = false;
   }
+  goTo(){
+    this.navCtrl.setRoot("FriendlistPage");
+  }
   ionViewDidLoad() {
     //when user comes to this page this function will call.
     var me = this;
@@ -247,10 +247,8 @@ export class ChatPage {
     me.textprofile = me.navParams.data.name.slice(0,2);
     firebase.database().ref('users/'+ me.navParams.data.key).on('value',function(userData){
       var a = userData.val();
-      console.log("++++++++++",a);
       me.pushId = a.pushToken;
     });
-    console.log("me.navParams.data",me.navParams.data);
     var block1;
     block1 = me.senderUser.block;
     me.block1 = block1;
@@ -258,7 +256,6 @@ export class ChatPage {
     me.friendkey = me.senderUser.key;
     // checking record for new friend  
     firebase.database().ref().child('Friends/' + user.uid + '/' + me.navParams.data.key).on('value', function(_data){
-      console.log('_data.val()', _data.val())
       if(_data.val() == null) {
         console.log("in if");
         me.checkUserPresent = false;
@@ -518,7 +515,7 @@ export class ChatPage {
                     access : true,
                     unreadCount : 0,
                     name : me.senderUser.name,
-                    profilePic : "assets/image/profile.png",
+                    profilePic : me.senderUser.profilePic,
                 });
                 firebase.database().ref().child('Friends/' + me.senderUser.senderId + '/' + userId).set({
                     DateCreated : dateCreated,

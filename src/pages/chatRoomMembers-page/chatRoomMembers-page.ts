@@ -4,6 +4,7 @@ import { CommonProvider } from '../../providers/common/common';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Network } from '@ionic-native/network';
 import { global } from '../global/global';
+import { TranslateService } from '@ngx-translate/core';
 //import * as Message from '../../providers/message/message';
 declare var firebase;
 
@@ -16,7 +17,7 @@ declare var firebase;
         <ion-toolbar color="light" class="chat-room">
             <ion-row>
                 <ion-icon name="arrow-back" (click)="goTo()"></ion-icon>
-                <ion-title  class="title">Chat Room Members</ion-title>
+                <ion-title  class="title">{{ 'Chat room members' | translate }}</ion-title>
             </ion-row>       
         </ion-toolbar>
     </ion-header>
@@ -49,7 +50,7 @@ export class ChatRoomMembers {
     count = 0;
     sqlDb: SQLiteObject;
 
-    constructor(public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
+    constructor(public translate: TranslateService,public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
         var me = this;
         me.menu.swipeEnable(true);
         var user = JSON.parse(localStorage.getItem("loginUser"));

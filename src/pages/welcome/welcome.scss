@@ -1,13 +1,23 @@
 
 .welcome{    
     background: #fff;
-    background: url('../assets/image/wel.png');
+    background: url('../assets/image/welcome_screen_bg.png');
     /* height: 54vh; */
-    background-size: 100% 55%;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: top;
     button{
-        color: #4c5660;
+        color: #340c6c;
+        font-weight: 500;
+    }
+    h1{
+        position: relative;
+        top: 34%;
+        text-align: center;
+        color: #33106e;
+        font-style: italic;
+        font-weight: 700;
+        font-size: 21px;
     }
 }    
 .welcome-start {
@@ -17,30 +27,30 @@
     bottom: 0px;
     margin: auto;
     height: fit-content;
-    width: fit-content;
+    width: auto;
     img{
         height: 353px;
-    }
-    h1{
-        text-align: center;
-        font-size: 28px;
-        font-family: initial;
-        font-weight: 300;
     }
     .language-btn{
         h2{
             text-align: center;
-            font-weight: 300;
-            font-size: 19px;
+            font-weight: normal !important;
+            font-size: 19px !important;
+            color: #340c6c;
+            width: 49%;
+            margin: auto;
+            border-bottom: 1px solid #340c6c;
+            padding-bottom: 5px;
+            margin-bottom: 25px;
         }
-        margin: 47px 0;
+        margin: 20px 0;
         button{
             width: 40%;
             padding: 11px 0;
-            margin: 20px auto;
+            margin: 13px auto;
             font-size: 19px;
             background: transparent;
-            border: 1px solid #000;
+            border: 1.5px solid #340c6c;
             display: block;
             border-radius: 113px !important;
         }

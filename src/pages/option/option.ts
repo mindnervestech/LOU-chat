@@ -4,7 +4,7 @@ declare var firebase;
 import * as Message from '../../providers/message/message';
 import { global } from '../global/global';
 import { LoadingProvider } from '../../providers/loading/loading';
-
+import { TranslateService } from '@ngx-translate/core';
 @IonicPage()
 @Component({
   selector: 'page-option',
@@ -18,6 +18,10 @@ export class OptionPage {
    optionValue : string = "";
    selected: any;
    tripeValue : any;
+   tripPurpose: string = '';
+   validTrip: string = '';
+   inValid: string = '';
+   chatRoom: string = '';
    public selectedOption1:boolean = false;
    public selectedOption2:boolean = false;
    public selectedOption3:boolean = false;
@@ -26,11 +30,13 @@ export class OptionPage {
    public servesOption1:boolean = false;
    public servesOption2:boolean = false;
    public servesOption3:boolean = false;
+   public servesOption4:boolean = false;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public alertCtrl: AlertController,
-    public LoadingProvider: LoadingProvider,) {
+    public LoadingProvider: LoadingProvider,
+    public translate: TranslateService) {
     global.backPage = "EXIT";
   }
 
@@ -78,6 +84,17 @@ export class OptionPage {
   isActive(text){
     return this.selected === text;
   }
+  
+  ionViewDidEnter(){
+    console.log("ionViewDidEnter")
+    this.getLang();
+  }
+  getLang(){
+    var lang = localStorage.getItem('lan');
+    this.translate.use(lang);           
+    console.log("lang",lang);
+  }
+
   nextPage(){
     var data = {
       tripeValue : this.tripeValue,
@@ -90,17 +107,33 @@ export class OptionPage {
       servesOption1 : this.servesOption1,
       servesOption2 : this.servesOption2,
       servesOption3 : this.servesOption3,
+      servesOption4 : this.servesOption4,
     };
     var me = this;
-    
-      if(this.selectedOption1 == false && this.selectedOption2 == false && this.selectedOption3 == false && this.selectedOption4 == false){
-        let alert = me.alertCtrl.create({ subTitle: "Please select at list one trip purpose", buttons: ['OK'] });
+    var lang = localStorage.getItem('lan');
+    if(lang == 'fn'){
+      me.tripPurpose = "Sélectionner au moins un objet du voyage";
+      me.validTrip = "Sélectionner entrer un numéro valide";
+      me.inValid = "Numéro invalide"
+    }else{
+      me.tripPurpose = 'Please select at least one trip purpose';
+      me.validTrip = 'Please enter a valid trip number'
+      me.inValid = "Invalid trip number"
+    }
+      if(me.TrainOrFliteNumber == '' || me.optionValue == ''){
+        let alert = me.alertCtrl.create({ subTitle: me.validTrip, buttons: ['OK'] });
+        alert.present();
+      }else if(me.TrainOrFliteNumber == '' && me.selectedOption1 == false && me.selectedOption2 == false && me.selectedOption3 == false && me.selectedOption4 == false && this.selectedOption5 == false){
+        let alert = me.alertCtrl.create({ subTitle: me.inValid, buttons: ['OK'] });
+        alert.present();
+      }else if(this.selectedOption1 == false && this.selectedOption2 == false && this.selectedOption3 == false && this.selectedOption4 == false && this.selectedOption5 == false){
+        let alert = me.alertCtrl.create({ subTitle: me.tripPurpose, buttons: ['OK'] });
         alert.present();
       }else{
         if(me.TrainOrFliteNumber != "" && me.optionValue != ""){
          firebase.database().ref('Group').orderByChild("trainNumber").equalTo(me.TrainOrFliteNumber).on('value', function (group) {
             if(group.val() == null){
-               let alert = me.alertCtrl.create({ subTitle: "Please enter valid number", buttons: ['OK'] });
+               let alert = me.alertCtrl.create({ subTitle: me.validTrip, buttons: ['OK'] });
                alert.present();
             }else{
               firebase.database().ref('Group').orderByChild("trainNumber").equalTo(me.TrainOrFliteNumber).on('value', function (group) {
@@ -194,6 +227,9 @@ export class OptionPage {
         if(text == 3){
           this.servesOption3 = true;
         }
+        if(text == 4){
+          this.servesOption4 = true;
+        }
     }
     else{
       ionicButton.color = 'dark';
@@ -206,6 +242,9 @@ export class OptionPage {
         if(text == 3){
           this.servesOption3 = false;
         }
+        if(text == 4){
+          this.servesOption4 = false;
+        }
     }  
   }
 
@@ -215,6 +254,12 @@ export class OptionPage {
   }
 
   tripeDateValidation(ripeDate,startDate,endDate){
+      var lang = localStorage.getItem('lan');
+      if(lang == 'fn'){
+        this.chatRoom = "Le t'chat room n'est pas encore ouvert, il s'ouvre à hh:mm";
+      }else{
+        this.chatRoom = "The group chat not start yet. It's start at hh:mm";
+      }
         var msg = "";
         var convertDate = ripeDate.split("-");
         //var start = startDate.split(":");
@@ -236,7 +281,7 @@ export class OptionPage {
                           msg = "";
                           return msg;
                         }else{
-                          msg = "This chat room is not available";
+                          msg = this.chatRoom;
                           return msg;
                         }
                       }else{
@@ -244,7 +289,7 @@ export class OptionPage {
                         return msg;
                       }
                     }else{
-                      msg = "This chat room is not available";
+                      msg = this.chatRoom;
                       return msg;
                     }
                   }else{
@@ -252,7 +297,7 @@ export class OptionPage {
                     return msg;
                   }
                 }else{
-                  msg = "This chat room is not available";
+                  msg = this.chatRoom;
                   return msg;
                 }
               }else{
@@ -260,7 +305,7 @@ export class OptionPage {
                 return msg;
               }
             }else{
-              msg = "This chat room is not available";
+              msg = this.chatRoom;
               return msg;
             }
           }else{
@@ -268,7 +313,7 @@ export class OptionPage {
             return msg;
           }
         }else{
-          msg = "This chat room is not available";
+          msg = this.chatRoom;
           return msg;
         }   
     }

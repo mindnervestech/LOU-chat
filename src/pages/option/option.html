@@ -14,52 +14,28 @@
 
 
 <ion-content padding>
-    <h1>Define your trip</h1>
+    <h1>{{ 'Define your trip' | translate }}</h1>
     <form>
         <p class="error">{{ error_message }}</p>
-        <ion-label>Select your transport</ion-label>
-        <!-- <ion-item class="txtdesign1 select">
-          <ion-select placeholder="Select option" interface="popover" name="option" [(ngModel)]="optionValue">
-            <ion-option *ngFor ="let data of option" [value]="data.option">
-              {{data.option}}
-            </ion-option>
-          </ion-select>
-        </ion-item> -->
+        <ion-label>{{ 'Select your transport' | translate }}</ion-label>
         <ion-item class="select-option">
           <button *ngFor ="let data of option" [ngClass]="{active: isActive(data.option)}"  name="optionValue" class="transport" id="1" #first ion-button color="dark" [(ngModel)]="optionValue" (click)="optionClick($event,data.option)"><span><img src="{{data.image}}"></span> {{data.option}}</button>
         </ion-item>
 
-        <ion-label>Flight or Train number</ion-label>
+        <ion-label>{{ 'Flight or Train number' | translate }}</ion-label>
         <ion-item class="txtdesign1 train">
-            <ion-input type="text" placeholder="Enter a valid number" name="number" [(ngModel)]="TrainOrFliteNumber"></ion-input>
+            <ion-input type="text" placeholder="{{ 'Enter a valid number' | translate }}" name="number" [(ngModel)]="TrainOrFliteNumber"></ion-input>
         </ion-item>
         
-        <ion-label class="info">What is the purpose of your trip</ion-label>
-        <!-- <ion-item class="txtdesign1 remove-border">
-          <ion-label>Info_1</ion-label>    
-          <ion-checkbox></ion-checkbox>
-        </ion-item>
-        <ion-item class="txtdesign1 remove-border">
-          <ion-label>Info_2</ion-label>
-          <ion-checkbox></ion-checkbox>  
-        </ion-item>
-        <ion-item class="txtdesign1 remove-border">
-          <ion-label>Info_3</ion-label>
-          <ion-checkbox></ion-checkbox>  
-        </ion-item> 
-        <ion-item class="txtdesign1 remove-border">
-          <ion-label>Info_4</ion-label>
-          <ion-checkbox></ion-checkbox>
-        </ion-item> -->
+        <ion-label class="info">{{ 'What is the purpose of your trip' | translate }}</ion-label>
+        
         <div class="multiple-option">
           <div>
             <button *ngFor="let data of trepOption" id="1" #first ion-button color="dark" (click)="btnActivate(first,data.optionNumber)">{{data.option}}</button>
           </div>
-          <!-- <button id="2" #second ion-button color="dark" (click)="btnActivate(second,'option2')">Tourism</button>
-          <button id="3" #third ion-button color="dark" (click)="btnActivate(third,'option3')">Business</button>
-          <button id="4" #fourth ion-button color="dark" (click)="btnActivate(fourth,'option4')">VisitPeople</button> -->
+         
         </div>
-        <ion-label class="info">My services</ion-label>
+        <ion-label class="info">{{ 'My services' | translate }}</ion-label>
         <div class="multiple-option">
           <div>
             <button *ngFor="let data of servicesOption" id="1" #first ion-button color="dark" (click)="servesBtnActivate(first,data.optionNumber)">{{data.option}}</button>
@@ -69,6 +45,6 @@
 </ion-content>
 <ion-footer>
   <ion-toolbar class="option">
-    <button ion-button full color="primary" (click)="nextPage()" class="btndesign" tappable>Next</button>
+    <button ion-button full color="primary" (click)="nextPage()" class="btndesign" tappable>{{ 'Next' | translate }}</button>
   </ion-toolbar>
 </ion-footer>

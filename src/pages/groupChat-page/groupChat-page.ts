@@ -93,7 +93,7 @@ declare var firebase;
           <ion-icon name="md-happy"></ion-icon>
         </button>
     </ion-item>    
-		<ion-buttons end>
+		<ion-buttons end style="margin-bottom: -3px;">
 			<button class="send-btn" ion-button icon-right color='primary' tappable (click)='sendMessage("text")' tappable>            
         <ion-icon name='send'></ion-icon>
       </button>

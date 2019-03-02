@@ -23,7 +23,8 @@ export class PushProvider {
     data = {
       "notification": {
         "title": title,
-        "body": body
+        "body": body,
+        "sound": 'mySound'
       },
 
       "to": token

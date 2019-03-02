@@ -9,6 +9,7 @@ import { Clipboard } from '@ionic-native/clipboard';
 import { CommonProvider } from '../../providers/common/common';
 //import * as Message from '../../providers/message/message';
 import { Network } from '@ionic-native/network';
+import { TranslateService } from '@ngx-translate/core';
 declare var firebase;
 
 @IonicPage()
@@ -89,7 +90,7 @@ export class ProfilePage {
     public selectedOption5:boolean = false;
     groupName: string = '';
     optionVal: string = ''; 
-    constructor(public CommonProvider: CommonProvider, public _zone: NgZone, public events: Events, public navCtrl: NavController, public sqlite: SQLite, public navParams: NavParams, public alertCtrl: AlertController,
+    constructor(public translate: TranslateService,public CommonProvider: CommonProvider, public _zone: NgZone, public events: Events, public navCtrl: NavController, public sqlite: SQLite, public navParams: NavParams, public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController, private camera: Camera, private clipboard: Clipboard,private network: Network) {
         //var user = firebase.auth().currentUser;
         var me = this;
@@ -134,6 +135,15 @@ export class ProfilePage {
     ionViewDidLoad() {
         this.loadUserProfileData();
         this.profilePage = true;
+    }
+
+    ionViewDidEnter(){
+        this.getLang();
+    }
+    getLang(){
+        var lang = localStorage.getItem('lan');
+        this.translate.use(lang);           
+        console.log("lang",lang);
     }
     goTo(){
         this.navCtrl.setRoot("FriendlistPage"); 
@@ -535,7 +545,7 @@ export class ProfilePage {
                     localStorage.setItem("loginUser", JSON.stringify(logInUser));
                     let alert = me.alertCtrl.create({ subTitle: 'Profile updated successfully', buttons: ['OK'] });
                     alert.present();
-                }, 500);
+                }, 1000);
                 
             });
            
