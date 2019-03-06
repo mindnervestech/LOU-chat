@@ -27,7 +27,7 @@ declare var firebase;
   <ion-toolbar>
     <ion-icon name="arrow-back" class="arrow-back" (click)="goTo()"></ion-icon>
 		<ion-title>
-			<ion-item class="title-item" no-lines>
+      <ion-item class="title-item" no-lines>
 				<ion-avatar *ngIf="senderUser.profilePic != 'assets/image/profile.png'" item-start (click)="showProfile(senderUser)" tappable class="prof-icon">
 					<img  [src]="_DomSanitizer.bypassSecurityTrustUrl(senderUser.profilePic)"/>
 				</ion-avatar>
@@ -200,6 +200,8 @@ export class ChatPage {
   showEmojiPicker: boolean = false;
   checkUserPresent = false;
   check = false;
+  sendMsgCount = 2;
+
   constructor(public modalCtrl: ModalController, private camera: Camera, public LoadingProvider: LoadingProvider, public platform: Platform, public CommonProvider: CommonProvider, public _DomSanitizer: DomSanitizer, public toastCtrl: ToastController, public sqlite: SQLite, private network: Network, public PushProvider: PushProvider, public element: ElementRef, public actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public _zone: NgZone, public navParams: NavParams, public alertCtrl: AlertController) {
     var user = JSON.parse(localStorage.getItem("loginUser"));
     this.pushName = user.name;
@@ -247,7 +249,10 @@ export class ChatPage {
     me.textprofile = me.navParams.data.name.slice(0,2);
     firebase.database().ref('users/'+ me.navParams.data.key).on('value',function(userData){
       var a = userData.val();
+      if(a.name){
       me.pushId = a.pushToken;
+      console.log("userdata",userData.val());
+      }
     });
     var block1;
     block1 = me.senderUser.block;
@@ -505,7 +510,7 @@ export class ChatPage {
             firebase.database().ref().child('Friends/' + userId + '/' + me.senderUser.senderId).on('value', function(userData){
               if(userData.val() == null){
                 console.log('userData.val()', userData.val());
-                
+                me.check = false;
                 firebase.database().ref().child('Friends/' + userId + '/' + me.senderUser.senderId).set({
                     DateCreated : dateCreated,
                     lastDate : dateCreated,
@@ -516,6 +521,17 @@ export class ChatPage {
                     unreadCount : 0,
                     name : me.senderUser.name,
                     profilePic : me.senderUser.profilePic,
+                }).then(function () {
+                  firebase.database().ref('Friends/' + userId + '/' + me.senderUser.senderId).once('value').then(function (snapshot) {
+                    var friendRef = firebase.database().ref('Friends/' + userId);
+                    friendRef.child(me.senderUser.senderId).update({
+                      lastDate: dateCreated,
+                      lastMessage: lastDisplaymessage
+                    }).then(function () {
+                      console.log("Message send successfully-----");
+                    });
+                  });
+                 
                 });
                 firebase.database().ref().child('Friends/' + me.senderUser.senderId + '/' + userId).set({
                     DateCreated : dateCreated,
@@ -524,14 +540,10 @@ export class ChatPage {
                     SenderId : userId,
                     block: 0,
                     access : true,
-                    unreadCount : 1,
+                    unreadCount : 0,
                     name : user.name,
-                    profilePic : user.profilePic,
-                });
-              }else{
-                console.log("if user present");
-                if(me.check == true){
-                  me.check = false;
+                    profilePic : user.profilePic == "" ? "assets/image/profile.png" : user.profilePic,
+                }).then(function () {
                   firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).once('value').then(function (snapshot) {
                     var friendRef = firebase.database().ref('Friends/' + me.senderUser.senderId);
                     friendRef.child(userId).update({
@@ -539,9 +551,33 @@ export class ChatPage {
                       unreadCount: parseInt(snapshot.val().unreadCount) + 1,
                       lastMessage: lastDisplaymessage
                     }).then(function () {
-                      console.log("Message send successfully");
+                    firebase.database().ref('users/'+ me.senderUser.senderId).on('value',function(userData){
+                        var a = userData.val();
+                        if(a.name != ''){
+                          me.pushId = a.pushToken;
+                        }
+                    });
+                    console.log("Message send successfully----++++++");
+                    var title = "You have new message from " + me.pushName;
+                    var body = me.strip(lastDisplaymessage);
+                    me.PushProvider.PushNotification(me.pushId, title, body);
+                    });
+                  });
+                });
+              }else{
+                console.log("if user present");
+                if(me.check == true){
+                  me.check = false;
+                  firebase.database().ref('Friends/' + me.senderUser.senderId + '/' + userId).once('value').then(function (snapshot) {
+                    console.log(snapshot.val());
+                    var friendRef = firebase.database().ref('Friends/' + me.senderUser.senderId);
+                    friendRef.child(userId).update({
+                      lastDate: dateCreated,
+                      unreadCount: parseInt(snapshot.val().unreadCount) + 1,
+                      lastMessage: lastDisplaymessage
+                    }).then(function () {
+                      console.log("Message send successfully======");
                       var title = "You have new message from " + me.pushName;
-                      console.log("title",title);
                       var body = me.strip(lastDisplaymessage);
                       me.PushProvider.PushNotification(me.pushId, title, body);
                     });
@@ -552,8 +588,7 @@ export class ChatPage {
                       lastDate: dateCreated,
                       lastMessage: lastDisplaymessage
                     }).then(function () {
-
-                      console.log("Message send successfully");
+                      console.log("Message send successfully=======-----");
                     });
                   });
                 }

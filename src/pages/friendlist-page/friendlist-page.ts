@@ -72,7 +72,7 @@ declare var firebase;
                     </div>    
                 </ion-avatar>
                 <div (click)='groupMessageBox(data)'>                
-                    <h2>{{ data.groupName }} {{trainNo}}</h2> 
+                    <h2>{{ data.type }} {{trainNo}}</h2> 
                     <p style="margin-top: 4px !important;">{{ data.lastMessage }}</p>
                 </div>               
                 <div item-right (click)='groupMessageBox(data)'>
@@ -153,6 +153,9 @@ export class FriendlistPage {
     userMatchCheck = false;
     checkForEnteryStatus = false;
     trainNo: string = '';
+    activeGroup: boolean;
+    startTime: string = '';
+    showMsg: string = '';
     constructor(public translate: TranslateService,public modalCtrl: ModalController,public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
         var me = this;
         me.menu.swipeEnable(true);
@@ -172,14 +175,14 @@ export class FriendlistPage {
         this.slides.slideNext();
     }
     
-    prev() {
+      prev() {
         this.slides.slidePrev();
-    }
+      }
 
     ionViewDidLoad() {
         var me = this;
         me.friendList = true;
-       /* this.sqlite.create({
+        /* this.sqlite.create({
             name: 'data.db',
             location: 'default'
         })
@@ -188,15 +191,18 @@ export class FriendlistPage {
                 //me.LoadList();
             });*/
              var popup = localStorage.getItem("popUp");
+             console.log("popup",popup);
              if(popup == "true"){
+                console.log("in if");
                 me.checkForEntery = true;
                 me.getUserData();
              }else{
+                console.log("in else");
                 me.match();
              }
             me.LoadList();
              me.getChatMemberData();
-    }
+        }
     
     chatPage(){
         this.navCtrl.push("FriendlistPage");   
@@ -309,7 +315,6 @@ export class FriendlistPage {
                     }  
               }
          });
-        
     }
     addToChat(data,index){
         var me = this;
@@ -448,9 +453,10 @@ export class FriendlistPage {
                         };
                         me.usersList.push(userinfo);      
                  }
-                 
+
                   me.usersList = me.usersList.sort(function(a,b){return a.checkDate - b.checkDate});
                 // me.checkForEntery = false;
+                console.log(me.usersList);
              }
          });
     }
@@ -475,7 +481,7 @@ export class FriendlistPage {
                     valueKey.push(value);
                 }
                 if(friends == null){
-
+                    me.chackFriend = false;
                 }else{
                     if(me.chackFriend){
                         me.chackFriend = false;
@@ -493,7 +499,8 @@ export class FriendlistPage {
                 }
             });
              firebase.database().ref('GroupMember/'+ groupInfo.groupId).on('value',function(Alluser){
-                 if(me.checkGroupMemberForMatch == true){
+                if(Alluser.val() != null){
+                  if(me.checkGroupMemberForMatch == true){
                      var GroupUserData = Alluser.val();
                      me.tripeUsersList = [];
                      me.usersKey = [];
@@ -655,6 +662,7 @@ export class FriendlistPage {
                       push = "true";
                  }
                  }
+                } 
              });
         });
 
@@ -695,22 +703,30 @@ export class FriendlistPage {
         var groupInfo = JSON.parse(localStorage.getItem("Group"));
         var userId = localStorage.getItem("userId");
         firebase.database().ref('GroupMember/' + groupInfo.groupId+ '/' + userId).on("value",function(user){
-            me.groupData = [];
-            var userInfo = user.val();
-            GrouplastDate = me.getLastDate(userInfo.lastDate);
-            firebase.database().ref('Group/'+ groupInfo.key).on("value",function(groupData){
-                var value = groupData.val();
+            if(user.val() != null){
                 me.groupData = [];
-                var groupDetail = {
-                    groupId : value.groupId,
-                    groupName : value.groupName,
-                    unreadCount : userInfo.unreadCount,
-                    lastMessage : userInfo.lastMessage,
-                    lastDate : GrouplastDate
-                };
-                me.groupData.push(groupDetail);
-                console.log("me.groupData",me.groupData);
-            });
+                var userInfo = user.val();
+                console.log(userInfo);
+                GrouplastDate = me.getLastDate(userInfo.lastDate);
+                firebase.database().ref('Group/'+ groupInfo.key).on("value",function(groupData){
+                    var value = groupData.val();
+                    me.groupData = [];
+                    var groupDetail = {
+                        groupId : value.groupId,
+                        groupName : value.groupName,
+                        unreadCount : userInfo.unreadCount,
+                        lastMessage : userInfo.lastMessage,
+                        lastDate : GrouplastDate,
+                        type: value.type, 
+                        active: value.groupActivated,
+                        startTime: value.startTime,
+                    };
+                    me.groupData.push(groupDetail);
+                    me.activeGroup = groupDetail.active;
+                    me.startTime = groupDetail.startTime;
+                    console.log("me.groupData",me.groupData);
+                });
+            }
         });
          /*firebase.database().ref('GroupMember').on('value', function (snapshot) {
             var groupData  = snapshot.val();
@@ -845,13 +861,20 @@ export class FriendlistPage {
     }
     groupMessageBox(item){
         var me = this;
+        console.log("me.groupData.active",me.groupData.active);
+        var lan = localStorage.getItem('lan');
+        if(lan = 'en'){
+            me.showMsg = 'Group chat not start yet. Its start at ';
+        }else{
+            me.showMsg = 'La discussion de groupe ne commence pas encore. Son début à '
+        }
         var groupData = JSON.parse(localStorage.getItem("Group"));
         firebase.database().ref('Group/' + groupData.key).on('value', function(group){
-            var msg = me.tripeDateValidation(group.val().tripeDate,group.val().startTime,group.val().endTime);
-            if(msg == ""){
+            //var msg = me.tripeDateValidation(group.val().tripeDate,group.val().startTime,group.val().endTime);
+            if(me.activeGroup == true){
                 me.navCtrl.push("GroupChatPage",item);
             }else{
-                let alert = me.alertCtrl.create({ subTitle: msg, buttons: ['OK'] });
+                let alert = me.alertCtrl.create({ subTitle: me.showMsg + me.startTime, buttons: ['OK'] });
                   alert.present();
             }
         });

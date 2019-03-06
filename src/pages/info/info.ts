@@ -69,6 +69,7 @@ export class InfoPage {
       }
     });
   }
+  
 
   // homework(){
   //  let self = this;

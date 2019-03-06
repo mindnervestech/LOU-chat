@@ -112,9 +112,9 @@ export class OptionPage {
     var me = this;
     var lang = localStorage.getItem('lan');
     if(lang == 'fn'){
-      me.tripPurpose = "Sélectionner au moins un objet du voyage";
-      me.validTrip = "Sélectionner entrer un numéro valide";
-      me.inValid = "Numéro invalide"
+      me.tripPurpose = "SÃ©lectionner au moins un objet du voyage";
+      me.validTrip = "SÃ©lectionner entrer un numÃ©ro valide";
+      me.inValid = "NumÃ©ro invalide"
     }else{
       me.tripPurpose = 'Please select at least one trip purpose';
       me.validTrip = 'Please enter a valid trip number'
@@ -149,9 +149,10 @@ export class OptionPage {
                     startTime:  GroupInformation.val().startTime,
                     endTime:  GroupInformation.val().endTime,
                     type :  GroupInformation.val().type,
+                    groupActivated: GroupInformation.val().groupActivated,
                   }
-                    var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
-                    if(msg == ""){
+                    //var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
+                    if(groupData.groupActivated == true){
                       console.log(groupData.type,me.tripeValue);
                       if(groupData.type !=  me.tripeValue){
                         let alert = me.alertCtrl.create({ subTitle: "Please select valid tripe number", buttons: ['OK'] }); 
@@ -161,7 +162,7 @@ export class OptionPage {
                         me.navCtrl.setRoot("loginAndTopicInfo",data);
                       }
                     }else{
-                      let alert = me.alertCtrl.create({ subTitle: msg, buttons: ['OK'] }); 
+                      let alert = me.alertCtrl.create({ subTitle: "The group chat not start yet. It's start at" + ' ' + groupData.startTime, buttons: ['OK'] }); 
                       alert.present();
                     }
 
@@ -256,7 +257,7 @@ export class OptionPage {
   tripeDateValidation(ripeDate,startDate,endDate){
       var lang = localStorage.getItem('lan');
       if(lang == 'fn'){
-        this.chatRoom = "Le t'chat room n'est pas encore ouvert, il s'ouvre à hh:mm";
+        this.chatRoom = "Le t'chat room n'est pas encore ouvert, il s'ouvre Ã  hh:mm";
       }else{
         this.chatRoom = "The group chat not start yet. It's start at hh:mm";
       }

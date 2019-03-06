@@ -25,7 +25,7 @@ declare var firebase;
             <button ion-button icon-only class="back-btn" (click)="goToFriendPage()">
                 <ion-icon name='arrow-back'></ion-icon>
             </button>
-            <ion-title  class="title">{{groupData.groupName}} {{trainNo}}</ion-title>
+            <ion-title  class="title">{{groupData.type}} {{trainNo}}</ion-title>
             <div>
               <button ion-button icon-only class="btn circle" (click)="goToChatRoomMember()" tappable>
                 <ion-icon name="radio-button-off"></ion-icon>
@@ -76,6 +76,7 @@ declare var firebase;
     </ion-item-group>
   </ion-list>
     </div>
+    <p style="text-align: center;color:#bdbdbd" *ngIf="groupNotActive == false">------{{Group chat ended------</p>
 </ion-content>
 <ion-footer [style.height]="showEmojiPicker ? '311px' : 'auto'" class="f-class">
 	<ion-toolbar *ngIf="blockUser" class="blocked-message group-chat">
@@ -135,6 +136,7 @@ export class GroupChatPage {
     chatMessage: string;
     showEmojiPicker: boolean = false;
     trainNo: string = '';
+    groupNotActive: boolean;
     constructor( public element:ElementRef,public _DomSanitizer: DomSanitizer,public modalCtrl: ModalController,private camera: Camera, public LoadingProvider: LoadingProvider,public platform: Platform,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams, public PushProvider: PushProvider) {
         var me = this;
         me.menu.swipeEnable(true);
@@ -192,8 +194,11 @@ export class GroupChatPage {
           }
         }
       });
+      firebase.database().ref('Group/'+ me.groupData.key).on("value",function(groupData){
+        me.groupNotActive = groupData.val().groupActivated
+      }) 
     }
-
+  
     handleSelection(event) {
       this.message += event.char;
     }
@@ -378,11 +383,13 @@ export class GroupChatPage {
                   //userToken.push(pushToken.val().pushToken);
                   console.log("pushToken",pushToken.val());
                   var group = JSON.parse(localStorage.getItem("Group"));
-                  var title = "You have new message from" + group.groupName;
+                  var title = "You have new message from" + group.type;
                   var login = JSON.parse(localStorage.getItem("loginUser"));
                   var body = me.strip(lastDisplaymessage);
-                  if(user.name != pushToken.val().name){
+                  var app = localStorage.getItem("AppId");
+                  if(user.name != pushToken.val().name && app != pushToken.val().pushToken){
                     me.PushProvider.PushNotification(pushToken.val().pushToken, title, body);
+                    console.log("pushToken.val().name",pushToken.val().name)
                   }  
                 });
               }

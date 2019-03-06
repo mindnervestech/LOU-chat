@@ -120,6 +120,10 @@ export class MyApp {
     constructor(translate: TranslateService,private fb: Facebook,public googlePlus: GooglePlus, /*public _DomSanitizer: DomSanitizer,*/ private network: Network, public deploy: Deploy, private push: Push, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private _zone: NgZone, public events: Events, public platform: Platform, private storage: Storage, public statusBar: StatusBar, public actionSheetCtrl: ActionSheetController, public splashScreen: SplashScreen, private clipboard: Clipboard, private camera: Camera, private sqlite: SQLite,private firebasepush: Firebase) {
         this.initializeApp();
         this.pushSetup();
+        // var lang = localStorage.getItem('lan');
+        // if(lang){
+        //     translate.setDefaultLang(lang);
+        // }    
        /// this.getFirebasetoken();
        // this.getFirebaseNottification();
 
@@ -201,7 +205,7 @@ export class MyApp {
             // Here you can do any higher level native things you might need.
             this.statusBar.styleDefault();
             this.splashScreen.hide();
-
+            //this.showAdmobBannerAds();
 
             //Send Notification
             //senderId is declared globally on index.html and access here to send PushNotification.
@@ -258,6 +262,23 @@ export class MyApp {
                 });
         });
     }
+
+    // showAdmobBannerAds(){
+    //     const bannerConfig: AdMobFreeBannerConfig = {
+    //         id: 'ca-app-pub-1851328038839575/1698423772',
+    //         isTesting: true,
+    //         autoShow: true
+    //     };
+    //     this.admobFree.banner.config(bannerConfig);
+    
+    //     this.admobFree.banner.prepare()
+    //     .then(() => {
+    //         // banner Ad is ready
+    //         // if we set autoShow to false, then we will need to call the show method here
+    //     })
+    //     .catch(e => console.log(e));    
+    // }      
+
     downloadAndInstall() {
         const updating = this.loadingCtrl.create({
             content: 'Updating application.....'

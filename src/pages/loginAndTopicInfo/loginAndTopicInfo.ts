@@ -102,6 +102,7 @@ export class loginAndTopicInfo {
                   startTime:  GroupInformation.val().startTime,
                   endTime:  GroupInformation.val().endTime,
                   type :  GroupInformation.val().type,
+                  groupActivated: GroupInformation.val().groupActivated,
                 }
                 me.groupInfo = groupData;
                 localStorage.setItem("Group", JSON.stringify(groupData));
@@ -202,7 +203,7 @@ export class loginAndTopicInfo {
       var me = this;
       var lang = localStorage.getItem('lan');
       if(lang == 'fn'){
-        me.tripPurpose = "Sélectionner au moins un objet du voyage";
+        me.tripPurpose = "SÃ©lectionner au moins un objet du voyage";
       }else{
         me.tripPurpose = 'Please select at least one trip purpose';
       }
@@ -247,8 +248,8 @@ export class loginAndTopicInfo {
               "services" : me.servesOption,
             }).then(()=>{
               var groupData = JSON.parse(localStorage.getItem("Group"));
-              var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
-              if(msg == ""){
+              //var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
+              if(me.groupInfo.groupActivated == true){
                 if(me.counter == 0){
                   me.LoadingProvider.closeLoading();
                   let alert = me.alertCtrl.create({ subTitle: me.tripPurpose, buttons: ['OK'] });
@@ -285,8 +286,8 @@ export class loginAndTopicInfo {
       localStorage.setItem("value", "true");
       var lang = localStorage.getItem('lan');
       if(lang == 'fn'){
-        me.tripPurpose = "Sélectionner au moins un objet du voyage";
-        me.enterNickname = "S'il vous plaît entrer pseudo";
+        me.tripPurpose = "SÃ©lectionner au moins un objet du voyage";
+        me.enterNickname = "S'il vous plaÃ®t entrer pseudo";
       }else{
         me.tripPurpose = 'Please select at least one trip purpose';
         me.enterNickname = "Please enter nick name";
@@ -356,8 +357,8 @@ export class loginAndTopicInfo {
                         unreadCount : me.groupInfo.unreadCount,
                         lastMessage: me.groupInfo.lastMessage
                     });
-                        var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
-                        if(msg == ""){
+                        //var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
+                        if(me.groupInfo.groupActivated == true){
                           if(me.counter == 0){
                             me.LoadingProvider.closeLoading();
                             let alert = me.alertCtrl.create({ subTitle: me.tripPurpose , buttons: ['OK'] });

@@ -97,7 +97,7 @@ export class ProfilePage {
         var user = JSON.parse(localStorage.getItem("loginUser"));
         var group = JSON.parse(localStorage.getItem("Group"));
         var value = JSON.parse(localStorage.getItem("option"));
-        me.groupName = group.groupName;
+        me.groupName = group.type;
         me.optionVal = value.optionValue;
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
