@@ -32,6 +32,8 @@ export class loginAndTopicInfo {
     userProfilePic : string = ""; 
     user_profilePic: string = "assets/image/profile.png";
     tripPurpose: string = '';
+    startDateTime: any;
+   endDateTime: any;
 	constructor(public LoadingProvider: LoadingProvider,
 	public CommonProvider: CommonProvider,
 	private network: Network,
@@ -103,6 +105,8 @@ export class loginAndTopicInfo {
                   endTime:  GroupInformation.val().endTime,
                   type :  GroupInformation.val().type,
                   groupActivated: GroupInformation.val().groupActivated,
+                  startDate: GroupInformation.val().startDateTime,
+                  endDate: GroupInformation.val().endDateTIme,
                 }
                 me.groupInfo = groupData;
                 localStorage.setItem("Group", JSON.stringify(groupData));
@@ -249,7 +253,10 @@ export class loginAndTopicInfo {
             }).then(()=>{
               var groupData = JSON.parse(localStorage.getItem("Group"));
               //var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
-              if(me.groupInfo.groupActivated == true){
+              var currentTime = new Date();
+              me.startDateTime = new Date(me.groupInfo.startDate);
+              me.endDateTime = new Date(me.groupInfo.endDate);
+              if(me.startDateTime.getTime() <= currentTime.getTime() && me.endDateTime.getTime() >= currentTime.getTime()){
                 if(me.counter == 0){
                   me.LoadingProvider.closeLoading();
                   let alert = me.alertCtrl.create({ subTitle: me.tripPurpose, buttons: ['OK'] });
@@ -358,7 +365,10 @@ export class loginAndTopicInfo {
                         lastMessage: me.groupInfo.lastMessage
                     });
                         //var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
-                        if(me.groupInfo.groupActivated == true){
+                        var currentTime = new Date();
+                        me.startDateTime = new Date(me.groupInfo.startDate);
+                        me.endDateTime = new Date(me.groupInfo.endDate);
+                        if(me.startDateTime.getTime() <= currentTime.getTime() && me.endDateTime.getTime() >= currentTime.getTime()){
                           if(me.counter == 0){
                             me.LoadingProvider.closeLoading();
                             let alert = me.alertCtrl.create({ subTitle: me.tripPurpose , buttons: ['OK'] });

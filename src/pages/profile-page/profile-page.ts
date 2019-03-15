@@ -89,7 +89,8 @@ export class ProfilePage {
     public selectedOption4:boolean = false;
     public selectedOption5:boolean = false;
     groupName: string = '';
-    optionVal: string = ''; 
+    optionVal: string = '';
+    allFriend: any = new Array(); 
     constructor(public translate: TranslateService,public CommonProvider: CommonProvider, public _zone: NgZone, public events: Events, public navCtrl: NavController, public sqlite: SQLite, public navParams: NavParams, public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController, private camera: Camera, private clipboard: Clipboard,private network: Network) {
         //var user = firebase.auth().currentUser;
@@ -102,7 +103,7 @@ export class ProfilePage {
         if (!user) {
             me.navCtrl.setRoot("OptionPage");
         }
-        global.backPage = "FriendlistPage";
+       // global.backPage = "FriendlistPage";
 
         me.userInfo = {
             user_id: "",
@@ -135,8 +136,15 @@ export class ProfilePage {
     ionViewDidLoad() {
         this.loadUserProfileData();
         this.profilePage = true;
+        this.getFriend();
     }
-
+    getFriend(){
+        let me = this;
+        firebase.database().ref('Friends').on('value', function (friend) {
+            var values = Object.keys(friend.val()).map(key => friend.val()[key]);
+            me.allFriend =  Object.keys(friend.val()).map(key => friend.val()[key]);
+        });
+    }
     ionViewDidEnter(){
         this.getLang();
     }
@@ -534,7 +542,6 @@ export class ProfilePage {
             };
             hopperRef.update(obj).then(()=>{
                 localStorage.removeItem("loginUser");
-                 setTimeout(function() {
                     var logInUser = {
                         name :  user.name,
                         access_code : user.access_code,
@@ -545,10 +552,15 @@ export class ProfilePage {
                     localStorage.setItem("loginUser", JSON.stringify(logInUser));
                     let alert = me.alertCtrl.create({ subTitle: 'Profile updated successfully', buttons: ['OK'] });
                     alert.present();
-                }, 1000);
-                
             });
-           
+            firebase.database().ref('Friends/'+ userId).on('value',function(userData){
+                for(var data in userData.val()){
+                    firebase.database().ref('Friends/'+ data+'/'+userId).update({
+                        profilePic: me.tempProfile,
+                    })
+                }
+            });
+    
             //me.PublishEventUserUpdate();
         /* } */
     }

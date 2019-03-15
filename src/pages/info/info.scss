@@ -13,9 +13,9 @@ page-info {
         text-align: center;
         font-size: 24px;
     }
-    .bussiness,.people{
-        background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%,rgba(0,0,0,.02) 33%,rgba(0,0,0,0) 34%),url('../assets/image/bussiness.png');
-    }
+    // .bussiness,.people{
+    //     background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%,rgba(0,0,0,.02) 33%,rgba(0,0,0,0) 34%),url('../assets/image/bussiness.png');
+    // }
     .title-btn button {
         width: 24%;
         border: 1px solid #000;
@@ -33,7 +33,7 @@ page-info {
     }
     .ads{
         height: 198px;
-        background-size: cover;
+        background-size: 100% 100%;
         border-radius: 9px;
         margin-bottom: 14px !important;
         h2{
@@ -60,9 +60,9 @@ page-info {
         }
     }
 
-    .homework{
-        background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%,rgba(0,0,0,.02) 33%,rgba(0,0,0,0) 34%),url('../assets/image/homework.jpeg');
-    }
+    // .homework{
+    //     background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%,rgba(0,0,0,.02) 33%,rgba(0,0,0,0) 34%),url('../assets/image/homework.jpeg');
+    // }
     .chat-room{
         .toolbar-background-md {
            background: #7bd7e0 !important;

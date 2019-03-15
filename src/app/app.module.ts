@@ -23,6 +23,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx'
 //import { AdMob } from 'ionic-native';
 //import { AdMob } from 'ionic-native';
 export function setTranslateLoader(http: Http) {
@@ -88,6 +89,7 @@ const cloudSettings: CloudSettings = {
     Facebook,
     Firebase,
     TranslateService,
+    InAppBrowser,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })

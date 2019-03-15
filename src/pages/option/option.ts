@@ -22,6 +22,8 @@ export class OptionPage {
    validTrip: string = '';
    inValid: string = '';
    chatRoom: string = '';
+   groupNot: string = '';
+   alertShow: boolean = false;
    public selectedOption1:boolean = false;
    public selectedOption2:boolean = false;
    public selectedOption3:boolean = false;
@@ -31,7 +33,9 @@ export class OptionPage {
    public servesOption2:boolean = false;
    public servesOption3:boolean = false;
    public servesOption4:boolean = false;
-
+   startDateTime: any;
+   endDateTime: any;
+   alertTime: any;
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public alertCtrl: AlertController,
@@ -110,15 +114,18 @@ export class OptionPage {
       servesOption4 : this.servesOption4,
     };
     var me = this;
+    me.alertShow = true;
     var lang = localStorage.getItem('lan');
     if(lang == 'fn'){
       me.tripPurpose = "Sélectionner au moins un objet du voyage";
       me.validTrip = "Sélectionner entrer un numéro valide";
-      me.inValid = "Numéro invalide"
+      me.inValid = "Numéro invalide";
+      me.groupNot = "Le t'chat room n'est pas encore ouvert, il s'ouvre à";
     }else{
       me.tripPurpose = 'Please select at least one trip purpose';
       me.validTrip = 'Please enter a valid trip number'
-      me.inValid = "Invalid trip number"
+      me.inValid = "Invalid trip number";
+      me.groupNot = "The group chat not start yet. It's start at";
     }
       if(me.TrainOrFliteNumber == '' || me.optionValue == ''){
         let alert = me.alertCtrl.create({ subTitle: me.validTrip, buttons: ['OK'] });
@@ -150,10 +157,20 @@ export class OptionPage {
                     endTime:  GroupInformation.val().endTime,
                     type :  GroupInformation.val().type,
                     groupActivated: GroupInformation.val().groupActivated,
+                    startDate: GroupInformation.val().startDateTime,
+                    endDate: GroupInformation.val().endDateTIme,
                   }
                     //var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
-                    if(groupData.groupActivated == true){
-                      console.log(groupData.type,me.tripeValue);
+                    var currentTime = new Date();
+                    me.startDateTime = new Date(groupData.startDate);
+                    me.endDateTime = new Date(groupData.endDate);
+                    me.alertTime =  new Date(me.startDateTime).toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+                    console.log('currentTime', currentTime);
+                    console.log('startDateTime', me.startDateTime);
+                    console.log('endDateTime', me.endDateTime);
+                    console.log('alertTime-----', me.alertTime);
+                    if(me.startDateTime.getTime() <= currentTime.getTime() && me.endDateTime.getTime() >= currentTime.getTime()){
+                      console.log('true');
                       if(groupData.type !=  me.tripeValue){
                         let alert = me.alertCtrl.create({ subTitle: "Please select valid tripe number", buttons: ['OK'] }); 
                         alert.present();
@@ -162,10 +179,13 @@ export class OptionPage {
                         me.navCtrl.setRoot("loginAndTopicInfo",data);
                       }
                     }else{
-                      let alert = me.alertCtrl.create({ subTitle: "The group chat not start yet. It's start at" + ' ' + groupData.startTime, buttons: ['OK'] }); 
-                      alert.present();
+                      console.log('false');
+                      if(me.alertShow == true){
+                        me.alertShow = false;
+                        let alert = me.alertCtrl.create({ subTitle: me.groupNot + ' ' + me.alertTime, buttons: ['OK'] }); 
+                        alert.present();
+                      }
                     }
-
                 });
               });
          
@@ -253,7 +273,7 @@ export class OptionPage {
     return 'primary';
     // event.target.getAttribute('selected') ? 'primary' : '';
   }
-
+  // ionic cordowa build android - plateform -android- build - output- apk- 
   tripeDateValidation(ripeDate,startDate,endDate){
       var lang = localStorage.getItem('lan');
       if(lang == 'fn'){

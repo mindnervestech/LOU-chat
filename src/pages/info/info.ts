@@ -1,5 +1,7 @@
 import { Component,NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { DomSanitizer } from '@angular/platform-browser';
 declare var firebase;
 /**
  * Generated class for the InfoPage page.
@@ -21,7 +23,7 @@ export class InfoPage {
   people: any = [];
   tour: any = []; 
   active: boolean = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private iab: InAppBrowser,public _DomSanitizer: DomSanitizer) {
     var title = JSON.parse(localStorage.getItem("Group"));
     this.titleName = title.groupName;
     console.log('this.titleName',this.titleName); 
@@ -35,7 +37,10 @@ export class InfoPage {
   goTo(){
     this.navCtrl.setRoot("FriendlistPage");
   }
-
+  openWebpage(data: string){
+    console.log("link",data);
+    const browser = this.iab.create(data);
+  }
   chatPage(){
     this.navCtrl.push("FriendlistPage");   
   }
@@ -53,19 +58,32 @@ export class InfoPage {
     self.business=[];
     self.active = name;
     firebase.database().ref('Ads/'+ name).on('value', function (snapshot) {
-      for(var i = 1;i < snapshot.val().length;i++){
-        firebase.database().ref('Ads/'+name+'/'+ i).on('value', function (snapshot) {
-          if(snapshot.val() != null && snapshot.val() != ''){
-            var date = new Date(snapshot.val().date);
-            var data = {
-              title: snapshot.val().title,
-              description: snapshot.val().description,
-              date: date,
-              image: snapshot.val().image,
-            }
-            self.business.push(data);
-          }    
-        });
+      // for(var i = 0;i < snapshot.val().length;i++){
+      //   firebase.database().ref('Ads/'+name+'/'+ i).on('value', function (snapshot) {
+      //     if(snapshot.val() != null && snapshot.val() != ''){
+      //       var date = new Date(snapshot.val().date);
+      //       var data = {
+      //         title: snapshot.val().title,
+      //         description: snapshot.val().description,
+      //         date: date,
+      //         image: snapshot.val().image,
+      //       }
+      //       self.business.push(data);
+      //       console.log("self.business",self.business);
+      //     }    
+      //   });
+      // }
+      var ads = snapshot.val();
+      for(var data in ads){
+        var snap = {
+                   title: ads[data].title,
+                   description: ads[data].description,
+                   date:  ads[data].date,
+                   image: self._DomSanitizer.bypassSecurityTrustStyle(`url(${ads[data].image})`),
+                   link: ads[data].link,
+                 }
+        self.business.push(snap);
+        console.log("self.business",self.business);
       }
     });
   }

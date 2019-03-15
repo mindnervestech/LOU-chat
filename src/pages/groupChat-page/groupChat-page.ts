@@ -382,14 +382,14 @@ export class GroupChatPage {
                 firebase.database().ref('users/'+ i).on('value',function(pushToken){
                   //userToken.push(pushToken.val().pushToken);
                   console.log("pushToken",pushToken.val());
-                  var group = JSON.parse(localStorage.getItem("Group"));
-                  var title = "You have new message from" + group.type;
+                  var group = JSON.parse(localStorage.getItem("option"));
+                  var title = "You have new message from " + group.tripeValue + ' ' + group.optionValue;
                   var login = JSON.parse(localStorage.getItem("loginUser"));
                   var body = me.strip(lastDisplaymessage);
                   var app = localStorage.getItem("AppId");
                   if(user.name != pushToken.val().name && app != pushToken.val().pushToken){
                     me.PushProvider.PushNotification(pushToken.val().pushToken, title, body);
-                    console.log("pushToken.val().name",pushToken.val().name)
+                    console.log("pushToken.val().name",pushToken.val().name);
                   }  
                 });
               }

@@ -6,6 +6,7 @@ import { Network } from '@ionic-native/network';
 import * as Message from '../../providers/message/message';
 import { global } from '../global/global';
 import { TranslateService } from '@ngx-translate/core';
+import { LoadingProvider } from '../../providers/loading/loading';
 declare var firebase;
 
 @IonicPage()    
@@ -156,7 +157,8 @@ export class FriendlistPage {
     activeGroup: boolean;
     startTime: string = '';
     showMsg: string = '';
-    constructor(public translate: TranslateService,public modalCtrl: ModalController,public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
+    alertShow: boolean = false;
+    constructor(public LoadingProvider: LoadingProvider,public translate: TranslateService,public modalCtrl: ModalController,public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
         var me = this;
         me.menu.swipeEnable(true);
         var user = JSON.parse(localStorage.getItem("loginUser"));
@@ -182,6 +184,8 @@ export class FriendlistPage {
     ionViewDidLoad() {
         var me = this;
         me.friendList = true;
+        me.LoadingProvider.startLoading();
+        //me.LoadingProvider.startLoading();
         /* this.sqlite.create({
             name: 'data.db',
             location: 'default'
@@ -201,7 +205,7 @@ export class FriendlistPage {
                 me.match();
              }
             me.LoadList();
-             me.getChatMemberData();
+            me.getChatMemberData();
         }
     
     chatPage(){
@@ -243,24 +247,25 @@ export class FriendlistPage {
         this.hideMe = false;
         localStorage.setItem("popUp","true");
         this.getUserData();
+        //this.LoadingProvider.closeLoading();
     }
 
     dismiss(data,index){
         var me = this;
         var user = JSON.parse(localStorage.getItem("loginUser"));
         me.dismissChek = true;
-        firebase.database().ref().child('Friends/' + user.uid).orderByChild("name").equalTo(data.name).on('value',function(friend){
-            if(me.dismissChek == true){
-                me.dismissChek = false;
-                if(friend.val() == null){
+        // firebase.database().ref().child('Friends/' + user.uid).orderByChild("name").equalTo(data.name).on('value',function(friend){
+        //     if(me.dismissChek == true){
+        //         me.dismissChek = false;
+        //         if(friend.val() == null){
 
-                }else{
-                    firebase.database().ref().child('Friends/' + user.uid + '/' + data.senderId).update({
-                        access : false
-                    });
-                }
-            }
-        })
+        //         }else{
+        //             firebase.database().ref().child('Friends/' + user.uid + '/' + data.senderId).update({
+        //                 access : false
+        //             });
+        //         }
+        //     }
+        // })
         
         me.tripeUsersList.splice(index, 1);
         if(me.tripeUsersList.length == 0){
@@ -295,10 +300,9 @@ export class FriendlistPage {
                                 if(snap.val().name != null && snap.val().name != ''){
                                     conter1++;
                                     if(me.getChatMemberDataChak == true){
-                                        //me.getChatMemberDataChak = false;
+                                        me.getChatMemberDataChak = false;
                                         var value = snap.val();
-                                        var profilePic = value ? ((value.profilePic == "") ? 'assets/image/profile.png' : value.profilePic) : 'assets/image/profile.png';
-                                    
+                                        var profilePic = value ? ((value.profilePic == "") ? 'assets/image/profile.png' : value.profilePic) : 'assets/image/profile.png';  
                                         var groupDetail = {
                                             name : value.name.slice(0,2),
                                         };
@@ -431,7 +435,7 @@ export class FriendlistPage {
         var user = JSON.parse(localStorage.getItem("loginUser"));
         me.checkForEntery = true;
          firebase.database().ref().child('Friends/' + user.uid).orderByChild("access").equalTo(true).on('value',function(friend){
-             if(me.checkForEntery){
+            if(me.checkForEntery){
                  me.usersList = [];
                  for(var data in friend.val()){
                      var mylastDate = me.getLastDate(friend.val()[data].lastDate);
@@ -652,6 +656,7 @@ export class FriendlistPage {
                                         }
                                         if(count == groupMemberCount){
                                             me.hideMe = true;
+                                           me.LoadingProvider.closeLoading();
                                         }
                                     }
                                 }
@@ -728,6 +733,7 @@ export class FriendlistPage {
                 });
             }
         });
+        me.LoadingProvider.closeLoading();
          /*firebase.database().ref('GroupMember').on('value', function (snapshot) {
             var groupData  = snapshot.val();
             for (var data in groupData ) {
@@ -859,10 +865,11 @@ export class FriendlistPage {
     messageBox($event, item) {
         this.navCtrl.push("ChatPage", item);
     }
+
     groupMessageBox(item){
         var me = this;
-        console.log("me.groupData.active",me.groupData.active);
         var lan = localStorage.getItem('lan');
+        me.alertShow = true;
         if(lan = 'en'){
             me.showMsg = 'Group chat not start yet. Its start at ';
         }else{
@@ -874,8 +881,11 @@ export class FriendlistPage {
             if(me.activeGroup == true){
                 me.navCtrl.push("GroupChatPage",item);
             }else{
-                let alert = me.alertCtrl.create({ subTitle: me.showMsg + me.startTime, buttons: ['OK'] });
-                  alert.present();
+                if(me.alertShow == true){
+                    me.alertShow = false;
+                    let alert = me.alertCtrl.create({ subTitle: me.showMsg + me.startTime, buttons: ['OK'] });
+                    alert.present();
+                }    
             }
         });
     }
