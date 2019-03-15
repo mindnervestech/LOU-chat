@@ -1,0 +1,8 @@
+{
+  "name": "firebsechat",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "id": "4d5eda23"
+}
