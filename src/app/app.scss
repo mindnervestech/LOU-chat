@@ -188,8 +188,8 @@ button {
 }
 //ios
 .header-ios .toolbar-ios:last-child .toolbar-background-ios {
-     background: #0099a9; 
-     color:white
+    background-color: #7bd7e0;
+     color:white;
 }
 .bar-button-default-ios, .bar-button-default.bar-button-ios-default, .bar-button-clear-ios-default {
     color: white;
@@ -197,6 +197,7 @@ button {
 }
 .toolbar-title-ios {
     color: white;
+    text-align: left;
 }
 .footer-md::before{
     background-image: none !important;

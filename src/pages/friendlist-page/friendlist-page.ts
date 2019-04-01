@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
-import { Slides,Tabs,IonicPage, NavController, NavParams, MenuController, AlertController,ViewController, ModalController} from 'ionic-angular';
+import { Slides,Tabs,IonicPage, NavController, NavParams, MenuController, AlertController,ViewController, ModalController, App} from 'ionic-angular';
 import { CommonProvider } from '../../providers/common/common';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Network } from '@ionic-native/network';
@@ -31,7 +31,7 @@ declare var firebase;
                     <ion-slide *ngFor="let data of tripeUsersList; let i = index">
                         <span *ngIf="data.profilePic != 'assets/image/profile.png'"><img class="img_arrow_down_n" src="{{data.profilePic}}"></span>
                         <span class="text-profile" *ngIf="data.profilePic == 'assets/image/profile.png'"><span>{{data.slice}}</span></span>
-                        <h2 class="subheading_content">{{ 'You have match with' | translate }} {{data.name}}</h2>
+                        <h2 class="subheading_content">{{ 'You have match with' | translate }} <span style="text-transform: capitalize;">{{data.name}}</span></h2>
                         <div class="option-scroll">
                             <p *ngIf="data.trepOption.length > 0" class="common-topic">{{ 'Both, your are traveling for' | translate }} </p>
                             <div class="option" *ngFor="let value of data.trepOption">
@@ -77,8 +77,8 @@ declare var firebase;
                     <p style="margin-top: 4px !important;">{{ data.lastMessage }}</p>
                 </div>               
                 <div item-right (click)='groupMessageBox(data)'>
-                    <span class="mytime" >{{ data.lastDate }}</span>
-                    <ion-badge style="float: right;" *ngIf="data.unreadCount != 0">{{ data.unreadCount }}</ion-badge>  
+                    <ion-badge *ngIf="data.unreadCount != 0">{{ data.unreadCount }}</ion-badge>
+                    <span class="mytime" >{{ data.lastDate }}</span>  
                 </div>
             </ion-item>          
         </ion-list>
@@ -90,13 +90,13 @@ declare var firebase;
                 <ion-avatar item-left class="name-show" *ngIf="item.profilePic == 'assets/image/profile.png'">
                     <span>{{item.slice}}</span>
                 </ion-avatar>
-                <h2 *ngIf="item.name" >{{ item.name }} </h2>
+                <h2 style="text-transform:capitalize" *ngIf="item.name" >{{ item.name }} </h2>
                 <h2 *ngIf="!item.name">{{ item.email }} </h2>
                 
                 <p>{{ item.lastMessage }} </p>
                 <div item-right>
-                <span class="mytime" >{{ item.lastDate }}</span>
-                <ion-badge style="float: right;" *ngIf="item.unreadMessage">{{ item.unreadMessage }}</ion-badge>  
+                    <ion-badge *ngIf="item.unreadMessage">{{ item.unreadMessage }}</ion-badge>
+                    <span class="mytime" >{{ item.lastDate }}</span>
                 </div>             
             </ion-item>          
         </ion-list>
@@ -158,7 +158,7 @@ export class FriendlistPage {
     startTime: string = '';
     showMsg: string = '';
     alertShow: boolean = false;
-    constructor(public LoadingProvider: LoadingProvider,public translate: TranslateService,public modalCtrl: ModalController,public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
+    constructor(public app: App,public LoadingProvider: LoadingProvider,public translate: TranslateService,public modalCtrl: ModalController,public viewCtrl: ViewController,public alertCtrl: AlertController, public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
         var me = this;
         me.menu.swipeEnable(true);
         var user = JSON.parse(localStorage.getItem("loginUser"));
@@ -207,15 +207,12 @@ export class FriendlistPage {
             me.LoadList();
             me.getChatMemberData();
         }
-    
-    chatPage(){
-        this.navCtrl.push("FriendlistPage");   
-    }
+
     infoPage(){
-        this.navCtrl.push("InfoPage");   
+        this.app.getRootNav().push("InfoPage");   
     }
     mePage(){
-        this.navCtrl.push("ProfilePage");   
+        this.app.getRootNav().push("ProfilePage");   
     }
     ionViewDidEnter() {
        /* var me = this;

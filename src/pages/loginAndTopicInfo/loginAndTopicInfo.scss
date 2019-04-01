@@ -28,7 +28,11 @@ loginAndTopicInfo {
     font-size: 20px;
     color: #000000;   
     margin-bottom: 6px;
-    margin-top: 30px;
+    margin-top: 16px;
+    color: #7c8ea5;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    font-family: 'GothamRounded' !important;
   }
   p{
     font-size: 17px;
@@ -43,7 +47,9 @@ loginAndTopicInfo {
       font-size: 16px;
       margin: 30px 8px 0px 0;
       color: #7c8ea5;
-      text-transform: capitalize;
+      font-weight: 600 !important;
+      font-size: 16px !important;
+      font-family: 'GothamRounded' !important;
     }
     .item-md{
       padding-left: 0px;

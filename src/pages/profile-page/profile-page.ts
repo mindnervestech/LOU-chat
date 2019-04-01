@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewChild, } from '@angular/core';
-import { Nav, IonicPage, NavController, NavParams, AlertController, ActionSheetController } from 'ionic-angular';
+import { Nav, IonicPage, NavController, NavParams, AlertController, ActionSheetController, App } from 'ionic-angular';
 //import { UUID } from 'angular2-uuid';
 import { Camera } from '@ionic-native/camera';
 import { global } from '../global/global';
@@ -91,7 +91,7 @@ export class ProfilePage {
     groupName: string = '';
     optionVal: string = '';
     allFriend: any = new Array(); 
-    constructor(public translate: TranslateService,public CommonProvider: CommonProvider, public _zone: NgZone, public events: Events, public navCtrl: NavController, public sqlite: SQLite, public navParams: NavParams, public alertCtrl: AlertController,
+    constructor(public app: App,public translate: TranslateService,public CommonProvider: CommonProvider, public _zone: NgZone, public events: Events, public navCtrl: NavController, public sqlite: SQLite, public navParams: NavParams, public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController, private camera: Camera, private clipboard: Clipboard,private network: Network) {
         //var user = firebase.auth().currentUser;
         var me = this;
@@ -157,15 +157,11 @@ export class ProfilePage {
         this.navCtrl.setRoot("FriendlistPage"); 
     }
     chatPage(){
-        this.navCtrl.push("FriendlistPage");   
+        this.app.getRootNav().push("FriendlistPage");   
     }
 
     infoPage(){
-        this.navCtrl.push("InfoPage");   
-    }
-
-    mePage(){
-        this.navCtrl.push("ProfilePage");   
+        this.app.getRootNav().push("InfoPage");   
     }
     btnActivate(ionicButton,text,event) {
         if(ionicButton._color === 'dark'){

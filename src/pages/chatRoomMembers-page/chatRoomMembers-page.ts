@@ -1,5 +1,5 @@
 import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController, App } from 'ionic-angular';
 import { CommonProvider } from '../../providers/common/common';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Network } from '@ionic-native/network';
@@ -16,7 +16,8 @@ declare var firebase;
     <ion-header>
         <ion-toolbar color="light" class="chat-room">
             <ion-row>
-                <ion-icon name="arrow-back" (click)="goTo()"></ion-icon>
+                <span *ngIf="!memberPage"><ion-icon name="arrow-back" (click)="goTo()"></ion-icon></span>
+                <span *ngIf="memberPage"><ion-icon name="arrow-back" (click)="goMemberPage()"></ion-icon></span>
                 <ion-title  class="title">{{ 'Chat room members' | translate }}</ion-title>
             </ion-row>       
         </ion-toolbar>
@@ -49,8 +50,9 @@ export class ChatRoomMembers {
     hide: boolean = false;
     count = 0;
     sqlDb: SQLiteObject;
+    memberPage: boolean = false;
 
-    constructor(public translate: TranslateService,public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
+    constructor(public app: App,public translate: TranslateService,public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams/*,private storage: Storage*/) {
         var me = this;
         me.menu.swipeEnable(true);
         var user = JSON.parse(localStorage.getItem("loginUser"));
@@ -66,15 +68,26 @@ export class ChatRoomMembers {
     ionViewDidLoad() {
         var data = JSON.parse(localStorage.getItem("Group"));
         this.getChatMemberData(data.groupId);
+        var getMemebr = JSON.parse(localStorage.getItem("member"));
+        if(getMemebr == true){
+            this.memberPage = true;
+        }
     }
     ionViewDidEnter() {
         
+    }
+    ionViewWillLeave(){
+        localStorage.removeItem("member");
+        this.memberPage = true;
     }
     goTo(){
         this.navCtrl.setRoot("FriendlistPage");
     }
     goToFriendPage(){
          this.navCtrl.push(global.backPage);
+    }
+    goMemberPage(){
+        this.app.getRootNav().push("GroupChatPage");
     }
     getChatMemberData(groupId){
         var me = this;

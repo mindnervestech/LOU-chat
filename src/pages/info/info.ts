@@ -1,7 +1,8 @@
 import { Component,NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App  } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
+import { LoadingProvider } from '../../providers/loading/loading';
 declare var firebase;
 /**
  * Generated class for the InfoPage page.
@@ -23,13 +24,14 @@ export class InfoPage {
   people: any = [];
   tour: any = []; 
   active: boolean = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams,private iab: InAppBrowser,public _DomSanitizer: DomSanitizer) {
+  constructor(public app: App,public LoadingProvider: LoadingProvider,public navCtrl: NavController, public navParams: NavParams,private iab: InAppBrowser,public _DomSanitizer: DomSanitizer) {
     var title = JSON.parse(localStorage.getItem("Group"));
     this.titleName = title.groupName;
     console.log('this.titleName',this.titleName); 
   }
 
   ionViewDidLoad() {
+    this.LoadingProvider.startLoading();
     console.log('ionViewDidLoad InfoPage');
     this.adPage = true;
     this.busssiness('business');
@@ -37,20 +39,16 @@ export class InfoPage {
   goTo(){
     this.navCtrl.setRoot("FriendlistPage");
   }
-  openWebpage(data: string){
-    console.log("link",data);
-    const browser = this.iab.create(data);
-  }
+  // openWebpage(data: string){
+  //   console.log("link",data);
+  //   const browser = this.iab.create(data);
+  // }
   chatPage(){
-    this.navCtrl.push("FriendlistPage");   
-  }
-
-  infoPage(){
-      this.navCtrl.push("InfoPage");   
+    this.app.getRootNav().push("FriendlistPage");   
   }
 
   mePage(){
-      this.navCtrl.push("ProfilePage");   
+    this.app.getRootNav().push("ProfilePage");   
   }
 
   busssiness(name){
@@ -83,6 +81,7 @@ export class InfoPage {
                    link: ads[data].link,
                  }
         self.business.push(snap);
+        self.LoadingProvider.closeLoading();
         console.log("self.business",self.business);
       }
     });

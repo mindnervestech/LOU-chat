@@ -201,7 +201,7 @@ export class loginAndTopicInfo {
           }
         }
     }
-
+    userLogout: boolean = false;
     LoginUser(){
       var user = JSON.parse(localStorage.getItem("loginUser"));
       var me = this;
@@ -223,15 +223,16 @@ export class loginAndTopicInfo {
             var key = user.uid;
             localStorage.setItem("IsLogin", 'true');
             var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-            firebase.database().ref().child('GroupMember/'+ group_id + '/' + key).set({
-              groupId : group_id,
-              DateCreated: dateCreated,
-              userId : user.access_code,
-              lastDate : dateCreated,
-              unreadCount : me.groupInfo.unreadCount,
-              lastMessage: me.groupInfo.lastMessage
-            });
-
+            
+              firebase.database().ref().child('GroupMember/'+ group_id + '/' + key).set({
+                groupId : group_id,
+                DateCreated: dateCreated,
+                userId : user.access_code,
+                lastDate : dateCreated,
+                unreadCount : me.groupInfo.unreadCount,
+                lastMessage: me.groupInfo.lastMessage,
+                name: me.nickName
+              });
             var phofilePic = user.profilePic;
             console.log(me.servesOption);
             me.servesOption[0].value = me.navParams.data.servesOption1;
@@ -291,6 +292,7 @@ export class loginAndTopicInfo {
   	newLoginUser(){
   		var me = this;
       localStorage.setItem("value", "true");
+      me.userLogout= true;
       var lang = localStorage.getItem('lan');
       if(lang == 'fn'){
         me.tripPurpose = "Sélectionner au moins un objet du voyage";
@@ -301,10 +303,14 @@ export class loginAndTopicInfo {
       }
   		if(me.nickName != ""){
   			me.LoadingProvider.startLoading();
-
-  			firebase.database().ref('users').orderByChild("name").equalTo(me.nickName).on('value', function (user) {
-  				if(user.val() == null){
-            var groupData = JSON.parse(localStorage.getItem("Group"));
+        var groupData = JSON.parse(localStorage.getItem("Group"));
+        me.userLogout= true;
+        
+  			firebase.database().ref('GroupMember/' + groupData.groupId).orderByChild("name").equalTo(me.nickName.toLowerCase()).on('value', function (user) {
+          if(me.userLogout == true){
+          me.userLogout = false;
+          if(user.val() == null){
+            
             localStorage.setItem("value", "false");
             var phofilePic = "";
             if(me.base64Image != undefined){
@@ -319,7 +325,7 @@ export class loginAndTopicInfo {
             me.servesOption[3].value = me.navParams.data.servesOption4,
             firebase.database().ref().child('users').push({
                   created : new Date().getTime(),
-               name : me.nickName,
+               name : me.nickName.toLowerCase(),
                access_code: access_code,
                profilePic : phofilePic,
                status: "",
@@ -338,7 +344,7 @@ export class loginAndTopicInfo {
               services : me.servesOption,
                 }).then(()=>{
                   setTimeout(() => {
-                  firebase.database().ref('users').orderByChild("name").equalTo(me.nickName).on('value', function (userInfo) {
+                  firebase.database().ref('users').orderByChild("access_code").equalTo(access_code).on('value', function (userInfo) {
                     var key = Object.keys(userInfo.val())[0];
                     global.USER_IMAGE = profilePhoto;
                     global.USER_NAME = me.nickName;
@@ -356,14 +362,15 @@ export class loginAndTopicInfo {
                     var group_id = me.groupInfo.groupId;
                     var date = new Date();
                     var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-                    firebase.database().ref().child('GroupMember/'+ group_id + '/' + key).set({
-                        groupId : group_id,
-                        DateCreated: dateCreated,
-                        userId : access_code,
-                        lastDate : dateCreated,
-                        unreadCount : me.groupInfo.unreadCount,
-                        lastMessage: me.groupInfo.lastMessage
-                    });
+                      firebase.database().ref().child('GroupMember/'+ group_id + '/' + key).set({
+                          groupId : group_id,
+                          DateCreated: dateCreated,
+                          userId : access_code,
+                          lastDate : dateCreated,
+                          unreadCount : me.groupInfo.unreadCount,
+                          lastMessage: me.groupInfo.lastMessage,
+                          name: me.nickName.toLowerCase(),
+                      });  
                         //var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
                         var currentTime = new Date();
                         me.startDateTime = new Date(me.groupInfo.startDate);
@@ -405,9 +412,9 @@ export class loginAndTopicInfo {
 	      				alert.present();
 	      				me.nickName = "";
   					}
-  				}
+          }
+        }
   			});
-
   		}else{
   			let alert = me.alertCtrl.create({ subTitle: me.enterNickname, buttons: ['OK'] });
       		alert.present();

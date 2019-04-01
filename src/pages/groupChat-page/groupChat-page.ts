@@ -26,13 +26,14 @@ declare var firebase;
                 <ion-icon name='arrow-back'></ion-icon>
             </button>
             <ion-title  class="title">{{groupData.type}} {{trainNo}}</ion-title>
-            <div>
+          <div>
               <button ion-button icon-only class="btn circle" (click)="goToChatRoomMember()" tappable>
                 <ion-icon name="radio-button-off"></ion-icon>
                 <ion-icon name="radio-button-off"></ion-icon>
                 <ion-icon name="radio-button-off"></ion-icon>
               </button>
-            </div>
+              </div>
+            
         </ion-navbar>
     </ion-header>
 
@@ -137,6 +138,7 @@ export class GroupChatPage {
     showEmojiPicker: boolean = false;
     trainNo: string = '';
     groupNotActive: boolean;
+    modal: any;
     constructor( public element:ElementRef,public _DomSanitizer: DomSanitizer,public modalCtrl: ModalController,private camera: Camera, public LoadingProvider: LoadingProvider,public platform: Platform,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public CommonProvider: CommonProvider, private network: Network, public menu: MenuController, public sqlite: SQLite, public _zone: NgZone, public navCtrl: NavController, public navParams: NavParams, public PushProvider: PushProvider) {
         var me = this;
         me.menu.swipeEnable(true);
@@ -198,7 +200,9 @@ export class GroupChatPage {
         me.groupNotActive = groupData.val().groupActivated
       }) 
     }
-  
+    ionViewWillLeave(){
+      this.modal.dismiss();
+    }
     handleSelection(event) {
       this.message += event.char;
     }
@@ -254,7 +258,8 @@ export class GroupChatPage {
     }
     goToChatRoomMember(){
       global.backPage = "GroupChatPage";
-        this.navCtrl.setRoot("ChatRoomMembers");
+      localStorage.setItem("member",'true');
+        this.navCtrl.push("ChatRoomMembers");
     }
     setScroll() {
       if (this.content._scroll) this.content.scrollToBottom(280);
@@ -500,8 +505,8 @@ export class GroupChatPage {
     }
 
     imageTap(src) {
-    let modal = this.modalCtrl.create("ImagePopupPage", { imageSrc: src });
-    modal.present();
+    this.modal = this.modalCtrl.create("ImagePopupPage", { imageSrc: src });
+    this.modal.present();
 
     }
     showProfile(user) {

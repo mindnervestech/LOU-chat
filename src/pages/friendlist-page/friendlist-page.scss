@@ -97,6 +97,7 @@ page-friendlist{
             text-transform: uppercase;
             color: #7bd7e0;
             font-weight: 500;
+            margin: 6px auto;
             position: relative;
             span{
                 position: absolute;
@@ -291,8 +292,8 @@ page-friendlist{
     .mytime{
         font-size: 13px;
         display: inline;
-        float: right;
-        margin-top: 3px;
+        // float: right;
+        margin-top: -16px;
         color: #666;
         font-weight: normal;
     }

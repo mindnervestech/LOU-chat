@@ -27,10 +27,12 @@
 </ion-header>
 <ion-content padding>
     <span *ngFor="let item of business">
-        <ion-item class="ads bussiness" (click)="openWebpage(item.link)" [style.background-image]="item.image">
-            <h2>{{item.title}}</h2>
-            <p>{{item.description}}</p>
-            <div>{{item.date * 1000| date }}</div>    
+        <ion-item class="ads bussiness" [style.background-image]="item.image" style="background-color: #7bd7e0;">
+            <a href="{{item.link}}" style="text-decoration: none;display:block;">
+                <h2>{{item.title}}</h2>
+                <p>{{item.description}}</p>
+                <div>{{item.date * 1000| date }}</div>    
+            </a>
         </ion-item>
     </span>    
     <!-- <span>

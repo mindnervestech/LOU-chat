@@ -201,7 +201,7 @@ export class ChatPage {
   checkUserPresent = false;
   check = false;
   sendMsgCount = 2;
-
+  modal: any;
   constructor(public modalCtrl: ModalController, private camera: Camera, public LoadingProvider: LoadingProvider, public platform: Platform, public CommonProvider: CommonProvider, public _DomSanitizer: DomSanitizer, public toastCtrl: ToastController, public sqlite: SQLite, private network: Network, public PushProvider: PushProvider, public element: ElementRef, public actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public _zone: NgZone, public navParams: NavParams, public alertCtrl: AlertController) {
     var user = JSON.parse(localStorage.getItem("loginUser"));
     this.pushName = user.name;
@@ -249,6 +249,7 @@ export class ChatPage {
     me.textprofile = me.navParams.data.name.slice(0,2);
     firebase.database().ref('users/'+ me.navParams.data.key).on('value',function(userData){
       var a = userData.val();
+      console.log("a",a);
       if(a.name){
       me.pushId = a.pushToken;
       console.log("userdata",userData.val());
@@ -460,6 +461,7 @@ export class ChatPage {
         unreadCount: 0
       });
     }
+    me.modal.dismiss();
   }
 
   sendMessage(type) {
@@ -574,7 +576,8 @@ export class ChatPage {
                     friendRef.child(userId).update({
                       lastDate: dateCreated,
                       unreadCount: parseInt(snapshot.val().unreadCount) + 1,
-                      lastMessage: lastDisplaymessage
+                      lastMessage: lastDisplaymessage,
+                      access: true
                     }).then(function () {
                       console.log("Message send successfully======");
                       var title = "You have new message from " + me.pushName;
@@ -586,7 +589,8 @@ export class ChatPage {
                     var friendRef = firebase.database().ref('Friends/' + userId);
                     friendRef.child(me.senderUser.senderId).update({
                       lastDate: dateCreated,
-                      lastMessage: lastDisplaymessage
+                      lastMessage: lastDisplaymessage,
+                      access: true
                     }).then(function () {
                       console.log("Message send successfully=======-----");
                     });
@@ -968,8 +972,8 @@ export class ChatPage {
     });
   }
   imageTap(src) {
-    let modal = this.modalCtrl.create("ImagePopupPage", { imageSrc: src });
-    modal.present();
+    this.modal = this.modalCtrl.create("ImagePopupPage", { imageSrc: src });
+    this.modal.present();
 
   }
 

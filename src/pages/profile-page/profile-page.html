@@ -27,7 +27,7 @@
             </div>
             <div class="quit-btn"><button ion-button full color="primary"  class="btndesign" tappable (click)='logOutUser()'>{{ 'Quit' | translate }}</button></div>
         </div>
-        <ion-label class="color-label">{{ 'Gender' | translate }}</ion-label>
+        <ion-label class="color-label heading-css">{{ 'Gender' | translate }}</ion-label>
         <!-- <ion-item class="txtdesign1">
           <ion-select placeholder="Select option" interface="popover" [(ngModel)]="gender">
             <ion-option value="Male">Male</ion-option>
@@ -63,20 +63,20 @@
             <input type="radio" value="Female" [(ngModel)]="gender">
         </div>
         <div class="input-label" style="margin-top: -10px">
-            <ion-label>{{ 'Age' | translate }}</ion-label>
+            <ion-label class="heading-css">{{ 'Age' | translate }}</ion-label>
             <ion-item>
                 <ion-input type="text" placeholder="{{ 'Your age' | translate }}" [(ngModel)]="age" ></ion-input>
             </ion-item>
         </div>
         <div class="input-label">
-            <ion-label>{{ 'Profession' | translate }}</ion-label>
+            <ion-label class="heading-css">{{ 'Profession' | translate }}</ion-label>
             <ion-item>
                 <ion-input type="text" placeholder="{{ 'Your entry' | translate }}" [(ngModel)]="status"></ion-input>
             </ion-item>
         </div>
         <div class="profile-scroll">
             <div class="topic-info topic-info-1">
-                <h2>{{ 'Purpose of the trip' | translate }}</h2>
+                <h2 class="heading-css">{{ 'Purpose of the trip' | translate }}</h2>
                 <div class="row">
                     <div class="multiple-option">
                         <div>
@@ -93,7 +93,7 @@
                     </div>    
                 </div>   
             </div>     
-            <h2>{{ 'Topic that interest me' | translate }}</h2>
+            <h2 class="heading-css">{{ 'Topic that interest me' | translate }}</h2>
             <div class="topic-info topic-info-2">
                 <div class="row">
                     <div class="multiple-option">
@@ -108,7 +108,7 @@
                     </div>
                 </div>
             </div>
-            <h2>{{ 'Services' | translate }}</h2>
+            <h2 class="heading-css">{{ 'Services' | translate }}</h2>
             <div class="topic-info topic-info-2">
                 <div class="row">
                     <div class="multiple-option">
