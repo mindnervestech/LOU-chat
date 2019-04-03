@@ -102,7 +102,7 @@ export class OptionPage {
   nextPage(){
     var data = {
       tripeValue : this.tripeValue,
-      optionValue : this.TrainOrFliteNumber,
+      optionValue : this.TrainOrFliteNumber.toUpperCase(),
       selectedOption1 : this.selectedOption1,
       selectedOption2 : this.selectedOption2,
       selectedOption3 : this.selectedOption3,
@@ -117,7 +117,7 @@ export class OptionPage {
     me.alertShow = true;
     var lang = localStorage.getItem('lan');
     if(lang == 'fn'){
-      me.tripPurpose = "Sélectionner au moins un objet du voyage";
+      me.tripPurpose = "Sélectionner au moins un objectif de voyage";
       me.validTrip = "Sélectionner entrer un numéro valide";
       me.inValid = "Numéro invalide";
       me.groupNot = "Le t'chat room n'est pas encore ouvert, il s'ouvre à";
@@ -125,7 +125,7 @@ export class OptionPage {
       me.tripPurpose = 'Please select at least one trip purpose';
       me.validTrip = 'Please enter a valid trip number'
       me.inValid = "Invalid trip number";
-      me.groupNot = "The group chat not start yet. It's start at";
+      me.groupNot = "The chat room is not yet open, it opens at";
     }
       if(me.TrainOrFliteNumber == '' || me.optionValue == ''){
         let alert = me.alertCtrl.create({ subTitle: me.validTrip, buttons: ['OK'] });
@@ -138,12 +138,12 @@ export class OptionPage {
         alert.present();
       }else{
         if(me.TrainOrFliteNumber != "" && me.optionValue != ""){
-         firebase.database().ref('Group').orderByChild("trainNumber").equalTo(me.TrainOrFliteNumber).on('value', function (group) {
+         firebase.database().ref('Group').orderByChild("trainNumber").equalTo(me.TrainOrFliteNumber.toUpperCase()).on('value', function (group) {
             if(group.val() == null){
                let alert = me.alertCtrl.create({ subTitle: me.validTrip, buttons: ['OK'] });
                alert.present();
             }else{
-              firebase.database().ref('Group').orderByChild("trainNumber").equalTo(me.TrainOrFliteNumber).on('value', function (group) {
+              firebase.database().ref('Group').orderByChild("trainNumber").equalTo(me.TrainOrFliteNumber.toUpperCase()).on('value', function (group) {
                 var groupKey = Object.keys(group.val())[0];
                 firebase.database().ref('Group/'+ groupKey).on("value", function(GroupInformation){
                   var groupData = {
@@ -279,7 +279,7 @@ export class OptionPage {
       if(lang == 'fn'){
         this.chatRoom = "Le t'chat room n'est pas encore ouvert, il s'ouvre à hh:mm";
       }else{
-        this.chatRoom = "The group chat not start yet. It's start at hh:mm";
+        this.chatRoom = "The chat room is not yet open, it opens at";
       }
         var msg = "";
         var convertDate = ripeDate.split("-");

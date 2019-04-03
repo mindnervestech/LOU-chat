@@ -28,9 +28,7 @@ declare var firebase;
             <ion-title  class="title">{{groupData.type}} {{trainNo}}</ion-title>
           <div>
               <button ion-button icon-only class="btn circle" (click)="goToChatRoomMember()" tappable>
-                <ion-icon name="radio-button-off"></ion-icon>
-                <ion-icon name="radio-button-off"></ion-icon>
-                <ion-icon name="radio-button-off"></ion-icon>
+                <img src="assets/image/groupchat.png" width="40px" height="40px">
               </button>
               </div>
             

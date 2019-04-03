@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, App  } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LoadingProvider } from '../../providers/loading/loading';
+import { TranslateService } from '@ngx-translate/core';
 declare var firebase;
 /**
  * Generated class for the InfoPage page.
@@ -24,7 +25,10 @@ export class InfoPage {
   people: any = [];
   tour: any = []; 
   active: boolean = false;
-  constructor(public app: App,public LoadingProvider: LoadingProvider,public navCtrl: NavController, public navParams: NavParams,private iab: InAppBrowser,public _DomSanitizer: DomSanitizer) {
+  showAdsText: boolean = false;
+  trainN: string = '';
+  arrival: string = '';
+  constructor(public translate: TranslateService,public app: App,public LoadingProvider: LoadingProvider,public navCtrl: NavController, public navParams: NavParams,private iab: InAppBrowser,public _DomSanitizer: DomSanitizer) {
     var title = JSON.parse(localStorage.getItem("Group"));
     this.titleName = title.groupName;
     console.log('this.titleName',this.titleName); 
@@ -35,9 +39,33 @@ export class InfoPage {
     console.log('ionViewDidLoad InfoPage');
     this.adPage = true;
     this.busssiness('business');
+    this.getLang();
+    this.getGroup();
+  }
+  getGroup(){
+    let me = this;
+    var id = JSON.parse(localStorage.getItem("Group"));
+    firebase.database().ref('Group').orderByChild("groupId").equalTo(id.groupId).on('value', function (group) {
+      // console.log("---",group.val());
+      // me.trainN = group.val().type + " " + group.val().trainNumber;
+      // me.arrival = group.val().arrivalCity;
+      var value = group.val();
+      for(var data in value){
+        me.trainN = value[data].type + " " + value[data].trainNumber;
+        me.arrival = value[data].arrivalCity;
+      }
+    });
+  }
+  ionViewWillLeave(){
+    this.LoadingProvider.closeLoading();
   }
   goTo(){
     this.navCtrl.setRoot("FriendlistPage");
+  }
+  getLang(){
+    var lang = localStorage.getItem('lan');
+    this.translate.use(lang);           
+    console.log("lang",lang);
   }
   // openWebpage(data: string){
   //   console.log("link",data);
@@ -55,7 +83,10 @@ export class InfoPage {
     let self =this;
     self.business=[];
     self.active = name;
-    firebase.database().ref('Ads/'+ name).on('value', function (snapshot) {
+    self.showAdsText = false;
+    var id = JSON.parse(localStorage.getItem("Group"));
+    //firebase.database().ref('Ads/'+ name + '/' + id.groupId).on('value', function (snapshot) {
+      firebase.database().ref('Ads/'+ name + '/' + id.groupId).orderByChild("status").equalTo('Active').on('value', function (snapshot) {  
       // for(var i = 0;i < snapshot.val().length;i++){
       //   firebase.database().ref('Ads/'+name+'/'+ i).on('value', function (snapshot) {
       //     if(snapshot.val() != null && snapshot.val() != ''){
@@ -82,7 +113,12 @@ export class InfoPage {
                  }
         self.business.push(snap);
         self.LoadingProvider.closeLoading();
+
         console.log("self.business",self.business);
+      }
+      if(self.business.length <= 0){
+        self.LoadingProvider.closeLoading();
+        self.showAdsText = true;
       }
     });
   }

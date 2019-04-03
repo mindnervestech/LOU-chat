@@ -207,9 +207,9 @@ export class loginAndTopicInfo {
       var me = this;
       var lang = localStorage.getItem('lan');
       if(lang == 'fn'){
-        me.tripPurpose = "Sélectionner au moins un objet du voyage";
+        me.tripPurpose = "Sélectionner au moins un sujet";
       }else{
-        me.tripPurpose = 'Please select at least one trip purpose';
+        me.tripPurpose = 'Select at least one topic';
       }
       if (!user) {
             me.newLoginUser();
@@ -245,8 +245,8 @@ export class loginAndTopicInfo {
               "tripe" : {
                 "Home work trip" : me.navParams.data.selectedOption1,
                 "Tourism" : me.navParams.data.selectedOption2,
-                "Business tripe" : me.navParams.data.selectedOption3,
-                "To visit people" :me.navParams.data.selectedOption4,
+                "Business" : me.navParams.data.selectedOption3,
+                "Visit people" :me.navParams.data.selectedOption4,
                 "Participate to an event" : me.navParams.data.selectedOption5,
               },
               "information" : me.trepOption,
@@ -295,10 +295,10 @@ export class loginAndTopicInfo {
       me.userLogout= true;
       var lang = localStorage.getItem('lan');
       if(lang == 'fn'){
-        me.tripPurpose = "Sélectionner au moins un objet du voyage";
+        me.tripPurpose = "Sélectionner au moins un sujet";
         me.enterNickname = "S'il vous plaît entrer pseudo";
       }else{
-        me.tripPurpose = 'Please select at least one trip purpose';
+        me.tripPurpose = 'Select at least one topic';
         me.enterNickname = "Please enter nick name";
       }
   		if(me.nickName != ""){
@@ -336,8 +336,8 @@ export class loginAndTopicInfo {
               tripe : {
                 "Home work trip" : me.navParams.data.selectedOption1,
                 "Tourism" : me.navParams.data.selectedOption2,
-                "Business tripe" : me.navParams.data.selectedOption3,
-                "To visit people" : me.navParams.data.selectedOption4,
+                "Business" : me.navParams.data.selectedOption3,
+                "Visit people" : me.navParams.data.selectedOption4,
                 "Participate to an event" : me.navParams.data.selectedOption5,
               },
               information : me.trepOption,

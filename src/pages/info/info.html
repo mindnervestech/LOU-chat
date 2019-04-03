@@ -15,9 +15,12 @@
     <ion-toolbar color="light" class="chat-room">
         <ion-row>
             <ion-icon name="arrow-back" (click)="goTo()"></ion-icon>
-            <ion-title  class="title">Ads</ion-title>
+            <ion-title  class="title">{{ "ads-text" | translate }}</ion-title>
         </ion-row>       
     </ion-toolbar>
+    <ion-item style="border-bottom: 1px solid #51e4de;">
+        <span style="display: block;text-align:center;white-space: initial;">{{ "traintravel" | translate}} {{trainN}} {{ "destinationtravel" | translate }} {{arrival}}</span>
+    </ion-item>
     <ion-item class="title-btn">
         <button ion-button (click)="busssiness('business');" [ngClass]="{'active': active == 'business'}">Bussiness</button>
         <button ion-button (click)="busssiness('homework');" [ngClass]="{'active': active == 'homework'}">Homework</button>
@@ -26,6 +29,7 @@
     </ion-item>
 </ion-header>
 <ion-content padding>
+    <p *ngIf="showAdsText" style="text-align:center;">There is no ads in a room</p>
     <span *ngFor="let item of business">
         <ion-item class="ads bussiness" [style.background-image]="item.image" style="background-color: #7bd7e0;">
             <a href="{{item.link}}" style="text-decoration: none;display:block;">
