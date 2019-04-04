@@ -212,11 +212,11 @@ export class ShowProfilePage {
                     if(i == "Tourism" && language == "FN"){
                          value = "Tourisme";   
                     }
-                    if(i == "Business trip" && language == "FN"){
-                        value = "Voyage d?affaire";
+                    if(i == "Business" && language == "FN"){
+                        value = "Voyage d'affaire";
                     }
-                    if(i == "To visit people" && language == "FN"){
-                        value = "Rendre visite ? des personnes";
+                    if(i == "Visit people" && language == "FN"){
+                        value = "Rendre visite à des personnes";
                     }
                     if(i == "Participate to an event" && language == "FN"){
                         value = "Participer à un évènement";

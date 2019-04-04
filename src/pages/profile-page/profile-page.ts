@@ -296,10 +296,10 @@ export class ProfilePage {
                     if(i == "Tourism" && language == "FN"){
                          value = "Tourisme";   
                     }
-                    if(i == "Business trip" && language == "FN"){
-                        value = "Voyage d’affaire";
+                    if(i == "Business" && language == "FN"){
+                        value = "Voyage d'affaire";
                     }
-                    if(i == "To visit people" && language == "FN"){
+                    if(i == "Visit people" && language == "FN"){
                         value = "Rendre visite à des personnes";
                     }
                     if(i == "Participate to an event" && language == "FN"){
@@ -312,10 +312,10 @@ export class ProfilePage {
                     if(i == "Tourism"){
                         me.selectedOption5 = snapshot.val().tripe[i];
                     }
-                    if(i == "Business trip"){
+                    if(i == "Business"){
                         me.selectedOption1 = snapshot.val().tripe[i];
                     }
-                    if(i == "To visit people"){
+                    if(i == "Visit people"){
                         me.selectedOption4 = snapshot.val().tripe[i];
                     }
                     if(i == "Participate to an event"){
@@ -527,10 +527,10 @@ export class ProfilePage {
                 "gender": me.gender,
                 "profilePic" : me.tempProfile,
                 "tripe" : {
-                  "Business tripe" : me.selectedOption1,
+                  "Business" : me.selectedOption1,
                   "Home work trip" : me.selectedOption2,
                   "Participate to an event" : me.selectedOption3,
-                  "To visit people" :me.selectedOption4,
+                  "Visit people" :me.selectedOption4,
                   "Tourism" : me.selectedOption5,
                 },
                 "information" : me.information,

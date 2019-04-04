@@ -541,26 +541,32 @@ export class FriendlistPage {
                                                 }
                                             }
                                         }
-                                        if(myData.tripe["Business tripe"]){
-                                            if(language == "FN"){
-                                                    me.trepOption.push("Voyage d’affaire");
+                                        if(myData.tripe["Business"]){
+                                            if(userData.tripe["Business"] == myData.tripe["Business"]){
+                                                if(language == "FN"){
+                                                    me.trepOption.push("Voyage d'affaire");
                                                 }else{
-                                                    me.trepOption.push("Business tripe");
+                                                    me.trepOption.push("Business");
                                                 }
+                                            }    
                                         }
-                                        if(myData.tripe["To visit people"]){
-                                            if(language == "FN"){
+                                        if(myData.tripe["Visit people"]){
+                                            if(userData.tripe["Visit people"] == myData.tripe["Visit people"]){
+                                                if(language == "FN"){
                                                     me.trepOption.push("Rendre visite à des personnes");
                                                 }else{
-                                                    me.trepOption.push("To visit people");
+                                                    me.trepOption.push("Visit people");
                                                 }
+                                            }    
                                         }
                                         if(myData.tripe["Participate to an event"]){
-                                            if(language == "FN"){
+                                            if(userData.tripe["Participate to an event"] == myData.tripe["Participate to an event"]){
+                                                if(language == "FN"){
                                                     me.trepOption.push("Participer à un évènement");
                                                 }else{
                                                     me.trepOption.push("Participate to an event");
                                                 }
+                                            }    
                                         }
                                         for(var j= 0; j < myData.services.length; j++){
                                             if(myData.services[j].value){
@@ -607,16 +613,16 @@ export class FriendlistPage {
                                                 }
                                             }
                                         }
-                                        if(myData.tripe["Business tripe"]){
-                                            if(userData.tripe["Business tripe"] == myData.tripe["Business tripe"]){
+                                        if(myData.tripe["Business"]){
+                                            if(userData.tripe["Business"] == myData.tripe["Business"]){
                                                 if(push == "true"){
                                                     me.tripeUsersList.push(userinfo);
                                                     push = "false";
                                                 }
                                             }
                                         }
-                                        if(myData.tripe["To visit people"]){
-                                            if(userData.tripe["To visit people"] == myData.tripe["To visit people"]){
+                                        if(myData.tripe["Visit people"]){
+                                            if(userData.tripe["Visit people"] == myData.tripe["Visit people"]){
                                                 if(push == "true"){
                                                     me.tripeUsersList.push(userinfo);
                                                     push = "false";
