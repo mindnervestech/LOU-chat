@@ -87,21 +87,6 @@ export class InfoPage {
     var id = JSON.parse(localStorage.getItem("Group"));
     //firebase.database().ref('Ads/'+ name + '/' + id.groupId).on('value', function (snapshot) {
       firebase.database().ref('Ads/'+ name + '/' + id.groupId).orderByChild("status").equalTo('Active').on('value', function (snapshot) {  
-      // for(var i = 0;i < snapshot.val().length;i++){
-      //   firebase.database().ref('Ads/'+name+'/'+ i).on('value', function (snapshot) {
-      //     if(snapshot.val() != null && snapshot.val() != ''){
-      //       var date = new Date(snapshot.val().date);
-      //       var data = {
-      //         title: snapshot.val().title,
-      //         description: snapshot.val().description,
-      //         date: date,
-      //         image: snapshot.val().image,
-      //       }
-      //       self.business.push(data);
-      //       console.log("self.business",self.business);
-      //     }    
-      //   });
-      // }
       var ads = snapshot.val();
       for(var data in ads){
         var snap = {
