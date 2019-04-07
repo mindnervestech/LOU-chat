@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>433761680362-dlvqv0vo98uii2er3fcih1al2r6bb9du.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.433761680362-dlvqv0vo98uii2er3fcih1al2r6bb9du</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAF2ss0l2uY59EZ4-Q2jrqMwR0fhFgNbXQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>433761680362</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.escaleconnect.app</string>
+	<key>PROJECT_ID</key>
+	<string>louchat-583ca</string>
+	<key>STORAGE_BUCKET</key>
+	<string>louchat-583ca.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:433761680362:ios:db2fc48d3f1c8e02</string>
+	<key>DATABASE_URL</key>
+	<string>https://louchat-583ca.firebaseio.com</string>
+</dict>
+</plist>
