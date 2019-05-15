@@ -27,9 +27,9 @@ declare var firebase;
             </button>
             <ion-title  class="title">{{groupData.type}} {{trainNo}}</ion-title>
           <div>
-              <button ion-button icon-only class="btn circle" (click)="goToChatRoomMember()" tappable>
+              <!--<button ion-button icon-only class="btn circle" (click)="goToChatRoomMember()" tappable>
                 <img src="assets/image/groupchat.png" width="40px" height="40px">
-              </button>
+              </button>-->
               </div>
             
         </ion-navbar>
@@ -94,7 +94,7 @@ declare var firebase;
         </button>
     </ion-item>    
 		<ion-buttons end style="margin-bottom: -3px;">
-			<button class="send-btn" ion-button icon-right color='primary' tappable (click)='sendMessage("text")' tappable>            
+			<button class="send-btn" ion-button icon-right color='primary' tappable (click)='sendMessage("text")' (mousedown)="$event.preventDefault()" tappable>            
         <ion-icon name='send'></ion-icon>
       </button>
     </ion-buttons>

@@ -41,11 +41,11 @@ declare var firebase;
 				<!--<button ion-button color="light" clear icon-only item-end (click)="showFriendOptions(senderUser)" tappable>
                         <ion-icon name="options"></ion-icon>
                     </button>-->
-        <div style="position: absolute;right: 0;top: 1px;bottom: 0;margin: auto;">
+        <!--<div style="position: absolute;right: 0;top: 1px;bottom: 0;margin: auto;">
               <button ion-button icon-only class="btn circle" (click)="showFriendOptions(senderUser)" tappable style="height:auto;">
                 <img src="assets/image/singlechat.png" width="40px" height="40px">
               </button>
-            </div>            
+            </div>-->            
 			</ion-item>
 		</ion-title>
 
