@@ -23,10 +23,13 @@
         </ion-item>
 
         <ion-label>{{ 'Flight or Train number' | translate }}</ion-label>
-        <ion-item class="txtdesign1 train">
-            <ion-input type="text" placeholder="{{ 'Enter a valid number' | translate }}" name="number" [(ngModel)]="TrainOrFliteNumber"></ion-input>
+        <span *ngIf="list.length > 0">
+        <ion-item class="txtdesign1 train auto-complete">
+            <!-- <ion-input type="text" placeholder="{{ 'Enter a valid number' | translate }}" name="number" [(ngModel)]="TrainOrFliteNumber"></ion-input> -->
+            <input name="number" id="list" [(ngModel)]="TrainOrFliteNumber" [ng4-auto-complete]="list" [word-trigger]="1" [list-length]="10"
+            filterName="name" no-record-text="No Records Found!">
         </ion-item>
-        
+        </span>
         <ion-label class="info">{{ 'What is the purpose of your trip' | translate }}</ion-label>
         
         <div class="multiple-option">

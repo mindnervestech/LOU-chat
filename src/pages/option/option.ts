@@ -5,6 +5,7 @@ import * as Message from '../../providers/message/message';
 import { global } from '../global/global';
 import { LoadingProvider } from '../../providers/loading/loading';
 import { TranslateService } from '@ngx-translate/core';
+import { AutoCompleteService } from 'ng4-auto-complete';
 @IonicPage()
 @Component({
   selector: 'page-option',
@@ -36,11 +37,14 @@ export class OptionPage {
    startDateTime: any;
    endDateTime: any;
    alertTime: any;
+   list: any = [];
+   groupDataCall: boolean = false;
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public alertCtrl: AlertController,
     public LoadingProvider: LoadingProvider,
-    public translate: TranslateService) {
+    public translate: TranslateService,
+    public autoCompleteService: AutoCompleteService) {
     global.backPage = "EXIT";
   }
 
@@ -74,6 +78,16 @@ export class OptionPage {
       }
       me.LoadingProvider.closeLoading();
     });
+    me.groupDataCall = true;
+    firebase.database().ref().child('Group').on('value',function(groupData){
+      if(me.groupDataCall == true){
+       var groups = groupData.val();
+        for(var group in groups){
+          me.list.push(groups[group].trainNumber);
+        }
+        me.groupDataCall = false;
+      }
+    });
   }
   optionClick(event,text){
     this.selected = text; 
@@ -84,6 +98,10 @@ export class OptionPage {
       this.optionValue = text;
       this.tripeValue = "Flight"
     }
+  }
+  setList(list){
+    this.autoCompleteService.setDynamicList(list);
+    // this will log in console if your list is empty.
   }
   isActive(text){
     return this.selected === text;

@@ -7,6 +7,8 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+
+import { AutoCompleteModule } from 'ng4-auto-complete';
 export function setTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -16,6 +18,7 @@ export function setTranslateLoader(http: Http) {
   ],
   imports: [
     IonicPageModule.forChild(OptionPage),
+    AutoCompleteModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
