@@ -70,6 +70,8 @@
     "ionic-plugin-deploy": "^0.6.7",
     "ionic-plugin-keyboard": "^2.2.1",
     "ionicons": "3.0.0",
+    "ng2-input-autocomplete": "^0.3.5",
+    "ng4-auto-complete": "^1.0.0",
     "node-sass": "^4.11.0",
     "phonegap-plugin-push": "git+https://github.com/phonegap/phonegap-plugin-push.git#v2.0.x",
     "run": "^1.4.0",
