@@ -26,7 +26,7 @@
         <span *ngIf="list.length > 0">
         <ion-item class="txtdesign1 train auto-complete">
             <!-- <ion-input type="text" placeholder="{{ 'Enter a valid number' | translate }}" name="number" [(ngModel)]="TrainOrFliteNumber"></ion-input> -->
-            <input name="number" id="list" [(ngModel)]="TrainOrFliteNumber" [ng4-auto-complete]="list" [word-trigger]="1" [list-length]="10"
+            <input name="number" id="list" placeholder="{{ 'Enter a valid number' | translate }}" [(ngModel)]="TrainOrFliteNumber" [ng4-auto-complete]="list" [word-trigger]="1" [list-length]="10"
             filterName="name" no-record-text="No Records Found!">
         </ion-item>
         </span>

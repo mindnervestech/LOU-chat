@@ -21,7 +21,16 @@
 //     src: url(../assets/Font/GothamRounded-Light.otf);
 //     font-weight: 500;
 // }
-
+.ui-autocomplete li {
+    padding: 5px 3px !important;
+    list-style-type: none !important; 
+}
+.ui-autocomplete {
+    background: #fff !important;
+}
+.ui-autocomplete li:nth-child(even) {
+    background: lightgrey !important;
+}
 body,h1,h2,h3,p,button,span,.label-md{
     font-family: 'GothamRounded' !important;
 }

@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone,ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ToastController, MenuController, ActionSheetController } from 'ionic-angular';
 import { global } from '../global/global';
 import { Events } from 'ionic-angular';
@@ -11,6 +11,7 @@ import { Camera } from '@ionic-native/camera';
 //import * as Message from '../../providers/message/message';
 //import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { TranslateService } from '@ngx-translate/core';
+
 declare var firebase;
 
 @IonicPage()
@@ -34,6 +35,7 @@ export class loginAndTopicInfo {
     tripPurpose: string = '';
     startDateTime: any;
    endDateTime: any;
+  userVerifyones: boolean = false;
 	constructor(public LoadingProvider: LoadingProvider,
 	public CommonProvider: CommonProvider,
 	private network: Network,
@@ -113,7 +115,7 @@ export class loginAndTopicInfo {
               });
             });
     }
-
+   
   	GoToFriendListPage() {
     	this.navCtrl.push("FriendlistPage");
     }
@@ -216,91 +218,101 @@ export class loginAndTopicInfo {
         }else{
           console.log("first");
           var groupData = JSON.parse(localStorage.getItem("Group"));
-        
-             //user data update and add member to group
-              var _user = JSON.parse(localStorage.getItem("loginUser"));
-              if(_user.name == me.nickName){
-                me.LoadingProvider.startLoading();
-                var group_id = me.groupInfo.groupId;
+            //user data update and add member to group
+            var _user = JSON.parse(localStorage.getItem("loginUser"));
+            if(_user.name == me.nickName){
+              me.LoadingProvider.startLoading();
+              var group_id = me.groupInfo.groupId;
+              if(group_id != null){
                 var date = new Date();
                 var key = user.uid;
                 localStorage.setItem("IsLogin", 'true');
+                console.log("group_id---",group_id);
+                me.userVerifyones = true;
                 var dateCreated = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
                 firebase.database().ref('GroupMember/' + groupData.groupId).orderByChild("name").equalTo(me.nickName.toLowerCase()).on('value', function (own) {
-                  var ownName;
-                  if(own.val() != null || own.val() != undefined){
-                    var obj = Object.keys(own.val()).forEach(key => {     
-                      ownName = own.val()[key].name;
-                    });
-                  }
-                  if(ownName != me.nickName){           
-                    firebase.database().ref().child('GroupMember/'+ group_id + '/' + key).set({
-                    groupId : group_id,
-                    DateCreated: dateCreated,
-                    userId : user.access_code,
-                    lastDate : dateCreated,
-                    unreadCount : me.groupInfo.unreadCount,
-                    lastMessage: me.groupInfo.lastMessage,
-                    name: me.nickName
-                  });
-                var phofilePic = user.profilePic;
-                console.log(me.servesOption);
-                me.servesOption[0].value = me.navParams.data.servesOption1;
-                me.servesOption[1].value = me.navParams.data.servesOption2,
-                me.servesOption[2].value = me.navParams.data.servesOption3,
-                me.servesOption[3].value = me.navParams.data.servesOption4,
-                firebase.database().ref().child('users/'+ key).update({
-                  "profilePic" : phofilePic,
-                  "groupName" : me.groupInfo.groupName,
-                  "tripe" : {
-                    "Home work trip" : me.navParams.data.selectedOption1,
-                    "Tourism" : me.navParams.data.selectedOption2,
-                    "Business" : me.navParams.data.selectedOption3,
-                    "Visit people" :me.navParams.data.selectedOption4,
-                    "Participate to an event" : me.navParams.data.selectedOption5,
-                  },
-                  "information" : me.trepOption,
-                  "services" : me.servesOption,
-                }).then(()=>{
-                  var groupData = JSON.parse(localStorage.getItem("Group"));
-                  //var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
-                  var currentTime = new Date();
-                  me.startDateTime = new Date(me.groupInfo.startDate);
-                  me.endDateTime = new Date(me.groupInfo.endDate);
-                  if(me.startDateTime.getTime() <= currentTime.getTime() && me.endDateTime.getTime() >= currentTime.getTime()){
-                    if(me.counter == 0){
-                      me.LoadingProvider.closeLoading();
-                      let alert = me.alertCtrl.create({ subTitle: me.tripPurpose, buttons: ['OK'] });
-                      alert.present();
+                  var ownName = '';
+                  if(me.userVerifyones == true){
+                    me.userVerifyones = false;
+                    console.log("user----------",own.val(), "[[", me.nickName);
+                    if(own.val() != null){
+                      var obj = Object.keys(own.val()).forEach(key => {     
+                        ownName = own.val()[key].name;
+                        console.log("ownName",ownName);
+                      });
+                    }
+                    // if(ownName.toLowerCase() != me.nickName.toLowerCase()){
+                    if(own.val() == null){             
+                      firebase.database().ref().child('GroupMember/'+ group_id + '/' + key).set({
+                        groupId : group_id,
+                        DateCreated: dateCreated,
+                        userId : user.access_code,
+                        lastDate : dateCreated,
+                        unreadCount : me.groupInfo.unreadCount,
+                        lastMessage: me.groupInfo.lastMessage,
+                        name: me.nickName
+                      });
+                      var phofilePic = user.profilePic;
+                      console.log(me.servesOption);
+                      me.servesOption[0].value = me.navParams.data.servesOption1;
+                      me.servesOption[1].value = me.navParams.data.servesOption2,
+                      me.servesOption[2].value = me.navParams.data.servesOption3,
+                      me.servesOption[3].value = me.navParams.data.servesOption4,
+                      firebase.database().ref().child('users/'+ key).update({
+                        "profilePic" : phofilePic,
+                        "groupName" : me.groupInfo.groupName,
+                        "tripe" : {
+                          "Home work trip" : me.navParams.data.selectedOption1,
+                          "Tourism" : me.navParams.data.selectedOption2,
+                          "Business" : me.navParams.data.selectedOption3,
+                          "Visit people" :me.navParams.data.selectedOption4,
+                          "Participate to an event" : me.navParams.data.selectedOption5,
+                        },
+                        "information" : me.trepOption,
+                        "services" : me.servesOption,
+                      }).then(()=>{
+                        var groupData = JSON.parse(localStorage.getItem("Group"));
+                        //var msg = me.tripeDateValidation(groupData.tripeDate,groupData.startTime,groupData.endTime);
+                        var currentTime = new Date();
+                        me.startDateTime = new Date(me.groupInfo.startDate);
+                        me.endDateTime = new Date(me.groupInfo.endDate);
+                        if(me.startDateTime.getTime() <= currentTime.getTime() && me.endDateTime.getTime() >= currentTime.getTime()){
+                          if(me.counter == 0){
+                            me.LoadingProvider.closeLoading();
+                            let alert = me.alertCtrl.create({ subTitle: me.tripPurpose, buttons: ['OK'] });
+                            alert.present();
+                          }else{
+                            me.LoadingProvider.closeLoading();
+                            me.navCtrl.setRoot("FriendlistPage");
+                          }
+                        }else{
+                          me.LoadingProvider.closeLoading();
+                          let actionSheet = me.alertCtrl.create({
+                            title: 'The chat room is not yet opened, but you can already see some tips for your trip',
+                            buttons: [{
+                                      text: 'Go',
+                                      handler: () => {
+                                        me.GoToFriendListPage();
+                                      }
+                                    }]
+                          });
+                          actionSheet.present();
+                        }         
+                      });
                     }else{
                       me.LoadingProvider.closeLoading();
-                      me.navCtrl.setRoot("FriendlistPage");
+                      let alert = me.alertCtrl.create({ subTitle: "This name is all ready use please try another name", buttons: ['OK'] });
+                      alert.present();
                     }
-                  }else{
-                    me.LoadingProvider.closeLoading();
-                    let actionSheet = me.alertCtrl.create({
-                      title: 'The chat room is not yet opened, but you can already see some tips for your trip',
-                      buttons: [{
-                                text: 'Go',
-                                handler: () => {
-                                  me.GoToFriendListPage();
-                                }
-                              }]
-                    });
-                    actionSheet.present();
-                }         
+                  // me.userVerifyones = false;
+                  } 
                 });
-              }else{
-                me.LoadingProvider.closeLoading();
-                let alert = me.alertCtrl.create({ subTitle: "This name is all ready use please try another name", buttons: ['OK'] });
-                alert.present();
-              } 
-            });
-              }else{
+              }
+            }else{
                 //if user login as a new user
                 localStorage.removeItem("loginUser");
                 me.newLoginUser();
-              }
+            }
         }
     }
     enterNickname: string = '';
