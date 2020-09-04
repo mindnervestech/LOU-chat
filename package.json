@@ -72,7 +72,7 @@
     "ionicons": "3.0.0",
     "ng2-input-autocomplete": "^0.3.5",
     "ng4-auto-complete": "^1.0.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.13.1",
     "phonegap-plugin-push": "git+https://github.com/phonegap/phonegap-plugin-push.git#v2.0.x",
     "run": "^1.4.0",
     "rxjs": "^5.5.12",
