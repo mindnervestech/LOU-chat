@@ -64,7 +64,7 @@
     "cordova-sqlite-storage": "^2.0.4",
     "es6-promise-plugin": "^4.2.2",
     "firebase": "^3.9.0",
-    "i": "^0.3.6",
+    "i": "^0.3.7",
     "ionic-angular": "3.2.0",
     "ionic-emoji-picker": "^0.1.8",
     "ionic-plugin-deploy": "^0.6.7",
